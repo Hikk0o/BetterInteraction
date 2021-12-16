@@ -29,6 +29,7 @@ public final class LoggerItems extends JavaPlugin {
         version = properties.getProperty("version");
         prefix = "[" + properties.getProperty("prefix") + "]";
 
+        new Permissions();
         new Commands();
 
         Bukkit.getPluginManager().registerEvents(new events(), this);

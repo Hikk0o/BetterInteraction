@@ -31,10 +31,9 @@ public class events implements Listener {
             e.printStackTrace();
         }
     }
-
+    BukkitScheduler scheduler = LoggerItems.getInstance().getServer().getScheduler();
     @EventHandler
     public void ItemDespawn(ItemDespawnEvent e) {
-        BukkitScheduler scheduler = LoggerItems.getInstance().getServer().getScheduler();
         scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "; owner: "+ e.getEntity().getOwner() +"}");
@@ -47,7 +46,6 @@ public class events implements Listener {
 
     @EventHandler
     public void PlayerDropItem(PlayerDropItemEvent e) {
-        BukkitScheduler scheduler = LoggerItems.getInstance().getServer().getScheduler();
         scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDropItemEvent: {item: " + e.getItemDrop().getName() + " x " + e.getItemDrop().getItemStack().getAmount() + "; owner: "+ e.getPlayer().getName() +"}");
@@ -60,7 +58,6 @@ public class events implements Listener {
 
     @EventHandler
     public void PlayerDeath(PlayerDeathEvent e) {
-        BukkitScheduler scheduler = LoggerItems.getInstance().getServer().getScheduler();
         scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDeathEvent: {items: " + e.getDrops() + "; owner: "+ e.getPlayer().getName() +"}");
