@@ -1,0 +1,9 @@
+name: ItemLogger
+version: '${project.version}'
+main: hikko.loggeritems.LoggerItems
+api-version: 1.18
+prefix: ItemLogger
+authors: [ Hikk0o ]
+website: https://github.com/Hikk0o
+commands:
+  logger: {}
