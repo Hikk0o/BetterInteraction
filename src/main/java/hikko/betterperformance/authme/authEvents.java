@@ -1,6 +1,5 @@
 package hikko.betterperformance.authme;
 
-import com.earth2me.essentials.Essentials;
 import fr.xephi.authme.events.LoginEvent;
 import fr.xephi.authme.events.LogoutEvent;
 import hikko.betterperformance.BetterPerformance;
@@ -20,7 +19,9 @@ public class authEvents implements Listener {
         BetterPerformance.getInstance().getLogger().log(Level.INFO, e.getPlayer().getName() + " зашел в аккаунт.");
         BetterPerformance.getInstance().getLogger().log(Level.INFO, String.valueOf(e.getPlayer().canSee(e.getPlayer())));
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) 0.3, 1);
+            if (player.canSee(e.getPlayer())) {
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) 0.3, 1);
+            }
         }
     }
 
@@ -28,7 +29,9 @@ public class authEvents implements Listener {
     public void LogoutEvent(LogoutEvent e) {
         BetterPerformance.getInstance().getLogger().log(Level.INFO, e.getPlayer().getName() + " вышел из аккаунта.");
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) 0.3, (float) 0.2);
+            if (player.canSee(e.getPlayer())) {
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, (float) 0.3, (float) 0.2);
+            }
         }
     }
 }
