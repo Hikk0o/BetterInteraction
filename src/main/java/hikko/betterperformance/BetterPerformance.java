@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public final class BetterPerformance extends JavaPlugin {
 
     private static BetterPerformance instance;
-    private static Permissions permissions;
+    private static PluginPermissions pluginPermissions;
     public static String version;
     public static String prefix;
 
@@ -46,7 +46,7 @@ public final class BetterPerformance extends JavaPlugin {
         prefix = "[" + properties.getProperty("prefix") + "]";
 
         new CheckerEntities();
-        permissions = new Permissions();
+        pluginPermissions = new PluginPermissions();
         new Commands();
 
         Bukkit.getPluginManager().registerEvents(new events(), this);
@@ -63,8 +63,8 @@ public final class BetterPerformance extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public Permissions getPermissions() {
-        return permissions;
+    public static PluginPermissions getPermissions() {
+        return pluginPermissions.getPermissions();
     }
 
     public void onReload() {

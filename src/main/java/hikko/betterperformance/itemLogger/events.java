@@ -37,9 +37,9 @@ public class events implements Listener {
     public void ItemDespawn(ItemDespawnEvent e) {
         scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
             openFile();
-            writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "; owner: "+ e.getEntity().getOwner() +"}");
+            writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount());
             if (BetterPerformance.getInstance().getConfig().getBoolean("logsToConsole")) {
-                logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "; owner: "+ e.getEntity().getOwner() +"}");
+                logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount());
             }
             writer.close();
         });

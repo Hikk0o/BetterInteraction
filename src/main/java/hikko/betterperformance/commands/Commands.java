@@ -2,7 +2,7 @@ package hikko.betterperformance.commands;
 
 import com.google.common.collect.Lists;
 import hikko.betterperformance.BetterPerformance;
-import hikko.betterperformance.Permissions;
+import hikko.betterperformance.PluginPermissions;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -30,7 +30,7 @@ public class Commands extends AbstractCommand {
             return;
         }
         if (args[0].equalsIgnoreCase("reload")) {
-            if (sender.hasPermission(BetterPerformance.getInstance().getPermissions().getPermissionReload())) {
+            if (sender.hasPermission(BetterPerformance.getPermissions().reload)) {
                 BetterPerformance.getInstance().onReload();
                 if (!sender.getName().equals("CONSOLE")) {
                     sender.sendMessage(ChatColor.YELLOW + BetterPerformance.prefix + " Reloaded.");

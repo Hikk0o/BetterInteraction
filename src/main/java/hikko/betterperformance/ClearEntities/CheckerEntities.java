@@ -34,28 +34,24 @@ public class CheckerEntities extends BukkitRunnable {
         if (entity.getType().name().equals("PIG")) {
             PIG++;
             if (PIG > MAXCOUNT) {
-                /*LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + entity.getType().name() + " KILLED!");*/
                 pigs.add(entity);
             }
         }
         if (entity.getType().name().equals("CHICKEN")) {
             CHICKEN++;
             if (CHICKEN > MAXCOUNT) {
-                /*LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + entity.getType().name() + " KILLED!");*/
                 chikens.add(entity);
             }
         }
         if (entity.getType().name().equals("COW")) {
             COW++;
             if (COW > MAXCOUNT) {
-                /*LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + entity.getType().name() + " KILLED!");*/
                 cows.add(entity);
             }
         }
         if (entity.getType().name().equals("SHEEP")) {
             SHEEP++;
             if (SHEEP > MAXCOUNT) {
-                /*LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + entity.getType().name() + " KILLED!");*/
                 sheeps.add(entity);
             }
         }

@@ -5,17 +5,16 @@ import org.bukkit.permissions.Permission;
 
 import java.util.logging.Level;
 
-public class Permissions {
+public class PluginPermissions {
 
-    final private Permission reload = new Permission("logger.reload");
+    public Permission reload = new Permission("betterperformance.reload");
 
-    public Permissions() {
+    public PluginPermissions() {
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading permissions...");
         Bukkit.getPluginManager().addPermission(reload);
-
     }
 
-    public Permission getPermissionReload() {
-        return reload;
+    public PluginPermissions getPermissions() {
+        return this;
     }
 }
