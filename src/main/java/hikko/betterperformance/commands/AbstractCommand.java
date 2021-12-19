@@ -1,6 +1,6 @@
-package hikko.loggeritems.commands;
+package hikko.betterperformance.commands;
 
-import hikko.loggeritems.LoggerItems;
+import hikko.betterperformance.BetterPerformance;
 import org.bukkit.command.*;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     public AbstractCommand(String command) {
-        PluginCommand pluginCommand = LoggerItems.getInstance().getCommand(command);
+        PluginCommand pluginCommand = BetterPerformance.getInstance().getCommand(command);
         if (pluginCommand != null) {
             pluginCommand.setExecutor(this);
         }

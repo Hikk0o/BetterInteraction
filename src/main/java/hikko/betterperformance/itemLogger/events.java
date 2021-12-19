@@ -1,5 +1,6 @@
-package hikko.loggeritems;
+package hikko.betterperformance.itemLogger;
 
+import hikko.betterperformance.BetterPerformance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemDespawnEvent;
@@ -24,20 +25,20 @@ public class events implements Listener {
     PrintWriter writer;
 
     void openFile() {
-        File file = new File(LoggerItems.getInstance().getDataFolder() + "/" + format.format(Calendar.getInstance().getTime()) + ".log");
+        File file = new File(BetterPerformance.getInstance().getDataFolder() + "/logs/" + format.format(Calendar.getInstance().getTime()) + ".log");
         try {
             writer = new PrintWriter(new FileWriter(file,true));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    BukkitScheduler scheduler = LoggerItems.getInstance().getServer().getScheduler();
+    BukkitScheduler scheduler = BetterPerformance.getInstance().getServer().getScheduler();
     @EventHandler
     public void ItemDespawn(ItemDespawnEvent e) {
-        scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
+        scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "; owner: "+ e.getEntity().getOwner() +"}");
-            if (Boolean.parseBoolean(LoggerItems.getInstance().getConfig().getString("logsToConsole"))) {
+            if (BetterPerformance.getInstance().getConfig().getBoolean("logsToConsole")) {
                 logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "; owner: "+ e.getEntity().getOwner() +"}");
             }
             writer.close();
@@ -46,10 +47,10 @@ public class events implements Listener {
 
     @EventHandler
     public void PlayerDropItem(PlayerDropItemEvent e) {
-        scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
+        scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDropItemEvent: {item: " + e.getItemDrop().getName() + " x " + e.getItemDrop().getItemStack().getAmount() + "; owner: "+ e.getPlayer().getName() +"}");
-            if (Boolean.parseBoolean(LoggerItems.getInstance().getConfig().getString("logsToConsole"))) {
+            if (BetterPerformance.getInstance().getConfig().getBoolean("logsToConsole")) {
                 logger.log(Level.INFO, "PlayerDropItemEvent: {item: " + e.getItemDrop().getName() + " x " + e.getItemDrop().getItemStack().getAmount() + "; owner: "+ e.getPlayer().getName() +"}");
             }
             writer.close();
@@ -58,10 +59,10 @@ public class events implements Listener {
 
     @EventHandler
     public void PlayerDeath(PlayerDeathEvent e) {
-        scheduler.runTaskAsynchronously(LoggerItems.getInstance(), () -> {
+        scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDeathEvent: {items: " + e.getDrops() + "; owner: "+ e.getPlayer().getName() +"}");
-            if (Boolean.parseBoolean(LoggerItems.getInstance().getConfig().getString("logsToConsole"))) {
+            if (BetterPerformance.getInstance().getConfig().getBoolean("logsToConsole")) {
                 logger.log(Level.INFO, "PlayerDeathEvent: {items:" + e.getDrops() + "; owner: "+ e.getPlayer().getName() +"}");
             }
             writer.close();

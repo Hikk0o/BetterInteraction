@@ -1,9 +1,9 @@
-name: ItemLogger
+name: BetterPerformance
 version: '${project.version}'
-main: hikko.loggeritems.LoggerItems
+main: hikko.betterperformance.BetterPerformance
 api-version: 1.18
-prefix: ItemLogger
+prefix: BetterPerformance
 authors: [ Hikk0o ]
 website: https://github.com/Hikk0o
 commands:
-  logger: {}
+  bp: {}

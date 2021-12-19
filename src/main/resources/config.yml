@@ -1,3 +1,7 @@
 logsToConsole: false
+
+maxEntitiesChunk: 20
+maxEntities: 30
+
 messages:
   noPermission: 'У вас нет прав на использование этой команды.'
