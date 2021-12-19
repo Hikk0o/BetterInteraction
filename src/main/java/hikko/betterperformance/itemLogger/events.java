@@ -19,9 +19,13 @@ import java.util.logging.Logger;
 
 public class events implements Listener {
 
-    Logger logger = Logger.getLogger("Item Events");
-    SimpleDateFormat format = new SimpleDateFormat("d.M.y");
-    SimpleDateFormat time = new SimpleDateFormat("[HH:mm:ss] ");
+    public events() {
+        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading events items...");
+    }
+
+    final Logger logger = Logger.getLogger("Item Events");
+    final SimpleDateFormat format = new SimpleDateFormat("d.M.y");
+    final SimpleDateFormat time = new SimpleDateFormat("[HH:mm:ss] ");
     PrintWriter writer;
 
     void openFile() {
@@ -32,14 +36,14 @@ public class events implements Listener {
             e.printStackTrace();
         }
     }
-    BukkitScheduler scheduler = BetterPerformance.getInstance().getServer().getScheduler();
+    final BukkitScheduler scheduler = BetterPerformance.getInstance().getServer().getScheduler();
     @EventHandler
     public void ItemDespawn(ItemDespawnEvent e) {
         scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
             openFile();
-            writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount());
+            writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "}");
             if (BetterPerformance.getInstance().getConfig().getBoolean("logsToConsole")) {
-                logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount());
+                logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "}");
             }
             writer.close();
         });

@@ -7,7 +7,7 @@ import java.util.logging.Level;
 
 public class PluginPermissions {
 
-    public Permission reload = new Permission("betterperformance.reload");
+    public final Permission reload = new Permission("betterperformance.reload");
 
     public PluginPermissions() {
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading permissions...");
