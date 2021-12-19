@@ -1,4 +1,4 @@
-package hikko.betterperformance.ClearEntities;
+package hikko.betterperformance.clearEntities;
 
 import hikko.betterperformance.BetterPerformance;
 import org.bukkit.*;
@@ -88,7 +88,7 @@ public class CheckerEntities extends BukkitRunnable {
                         taskActive = true;
                         BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Many entities!");
                         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Started deleting...");
-                        new ClearEntities().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
+                        new ClearEntitiesTask().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
                         break;
                     }
                     CheckerEntities.MAXCOUNT = BetterPerformance.getInstance().getConfig().getInt("maxEntities");
@@ -133,7 +133,7 @@ public class CheckerEntities extends BukkitRunnable {
                         taskActive = true;
                         BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Many entities!");
                         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Started deleting...");
-                        new ClearEntities().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
+                        new ClearEntitiesTask().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
                         break;
                     }
                 }

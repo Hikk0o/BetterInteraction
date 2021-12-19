@@ -1,8 +1,9 @@
 package hikko.betterperformance;
 
-import hikko.betterperformance.ClearEntities.CheckerEntities;
+import hikko.betterperformance.authme.authEvents;
+import hikko.betterperformance.clearEntities.CheckerEntities;
 import hikko.betterperformance.commands.Commands;
-import hikko.betterperformance.itemLogger.events;
+import hikko.betterperformance.itemLogger.itemEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,7 +50,8 @@ public final class BetterPerformance extends JavaPlugin {
         pluginPermissions = new PluginPermissions();
         new Commands();
 
-        Bukkit.getPluginManager().registerEvents(new events(), this);
+        Bukkit.getPluginManager().registerEvents(new itemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new authEvents(), this);
 
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");

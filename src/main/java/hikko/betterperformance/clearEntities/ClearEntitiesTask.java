@@ -1,4 +1,4 @@
-package hikko.betterperformance.ClearEntities;
+package hikko.betterperformance.clearEntities;
 
 import hikko.betterperformance.BetterPerformance;
 import org.bukkit.entity.Entity;
@@ -6,7 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Level;
 
-class ClearEntities extends BukkitRunnable {
+class ClearEntitiesTask extends BukkitRunnable {
 
     int counter = 0;
 

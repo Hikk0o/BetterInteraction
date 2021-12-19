@@ -2,7 +2,6 @@ package hikko.betterperformance.commands;
 
 import com.google.common.collect.Lists;
 import hikko.betterperformance.BetterPerformance;
-import hikko.betterperformance.PluginPermissions;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
