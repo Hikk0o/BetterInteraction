@@ -5,7 +5,6 @@ api-version: 1.18
 prefix: BetterPerformance
 authors: [ Hikk0o ]
 website: https://github.com/Hikk0o
-softdepend:
-  - AuthMe
+softdepend: [ AuthMe ]
 commands:
   bp: {}

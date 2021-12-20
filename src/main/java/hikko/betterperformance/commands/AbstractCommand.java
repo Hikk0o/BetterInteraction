@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
+abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     public AbstractCommand(String command) {
         PluginCommand pluginCommand = BetterPerformance.getInstance().getCommand(command);

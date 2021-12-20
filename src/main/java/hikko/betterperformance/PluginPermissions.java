@@ -2,6 +2,7 @@ package hikko.betterperformance;
 
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
