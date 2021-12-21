@@ -138,8 +138,13 @@ public class ChatEvents implements Listener {
                 }
             }
             if (!heard) {
-                Component notHeard = Component.text("Вас никто не услышал. Попробуйте написать в глобальный чат, поставив \"!\" в начало сообщения.")
-                                .color(TextColor.color(0xFF832C));
+                Component notHeard = Component.text(ChatColor.ITALIC + "Вас никто не услышал. ")
+                        .color(TextColor.color(0xFFFF55));
+                notHeard = notHeard.append(Component.text("[Написать в глобальный чат]")
+                        .color(TextColor.color(0x55FF55))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Или просто напиши '!' в начале сообщения")))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "!" + content))
+                );
                 e.getPlayer().sendMessage(notHeard);
                 messageQueue.getPlayer(e.getPlayer()).addMessage(notHeard);
             }
