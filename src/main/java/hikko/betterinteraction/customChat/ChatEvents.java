@@ -139,7 +139,7 @@ public class ChatEvents implements Listener {
             }
             if (!heard) {
                 Component notHeard = Component.text("Вас никто не услышал. Попробуйте написать в глобальный чат, поставив \"!\" в начало сообщения.")
-                                .color(TextColor.color(0xDC4B43));
+                                .color(TextColor.color(0xFF832C));
                 e.getPlayer().sendMessage(notHeard);
                 messageQueue.getPlayer(e.getPlayer()).addMessage(notHeard);
             }
