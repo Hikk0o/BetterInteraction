@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class itemEvents implements Listener {
 
     public itemEvents() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading events items...");
+        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading item events...");
     }
 
     final Logger logger = Logger.getLogger("Item Events");

@@ -2,6 +2,7 @@ name: BetterPerformance
 version: '${project.version}'
 main: hikko.betterperformance.BetterPerformance
 api-version: 1.18
+load: POSTWORLD
 prefix: BetterPerformance
 authors: [ Hikk0o ]
 website: https://github.com/Hikk0o

@@ -2,6 +2,7 @@ package hikko.betterperformance.authme;
 
 import fr.xephi.authme.api.v3.AuthMeApi;
 import fr.xephi.authme.events.LoginEvent;
+import hikko.betterperformance.BetterPerformance;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -10,7 +11,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.logging.Level;
+
 public class authEvents implements Listener {
+
+    public authEvents() {
+        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading auth events...");
+    }
 
     @EventHandler
     public void LoginEvent(LoginEvent e) {

@@ -39,6 +39,14 @@ public class Commands extends AbstractCommand {
             }
             return;
         }
+        if (args[0].equalsIgnoreCase("detelemessage")) {
+            if (sender.hasPermission(BetterPerformance.getPermissions().detelemessage)) {
+                BetterPerformance.getInstance().getChatEvents().delMessage(Integer.parseInt(args[1]));
+            } else {
+                sender.sendMessage(noPermission);
+            }
+            return;
+        }
 
         sender.sendMessage(ChatColor.GRAY + BetterPerformance.prefix + " Неизвестная команда: " + args[0]);
 

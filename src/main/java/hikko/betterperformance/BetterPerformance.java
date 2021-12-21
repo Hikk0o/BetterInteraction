@@ -1,13 +1,11 @@
 package hikko.betterperformance;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
 import hikko.betterperformance.authme.authEvents;
 import hikko.betterperformance.clearEntities.CheckerEntities;
 import hikko.betterperformance.commands.Commands;
-import hikko.betterperformance.customChat.chatEvents;
+import hikko.betterperformance.customChat.ChatEvents;
 import hikko.betterperformance.customChat.protocol.ChatPacketHandler;
 import hikko.betterperformance.itemLogger.itemEvents;
 import org.bukkit.Bukkit;
@@ -27,6 +25,7 @@ public final class BetterPerformance extends JavaPlugin {
     public static String version;
     public static String prefix;
     private static ProtocolManager protocolManager;
+    private static ChatEvents chatEvents;
 
 
     @Override
@@ -59,12 +58,11 @@ public final class BetterPerformance extends JavaPlugin {
         pluginPermissions = new PluginPermissions();
         protocolManager = ProtocolLibrary.getProtocolManager();
         new Commands();
-        new ChatPacketHandler();
         /*new ChatPacketHandler(this, ListenerPriority.HIGH, PacketType.Play.Server.CHAT);*/
-
         Bukkit.getPluginManager().registerEvents(new itemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new authEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new chatEvents(), this);
+        Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
+        new ChatPacketHandler();
 
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
         BetterPerformance.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
@@ -94,5 +92,7 @@ public final class BetterPerformance extends JavaPlugin {
     public static ProtocolManager getProtocolManager() {
         return protocolManager;
     }
-
+    public ChatEvents getChatEvents() {
+        return chatEvents;
+    }
 }
