@@ -1,7 +1,7 @@
-package hikko.betterperformance.customChat;
+package hikko.betterinteraction.customChat;
 
-import hikko.betterperformance.BetterPerformance;
-import hikko.betterperformance.customChat.chat.MessageQueue;
+import hikko.betterinteraction.BetterInteraction;
+import hikko.betterinteraction.customChat.chat.MessageQueue;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public class ChatEvents implements Listener {
     public ChatEvents() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading chat events...");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading chat events...");
     }
 
     MessageQueue messageQueue = new MessageQueue();
@@ -62,7 +62,7 @@ public class ChatEvents implements Listener {
         int id = conuter;
         conuter++;
 
-        Component message = Component.text("");
+        Component message = Component.empty();
 
         Component nickname = Component.text(e.getPlayer().getName())
                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
@@ -82,7 +82,7 @@ public class ChatEvents implements Listener {
         Component deleteButton = Component.text("[X] ")
                 .color(TextColor.color(0xED4E3F))
                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.RED + "Удалить сообщение\n"+ ChatColor.GRAY + ChatColor.ITALIC + "ID: " + id)))
-                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/bp detelemessage " + id));
+                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/bi detelemessage " + id));
 
         Location location = e.getPlayer().getLocation();
 
@@ -90,14 +90,15 @@ public class ChatEvents implements Listener {
                 .append(nickname)
                 .append(messageColon);
 
-
+        String logMessage;
         if (content.startsWith("!")) {
+            logMessage = ChatColor.GREEN + "[G] " + ChatColor.RESET + e.getPlayer().getName() + ": " + content.replaceFirst("!", "");
             message = message
                     .append(Component.text(content.replaceFirst("!", "")));
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Component sendMessage = Component.empty();
 
-                if (player.hasPermission(BetterPerformance.getPermissions().detelemessage)) {
+                if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
                     sendMessage = sendMessage
                             .append(deleteButton)
                             .append(global)
@@ -111,16 +112,17 @@ public class ChatEvents implements Listener {
                 messageQueue.getPlayer(player).addMessage(sendMessage);
 
             }
-
         } else {
+            logMessage = ChatColor.YELLOW + "[L] " + ChatColor.RESET + e.getPlayer().getName() + ": " + content;
             message = message
             .append(Component.text(content));
+            boolean heard = false;
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!location.getWorld().equals(player.getWorld())) continue;
                 if (location.distance(player.getLocation()) < 100) {
                     Component sendMessage = Component.empty();
 
-                    if (player.hasPermission(BetterPerformance.getPermissions().detelemessage)) {
+                    if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
                         sendMessage = sendMessage
                                 .append(deleteButton)
                                 .append(local)
@@ -130,17 +132,20 @@ public class ChatEvents implements Listener {
                                 .append(local)
                                 .append(message);
                     }
+                    if (!player.equals(e.getPlayer())) heard = true;
                     player.sendMessage(sendMessage);
                     messageQueue.getPlayer(player).addMessage(sendMessage);
-
                 }
+            }
+            if (!heard) {
+                Component notHeard = Component.text("Вас никто не услышал. Попробуйте написать в глобальный чат, поставив \"!\" в начало сообщения.")
+                                .color(TextColor.color(0xDC4B43));
+                e.getPlayer().sendMessage(notHeard);
+                messageQueue.getPlayer(e.getPlayer()).addMessage(notHeard);
             }
         }
         messages.add(message);
-
-        logger.log(Level.INFO, PlainTextComponentSerializer.plainText().serialize(message)
-                .replaceFirst("\\[G\\] ", ChatColor.GREEN + "[G] " + ChatColor.RESET)
-                .replaceFirst("\\[L\\] ", ChatColor.YELLOW + "[L] " + ChatColor.RESET));
+        logger.log(Level.INFO, logMessage);
     }
 
 }

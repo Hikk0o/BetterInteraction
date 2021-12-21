@@ -1,13 +1,13 @@
-package hikko.betterperformance;
+package hikko.betterinteraction;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import hikko.betterperformance.authme.authEvents;
-import hikko.betterperformance.clearEntities.CheckerEntities;
-import hikko.betterperformance.commands.Commands;
-import hikko.betterperformance.customChat.ChatEvents;
-import hikko.betterperformance.customChat.protocol.ChatPacketHandler;
-import hikko.betterperformance.itemLogger.itemEvents;
+import hikko.betterinteraction.authme.authEvents;
+import hikko.betterinteraction.clearEntities.CheckerEntities;
+import hikko.betterinteraction.commands.Commands;
+import hikko.betterinteraction.customChat.ChatEvents;
+import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
+import hikko.betterinteraction.itemLogger.itemEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,9 +18,9 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Level;
 
-public final class BetterPerformance extends JavaPlugin {
+public final class BetterInteraction extends JavaPlugin {
 
-    private static BetterPerformance instance;
+    private static BetterInteraction instance;
     private static PluginPermissions pluginPermissions;
     public static String version;
     public static String prefix;
@@ -34,11 +34,11 @@ public final class BetterPerformance extends JavaPlugin {
 
         saveDefaultConfig();
 
-        File file = new File(BetterPerformance.getInstance().getDataFolder() + "/logs/");
+        File file = new File(BetterInteraction.getInstance().getDataFolder() + "/logs/");
         if (!file.exists()) {
             try {
-                BetterPerformance.getInstance().getLogger().log(Level.INFO, "Trying to create a directory...");
-                Files.createDirectories(Paths.get(BetterPerformance.getInstance().getDataFolder() + "/logs/"));
+                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Trying to create a directory...");
+                Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/logs/"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,15 +64,15 @@ public final class BetterPerformance extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
         new ChatPacketHandler();
 
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
         // Plugin startup logic
 
     }
 
     @Override
     public void onDisable() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Goodbye!");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Goodbye!");
         // Plugin shutdown logic
     }
 
@@ -81,12 +81,12 @@ public final class BetterPerformance extends JavaPlugin {
     }
 
     public void onReload() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Reload plugin...");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reload plugin...");
         saveDefaultConfig();
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Reloaded.");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reloaded.");
     }
 
-    public static BetterPerformance getInstance() {
+    public static BetterInteraction getInstance() {
         return instance;
     }
     public static ProtocolManager getProtocolManager() {

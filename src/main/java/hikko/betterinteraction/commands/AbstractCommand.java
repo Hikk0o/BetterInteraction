@@ -1,6 +1,6 @@
-package hikko.betterperformance.commands;
+package hikko.betterinteraction.commands;
 
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +10,7 @@ import java.util.List;
 abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     public AbstractCommand(String command) {
-        PluginCommand pluginCommand = BetterPerformance.getInstance().getCommand(command);
+        PluginCommand pluginCommand = BetterInteraction.getInstance().getCommand(command);
         if (pluginCommand != null) {
             pluginCommand.setExecutor(this);
         }

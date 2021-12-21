@@ -6,7 +6,7 @@
 
     <groupId>Hikko</groupId>
     <artifactId>BetterPerformance</artifactId>
-    <version>1.2.1-beta</version>
+    <version>1.2.1-beta1</version>
     <packaging>jar</packaging>
 
     <name>BetterPerformance</name>

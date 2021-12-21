@@ -1,8 +1,8 @@
-package hikko.betterperformance.authme;
+package hikko.betterinteraction.authme;
 
 import fr.xephi.authme.api.v3.AuthMeApi;
 import fr.xephi.authme.events.LoginEvent;
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class authEvents implements Listener {
 
     public authEvents() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading auth events...");
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading auth events...");
     }
 
     @EventHandler
