@@ -11,6 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -98,17 +99,28 @@ public class ChatEvents implements Listener {
             message = message
                     .append(Component.text(content.replaceFirst("!", "")));
             for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerContent = content;
                 Component sendMessage = Component.empty();
+
+                if (playerContent.contains(player.getName())) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
+                    String tagName = ChatColor.AQUA + player.getName() + ChatColor.RESET;
+                    playerContent = playerContent.replace(player.getName(), tagName);
+                }
 
                 if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
                     sendMessage = sendMessage
                             .append(deleteButton)
                             .append(global)
-                            .append(message);
+                            .append(nickname)
+                            .append(messageColon)
+                            .append(Component.text(playerContent.replaceFirst("!", "")));
                 } else {
                     sendMessage = sendMessage
                             .append(global)
-                            .append(message);
+                            .append(nickname)
+                            .append(messageColon)
+                            .append(Component.text(playerContent.replaceFirst("!", "")));
                 }
                 messageQueue.getPlayer(player).addMessage(sendMessage);
                 player.sendMessage(sendMessage);
@@ -121,19 +133,30 @@ public class ChatEvents implements Listener {
             .append(Component.text(content));
             boolean heard = false;
             for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerContent = content;
                 if (!location.getWorld().equals(player.getWorld())) continue;
                 if (location.distance(player.getLocation()) < 100) {
                     Component sendMessage = Component.empty();
+
+                    if (playerContent.contains(player.getName())) {
+                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
+                        String tagName = ChatColor.AQUA + player.getName() + ChatColor.RESET;
+                        playerContent = playerContent.replace(player.getName(), tagName);
+                    }
 
                     if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
                         sendMessage = sendMessage
                                 .append(deleteButton)
                                 .append(local)
-                                .append(message);
+                                .append(nickname)
+                                .append(messageColon)
+                                .append(Component.text(playerContent));
                     } else {
                         sendMessage = sendMessage
                                 .append(local)
-                                .append(message);
+                                .append(nickname)
+                                .append(messageColon)
+                                .append(Component.text(playerContent));
                     }
                     if (!player.equals(e.getPlayer())) heard = true;
                     messageQueue.getPlayer(player).addMessage(sendMessage);
