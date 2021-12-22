@@ -66,7 +66,7 @@ public class ChatEvents implements Listener {
 
         Component nickname = Component.text(e.getPlayer().getName())
                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
-                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Написать личное сообщение\nигроку " + ChatColor.WHITE + e.getPlayer().getName())));
+                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName())));
 
         Component messageColon = Component.text(": ")
                 .color(TextColor.color(0x5D5D5D));
@@ -74,9 +74,11 @@ public class ChatEvents implements Listener {
         String content = PlainTextComponentSerializer.plainText().serialize(e.message());
 
         Component global = Component.text("[G] ")
+                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Глобальный чат").color(TextColor.color(0x55FF55))))
                 .color(TextColor.color(0x55FF55));
 
         Component local = Component.text("[L] ")
+                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Локальный чат").color(TextColor.color(0xFFFF55))))
                 .color(TextColor.color(0xFFFF55));
 
         Component deleteButton = Component.text("[X] ")
@@ -108,8 +110,9 @@ public class ChatEvents implements Listener {
                             .append(global)
                             .append(message);
                 }
-                player.sendMessage(sendMessage);
                 messageQueue.getPlayer(player).addMessage(sendMessage);
+                player.sendMessage(sendMessage);
+
 
             }
         } else {
@@ -133,16 +136,16 @@ public class ChatEvents implements Listener {
                                 .append(message);
                     }
                     if (!player.equals(e.getPlayer())) heard = true;
-                    player.sendMessage(sendMessage);
                     messageQueue.getPlayer(player).addMessage(sendMessage);
+                    player.sendMessage(sendMessage);
                 }
             }
             if (!heard) {
                 Component notHeard = Component.text(ChatColor.ITALIC + "Вас никто не услышал. ")
                         .color(TextColor.color(0xFFFF55));
-                notHeard = notHeard.append(Component.text("[Написать в глобальный чат]")
+                notHeard = notHeard.append(Component.text(ChatColor.RESET + "[Написать в глобальный чат]")
                         .color(TextColor.color(0x55FF55))
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Или просто напиши '!' в начале сообщения")))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Или просто напиши "+ ChatColor.GREEN + "!" + ChatColor.RESET + " в начале сообщения")))
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "!" + content))
                 );
                 e.getPlayer().sendMessage(notHeard);
