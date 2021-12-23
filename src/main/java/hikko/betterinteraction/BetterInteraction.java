@@ -6,7 +6,6 @@ import hikko.betterinteraction.authme.authEvents;
 import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.Commands;
 import hikko.betterinteraction.customChat.ChatEvents;
-import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
 import hikko.betterinteraction.itemLogger.itemEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,7 +26,6 @@ public final class BetterInteraction extends JavaPlugin {
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
 
-
     @Override
     public void onEnable() {
         instance = this;
@@ -46,6 +44,7 @@ public final class BetterInteraction extends JavaPlugin {
 
         final Properties properties = new Properties();
         try {
+
             properties.load(this.getClassLoader().getResourceAsStream("plugin.yml"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,12 +56,13 @@ public final class BetterInteraction extends JavaPlugin {
         new CheckerEntities();
         pluginPermissions = new PluginPermissions();
         protocolManager = ProtocolLibrary.getProtocolManager();
+/*        essentials = new Essentials(this.getServer());*/
+
         new Commands();
         /*new ChatPacketHandler(this, ListenerPriority.HIGH, PacketType.Play.Server.CHAT);*/
         Bukkit.getPluginManager().registerEvents(new itemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new authEvents(), this);
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
-        new ChatPacketHandler();
 
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");

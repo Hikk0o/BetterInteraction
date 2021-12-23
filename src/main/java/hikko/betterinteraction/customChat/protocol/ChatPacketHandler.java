@@ -44,8 +44,6 @@ public class ChatPacketHandler {
 //						BetterPerformance.getInstance().getLogger().log(Level.WARNING, " NullPointerException ChatPacketHandler");
 						return;
 					}
-
-
 					BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).addMessage(component);
 
 //					BetterPerformance.getInstance().getLogger().log(Level.INFO, "To " + player.getName() + ": " + PlainTextComponentSerializer.plainText().serialize(component));

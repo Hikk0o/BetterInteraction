@@ -2,7 +2,10 @@ package hikko.betterinteraction.customChat;
 
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.customChat.chat.MessageQueue;
+import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.ess3.api.events.PrivateMessagePreSendEvent;
+import net.ess3.api.events.PrivateMessageSentEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -26,6 +29,7 @@ import java.util.logging.Logger;
 public class ChatEvents implements Listener {
     public ChatEvents() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading chat events...");
+        new ChatPacketHandler();
     }
 
     MessageQueue messageQueue = new MessageQueue();
@@ -48,6 +52,39 @@ public class ChatEvents implements Listener {
     public void delMessage(int id) {
         Component message = messages.get(id);
         messageQueue.delMessage(message);
+    }
+
+    @EventHandler
+    public void PrivateMessageSent(PrivateMessagePreSendEvent e) { // Essentials event
+        e.setCancelled(true);
+        Player pecipient = BetterInteraction.getInstance().getServer().getPlayer(e.getRecipient().getName());
+        Player sender = BetterInteraction.getInstance().getServer().getPlayer(e.getSender().getName());
+        if (pecipient != null && sender != null) {
+            pecipient.playSound(pecipient.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
+            Component pecipientMessage = Component.empty();
+            pecipientMessage = pecipientMessage
+                    .append(Component.text("PM от ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(sender.getName())
+                            .color(TextColor.color(0xFFDB45))
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Ответить игроку ").color(TextColor.color(0xFF9D1F)).append(Component.text(sender.getName()).color(TextColor.color(0xFFDB45)))))
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + sender.getName() + " ")))
+                    .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
+
+            pecipient.sendMessage(pecipientMessage);
+
+            sender.playSound(sender.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, (float) 0.3, (float) 1.5);
+            Component sernderMessage = Component.empty();
+            sernderMessage = sernderMessage
+                    .append(Component.text("PM для ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(sender.getName()).color(TextColor.color(0xFFDB45)))
+                    .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
+
+            sender.sendMessage(sernderMessage);
+        }
+
+
     }
 
     Logger logger = Logger.getLogger("Chat");
