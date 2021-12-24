@@ -154,7 +154,7 @@ public class ChatEvents implements Listener {
                     playerContent = playerContent.replace(player.getName(), tagName);
                 }
 
-                if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
+                if (player.hasPermission("betterinteraction.detelemessage")) {
                     sendMessage = sendMessage
                             .append(deleteButton)
                             .append(global)
@@ -190,7 +190,7 @@ public class ChatEvents implements Listener {
                         playerContent = playerContent.replace(player.getName(), tagName);
                     }
 
-                    if (player.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
+                    if (player.hasPermission("betterinteraction.detelemessage")) {
                         sendMessage = sendMessage
                                 .append(deleteButton)
                                 .append(local)

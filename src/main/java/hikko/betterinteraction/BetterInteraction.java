@@ -23,11 +23,11 @@ import java.util.logging.Level;
 public final class BetterInteraction extends JavaPlugin {
 
     private static BetterInteraction instance;
-    private static PluginPermissions pluginPermissions;
     public static String version;
     public static String prefix;
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
+    private static Properties properties;
 
     @Override
     public void onEnable() {
@@ -45,7 +45,7 @@ public final class BetterInteraction extends JavaPlugin {
             }
         }
 
-        final Properties properties = new Properties();
+        properties = new Properties();
         try {
 
             properties.load(this.getClassLoader().getResourceAsStream("plugin.yml"));
@@ -57,30 +57,19 @@ public final class BetterInteraction extends JavaPlugin {
         prefix = "[" + properties.getProperty("prefix") + "]";
 
         new CheckerEntities();
-        pluginPermissions = new PluginPermissions();
         protocolManager = ProtocolLibrary.getProtocolManager();
-/*        essentials = new Essentials(this.getServer());*/
-
         new Commands();
-        /*new ChatPacketHandler(this, ListenerPriority.HIGH, PacketType.Play.Server.CHAT);*/
         Bukkit.getPluginManager().registerEvents(new itemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new authEvents(), this);
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
 
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
-        // Plugin startup logic
-
     }
 
     @Override
     public void onDisable() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Goodbye!");
-        // Plugin shutdown logic
-    }
-
-    public static PluginPermissions getPermissions() {
-        return pluginPermissions.getPermissions();
     }
 
     public void onReload() {
@@ -94,6 +83,9 @@ public final class BetterInteraction extends JavaPlugin {
     }
     public static ProtocolManager getProtocolManager() {
         return protocolManager;
+    }
+    public static Properties getProperties() {
+        return properties;
     }
     public ChatEvents getChatEvents() {
         return chatEvents;

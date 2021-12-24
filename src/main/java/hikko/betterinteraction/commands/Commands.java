@@ -41,7 +41,7 @@ public class Commands extends AbstractCommand {
             return;
         }
         if (args[0].equalsIgnoreCase("reload")) {
-            if (sender.hasPermission(BetterInteraction.getPermissions().reload)) {
+            if (sender.hasPermission("betterinteraction.reload")) {
                 BetterInteraction.getInstance().onReload();
                 if (!sender.getName().equals("CONSOLE")) {
                     sender.sendMessage(ChatColor.YELLOW + BetterInteraction.prefix + " Reloaded.");
@@ -52,7 +52,7 @@ public class Commands extends AbstractCommand {
             return;
         }
         if (args[0].equalsIgnoreCase("detelemessage")) {
-            if (sender.hasPermission(BetterInteraction.getPermissions().detelemessage)) {
+            if (sender.hasPermission("betterinteraction.detelemessage")) {
                 BetterInteraction.getInstance().getChatEvents().delMessage(Integer.parseInt(args[1]));
             } else {
                 sender.sendMessage(noPermission);
