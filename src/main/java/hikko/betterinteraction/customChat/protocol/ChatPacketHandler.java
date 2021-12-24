@@ -1,4 +1,4 @@
-package hikko.betterperformance.customChat.protocol;
+package hikko.betterinteraction.customChat.protocol;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -8,19 +8,15 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class ChatPacketHandler {
 
 	public ChatPacketHandler() {
-		BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading ChatPacketHandler...");
-
-		BetterPerformance.getProtocolManager().addPacketListener(new PacketAdapter(BetterPerformance.getInstance(),
+		BetterInteraction.getProtocolManager().addPacketListener(new PacketAdapter(BetterInteraction.getInstance(),
 				ListenerPriority.NORMAL,
 				PacketType.Play.Server.CHAT) {
 			@Override
@@ -32,8 +28,11 @@ public class ChatPacketHandler {
 
 				try {
 
+					if (packet.getChatTypes().getValues().isEmpty()) return;
 					if (packet.getChatTypes().getValues().get(0) == EnumWrappers.ChatType.GAME_INFO) return;
-					if (BetterPerformance.getInstance().getChatEvents().getMessageQueue().getPlayer(player).isLock()) return;
+					if (player == null) return;
+					if (BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player) == null) return;
+					if (BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).isLock()) return;
 
 					StructureModifier<WrappedChatComponent> chatComponents = packet.getChatComponents();
 					Component component;
@@ -43,9 +42,7 @@ public class ChatPacketHandler {
 //						BetterPerformance.getInstance().getLogger().log(Level.WARNING, " NullPointerException ChatPacketHandler");
 						return;
 					}
-
-
-					BetterPerformance.getInstance().getChatEvents().getMessageQueue().getPlayer(player).addMessage(component);
+					BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).addMessage(component);
 
 //					BetterPerformance.getInstance().getLogger().log(Level.INFO, "To " + player.getName() + ": " + PlainTextComponentSerializer.plainText().serialize(component));
 //					BetterPerformance.getInstance().getLogger().log(Level.INFO, "To " + player.getName() + ": " + packet.getChatTypes().getValues());

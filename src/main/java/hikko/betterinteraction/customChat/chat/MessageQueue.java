@@ -1,4 +1,4 @@
-package hikko.betterperformance.customChat.chat;
+package hikko.betterinteraction.customChat.chat;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;

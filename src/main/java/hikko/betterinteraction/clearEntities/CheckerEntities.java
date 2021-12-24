@@ -1,6 +1,6 @@
-package hikko.betterperformance.clearEntities;
+package hikko.betterinteraction.clearEntities;
 
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,8 +12,8 @@ import java.util.logging.Level;
 public class CheckerEntities extends BukkitRunnable {
 
     public CheckerEntities() {
-        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Loading CheckerEntities...");
-        this.runTaskTimer(BetterPerformance.getInstance(), 240, 200);
+        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading CheckerEntities...");
+        this.runTaskTimer(BetterInteraction.getInstance(), 240, 200);
     }
 
     int PIG = 0;
@@ -70,15 +70,15 @@ public class CheckerEntities extends BukkitRunnable {
                 }
             }
 
-            BukkitScheduler scheduler = BetterPerformance.getInstance().getServer().getScheduler();
-            scheduler.runTaskAsynchronously(BetterPerformance.getInstance(), () -> {
+            BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
+            scheduler.runTaskAsynchronously(BetterInteraction.getInstance(), () -> {
                 for (Chunk chunk : chunks) {
                     PIG = 0;
                     CHICKEN = 0;
                     COW = 0;
                     SHEEP = 0;
 
-                    CheckerEntities.MAXCOUNT = BetterPerformance.getInstance().getConfig().getInt("maxEntitiesChunk");
+                    CheckerEntities.MAXCOUNT = BetterInteraction.getInstance().getConfig().getInt("maxEntitiesChunk");
 
                     for (Entity entity : chunk.getEntities()) {
                         checkEntity(entity);
@@ -86,12 +86,12 @@ public class CheckerEntities extends BukkitRunnable {
 
                     if (!CheckerEntities.pigs.isEmpty() || !CheckerEntities.chikens.isEmpty() || !CheckerEntities.cows.isEmpty() || !CheckerEntities.sheeps.isEmpty()) {
                         taskActive = true;
-                        BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Many entities!");
-                        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Started deleting...");
-                        new ClearEntitiesTask().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
+                        BetterInteraction.getInstance().getLogger().log(Level.WARNING, "Many entities!");
+                        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Started deleting...");
+                        new ClearEntitiesTask().runTaskTimer(BetterInteraction.getInstance(), 0L, 5);
                         break;
                     }
-                    CheckerEntities.MAXCOUNT = BetterPerformance.getInstance().getConfig().getInt("maxEntities");
+                    CheckerEntities.MAXCOUNT = BetterInteraction.getInstance().getConfig().getInt("maxEntities");
 
                     if (world.getChunkAt(chunk.getX()+1, chunk.getZ()).isLoaded()) {
                         for (Entity entity : world.getChunkAt(chunk.getX()+1, chunk.getZ()).getEntities()) {
@@ -131,16 +131,16 @@ public class CheckerEntities extends BukkitRunnable {
 
                     if (!CheckerEntities.pigs.isEmpty() || !CheckerEntities.chikens.isEmpty() || !CheckerEntities.cows.isEmpty() || !CheckerEntities.sheeps.isEmpty()) {
                         taskActive = true;
-                        BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Many entities!");
-                        BetterPerformance.getInstance().getLogger().log(Level.INFO, "Started deleting...");
-                        new ClearEntitiesTask().runTaskTimer(BetterPerformance.getInstance(), 0L, 5);
+                        BetterInteraction.getInstance().getLogger().log(Level.WARNING, "Many entities!");
+                        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Started deleting...");
+                        new ClearEntitiesTask().runTaskTimer(BetterInteraction.getInstance(), 0L, 5);
                         break;
                     }
                 }
 
             });
         } else {
-            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "There is an active task");
+            BetterInteraction.getInstance().getLogger().log(Level.WARNING, "There is an active task");
         }
 
 

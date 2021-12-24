@@ -1,6 +1,6 @@
-package hikko.betterperformance.clearEntities;
+package hikko.betterinteraction.clearEntities;
 
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -51,7 +51,7 @@ class ClearEntitiesTask extends BukkitRunnable {
         }
 
         if (CheckerEntities.pigs.isEmpty() && CheckerEntities.chikens.isEmpty() && CheckerEntities.cows.isEmpty() && CheckerEntities.sheeps.isEmpty()) {
-            BetterPerformance.getInstance().getLogger().log(Level.INFO, "Successfully deleted. (Total: " + counter + ")");
+            BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully deleted. (Total: " + counter + ")");
             counter = 0;
             CheckerEntities.taskActive = false;
             this.cancel();

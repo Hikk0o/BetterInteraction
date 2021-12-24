@@ -1,7 +1,12 @@
 logsToConsole: false
 
+# Максимальное количество сущностей на один чанк
 maxEntitiesChunk: 20
+# Максимальное количество сущностей на 3x3 чанка
 maxEntities: 30
 
 messages:
   noPermission: 'У вас нет прав на использование этой команды.'
+
+# Do not change this value
+ConfigVersion: 1

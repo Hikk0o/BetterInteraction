@@ -1,11 +1,24 @@
-name: BetterPerformance
-version: '${project.version}'
-main: hikko.betterperformance.BetterPerformance
+name: BetterInteraction
+version: ${project.version}
+main: hikko.betterinteraction.BetterInteraction
 api-version: 1.18
 load: POSTWORLD
-prefix: BetterPerformance
+prefix: BetterInteraction
 authors: [ Hikk0o ]
 website: https://github.com/Hikk0o
-softdepend: [ AuthMe ]
+softdepend:
+  - AuthMe
+  - Essentials
+  - ProtocolLib
 commands:
-  bp: {}
+  betterinteraction:
+    description: Main command
+    aliases:
+      - bi
+permissions:
+  betterinteraction.reload:
+    description: Reload plugin
+    default: op
+  betterinteraction.detelemessage:
+    description: Deleting a message
+    default: op

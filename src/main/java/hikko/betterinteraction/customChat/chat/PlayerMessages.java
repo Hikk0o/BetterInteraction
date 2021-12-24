@@ -1,6 +1,6 @@
-package hikko.betterperformance.customChat.chat;
+package hikko.betterinteraction.customChat.chat;
 
-import hikko.betterperformance.BetterPerformance;
+import hikko.betterinteraction.BetterInteraction;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -30,8 +30,8 @@ public class PlayerMessages {
 //            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Add message for " + this.player + ": " + PlainTextComponentSerializer.plainText().serialize(message));
         } catch (Exception e) {
             e.printStackTrace();
-            BetterPerformance.getInstance().getLogger().log(Level.SEVERE, "this.messages.size() "+ this.messages.size());
-            BetterPerformance.getInstance().getLogger().log(Level.SEVERE, "message.toString() "+ message.toString());
+            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "this.messages.size() "+ this.messages.size());
+            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "message.toString() "+ message.toString());
         }
     }
 
@@ -53,12 +53,19 @@ public class PlayerMessages {
 
                 playerMessage = PlainTextComponentSerializer.plainText().serialize(this.messages.get(a));
                 delMessage = PlainTextComponentSerializer.plainText().serialize(component);
+
             } catch (IndexOutOfBoundsException e) {
                 continue;
             }
 
-            playerMessage = playerMessage.replace("[X] ", "").replace("[L] ", "").replace("[G] ", "");
-
+            playerMessage = playerMessage
+                    .replace("[X] ", "")
+                    .replace("[L] ", "")
+                    .replace("[G] ", "")
+                    .replace(ChatColor.AQUA + "", "")
+                    .replace(ChatColor.RESET + "", "");
+//            BetterInteraction.getInstance().getLogger().log(Level.WARNING, playerMessage);
+//            BetterInteraction.getInstance().getLogger().log(Level.WARNING, delMessage);
             if (playerMessage.equals(delMessage)) {
                 equals = true;
                 Component deteledMessage = Component.empty();
@@ -82,7 +89,7 @@ public class PlayerMessages {
             }
         }
         if (equals) {
-            Player player = BetterPerformance.getInstance().getServer().getPlayer(getPlayer());
+            Player player = BetterInteraction.getInstance().getServer().getPlayer(getPlayer());
             lock = true;
             for (int a = 0; a< 100; a++) {
                 assert player != null;
@@ -93,7 +100,6 @@ public class PlayerMessages {
 //            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Send comp");
             }
             lock = false;
-
         }
     }
 
