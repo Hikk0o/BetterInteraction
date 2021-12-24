@@ -1,11 +1,12 @@
-name: BetterInteraction
+name: ${project.name}
 version: ${project.version}
 main: hikko.betterinteraction.BetterInteraction
 api-version: 1.18
 load: POSTWORLD
-prefix: BetterInteraction
+prefix: ${project.name}
 authors: [ Hikk0o ]
-website: https://github.com/Hikk0o
+website: ${project.url}
+description: ${project.description}
 softdepend:
   - AuthMe
   - Essentials

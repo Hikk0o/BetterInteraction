@@ -47,7 +47,6 @@ public final class BetterInteraction extends JavaPlugin {
 
         properties = new Properties();
         try {
-
             properties.load(this.getClassLoader().getResourceAsStream("plugin.yml"));
         } catch (IOException e) {
             e.printStackTrace();

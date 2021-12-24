@@ -35,7 +35,7 @@ public class Commands extends AbstractCommand {
             message = message.append(Component.space());
             message = message.append(Component.text("by Hikk0o")
                     .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("GitHub").color(TextColor.color(0xC8C5C3)).decorate(TextDecoration.ITALIC)))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Hikk0o"))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, BetterInteraction.getProperties().getProperty("website")))
             );
             sender.sendMessage(message);
             return;
