@@ -13,13 +13,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class ChatPacketHandler {
 
 	public ChatPacketHandler() {
-		BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading ChatPacketHandler...");
-
 		BetterInteraction.getProtocolManager().addPacketListener(new PacketAdapter(BetterInteraction.getInstance(),
 				ListenerPriority.NORMAL,
 				PacketType.Play.Server.CHAT) {
@@ -32,8 +28,10 @@ public class ChatPacketHandler {
 
 				try {
 
-					if (packet.getChatTypes().getValues().get(0) == EnumWrappers.ChatType.GAME_INFO) return;
 					if (packet.getChatTypes().getValues().isEmpty()) return;
+					if (packet.getChatTypes().getValues().get(0) == EnumWrappers.ChatType.GAME_INFO) return;
+					if (player == null) return;
+					if (BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player) == null) return;
 					if (BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).isLock()) return;
 
 					StructureModifier<WrappedChatComponent> chatComponents = packet.getChatComponents();

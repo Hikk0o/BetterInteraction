@@ -6,6 +6,19 @@ load: POSTWORLD
 prefix: BetterInteraction
 authors: [ Hikk0o ]
 website: https://github.com/Hikk0o
-softdepend: [ AuthMe ]
+softdepend:
+  - AuthMe
+  - Essentials
+  - ProtocolLib
 commands:
-  bi: {}
+  betterinteraction:
+    description: Main command
+    aliases:
+      - bi
+permissions:
+  betterinteraction.reload:
+    description: Reload plugin
+    default: op
+  betterinteraction.detelemessage:
+    description: Deleting a message
+    default: op

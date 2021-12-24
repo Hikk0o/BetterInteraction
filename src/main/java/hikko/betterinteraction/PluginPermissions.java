@@ -7,8 +7,8 @@ import java.util.logging.Level;
 
 public class PluginPermissions {
 
-    public final Permission reload = new Permission("betterperformance.reload");
-    public final Permission detelemessage = new Permission("betterperformance.detelemessage");
+    public final Permission reload = new Permission("betterinteraction.reload");
+    public final Permission detelemessage = new Permission("betterinteraction.detelemessage");
 
     public PluginPermissions() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading permissions...");

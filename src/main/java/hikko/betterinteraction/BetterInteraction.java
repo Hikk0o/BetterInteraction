@@ -7,7 +7,10 @@ import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.Commands;
 import hikko.betterinteraction.customChat.ChatEvents;
 import hikko.betterinteraction.itemLogger.itemEvents;
+import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -94,5 +97,10 @@ public final class BetterInteraction extends JavaPlugin {
     }
     public ChatEvents getChatEvents() {
         return chatEvents;
+    }
+    public static IEssentials getAPIEssentials() {
+        PluginManager manager = Bukkit.getPluginManager();
+        Plugin plugin = manager.getPlugin("Essentials");
+        return (IEssentials) plugin;
     }
 }

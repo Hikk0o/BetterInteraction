@@ -1,11 +1,11 @@
 package hikko.betterinteraction.customChat;
 
+import com.earth2me.essentials.User;
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.customChat.chat.MessageQueue;
 import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.ess3.api.events.PrivateMessagePreSendEvent;
-import net.ess3.api.events.PrivateMessageSentEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -57,12 +57,12 @@ public class ChatEvents implements Listener {
     @EventHandler
     public void PrivateMessageSent(PrivateMessagePreSendEvent e) { // Essentials event
         e.setCancelled(true);
-        Player pecipient = BetterInteraction.getInstance().getServer().getPlayer(e.getRecipient().getName());
+        Player recipient = BetterInteraction.getInstance().getServer().getPlayer(e.getRecipient().getName());
         Player sender = BetterInteraction.getInstance().getServer().getPlayer(e.getSender().getName());
-        if (pecipient != null && sender != null) {
-            pecipient.playSound(pecipient.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
-            Component pecipientMessage = Component.empty();
-            pecipientMessage = pecipientMessage
+        if (recipient != null && sender != null) {
+            recipient.playSound(recipient.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
+            Component recipientMessage = Component.empty();
+            recipientMessage = recipientMessage
                     .append(Component.text("PM от ").color(TextColor.color(0xFF9D1F)))
                     .append(Component.text(sender.getName())
                             .color(TextColor.color(0xFFDB45))
@@ -71,17 +71,26 @@ public class ChatEvents implements Listener {
                     .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
                     .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
 
-            pecipient.sendMessage(pecipientMessage);
+            recipient.sendMessage(recipientMessage);
+            messageQueue.getPlayer(recipient).addMessage(recipientMessage);
 
             sender.playSound(sender.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, (float) 0.3, (float) 1.5);
             Component sernderMessage = Component.empty();
             sernderMessage = sernderMessage
                     .append(Component.text("PM для ").color(TextColor.color(0xFF9D1F)))
-                    .append(Component.text(sender.getName()).color(TextColor.color(0xFFDB45)))
+                    .append(Component.text(recipient.getName()).color(TextColor.color(0xFFDB45)))
                     .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
                     .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
 
             sender.sendMessage(sernderMessage);
+            messageQueue.getPlayer(sender).addMessage(sernderMessage);
+
+            Logger.getLogger("PM").log(Level.INFO, "От " + sender.getName() + " для " + recipient.getName() + ": " + e.getMessage());
+
+            User senderr = BetterInteraction.getAPIEssentials().getUser(sender);
+            User recipientt = BetterInteraction.getAPIEssentials().getUser(recipient);
+            senderr.setReplyRecipient(e.getRecipient());
+            recipientt.setReplyRecipient(e.getSender());
         }
 
 
