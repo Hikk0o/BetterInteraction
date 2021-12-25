@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -94,6 +95,40 @@ public class ChatEvents implements Listener {
         }
 
 
+    }
+
+    @EventHandler
+    public void DeathEvent(PlayerDeathEvent e) {
+        if (!e.isCancelled()) {
+            Player player = e.getPlayer();
+            Component message = Component.empty();
+            String world;
+            if (player.getLocation().getWorld().getName().equals("world")) {
+                world = "Верхний мир";
+            } else if (player.getLocation().getWorld().getName().equals("world_the_end")) {
+                world = "Энд";
+            } else if (player.getLocation().getWorld().getName().equals("world_nether")) {
+                world = "Ад";
+            } else {
+                world = "Неизвестный мир";
+            }
+            message = message
+                    .append(Component.text("Координаты вашей смерти:").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.newline())
+                    .append(Component.text("X: ").color(TextColor.color(0xFFFF55)))
+                    .append(Component.text(player.getLocation().getBlockX()).color(TextColor.color(0xFFFFFF)))
+                    .append(Component.space())
+                    .append(Component.text("Y: ").color(TextColor.color(0xFFFF55)))
+                    .append(Component.text(player.getLocation().getBlockY()).color(TextColor.color(0xFFFFFF)))
+                    .append(Component.space())
+                    .append(Component.text("Z: ").color(TextColor.color(0xFFFF55)))
+                    .append(Component.text(player.getLocation().getBlockZ()).color(TextColor.color(0xFFFFFF)))
+                    .append(Component.newline())
+                    .append(Component.text("Мир: ").color(TextColor.color(0xFFFF55)))
+                    .append(Component.text(world).color(TextColor.color(0xFFFFFF)));
+            player.sendMessage(message);
+            messageQueue.getPlayer(player).addMessage(message);
+        }
     }
 
     Logger logger = Logger.getLogger("Chat");
