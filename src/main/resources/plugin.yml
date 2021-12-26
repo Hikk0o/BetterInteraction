@@ -7,15 +7,19 @@ prefix: ${project.name}
 authors: [ Hikk0o ]
 website: ${project.url}
 description: ${project.description}
-softdepend:
+depend:
   - AuthMe
   - Essentials
   - ProtocolLib
+  - Factions
 commands:
+  chat:
+    description: Faction chat
+
   betterinteraction:
     description: Main command
     aliases:
-      - bi
+      - bin
 permissions:
   betterinteraction.reload:
     description: Reload plugin

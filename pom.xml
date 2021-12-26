@@ -68,6 +68,10 @@
             <id>essentials-snapshots</id>
             <url>https://repo.essentialsx.net/snapshots/</url>
         </repository>
+        <repository>
+            <id>faction-api</id>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -93,6 +97,12 @@
             <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.19.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>Factions</artifactId>
+            <version>1.6.9.5-U0.6.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

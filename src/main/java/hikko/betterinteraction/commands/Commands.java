@@ -17,7 +17,7 @@ import java.util.logging.Level;
 public class Commands extends AbstractCommand {
 
     public Commands() {
-        super("bi");
+        super("betterinteraction");
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading commands...");
     }
 

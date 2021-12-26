@@ -166,7 +166,7 @@ public class ChatEvents implements Listener {
         Component deleteButton = Component.text("[X] ")
                 .color(TextColor.color(0xED4E3F))
                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.RED + "Удалить сообщение\n"+ ChatColor.GRAY + ChatColor.ITALIC + "ID: " + id)))
-                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/bi detelemessage " + id));
+                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/betterinteraction detelemessage " + id));
 
         Location location = e.getPlayer().getLocation();
 
