@@ -13,6 +13,11 @@ public class EmotesFilter {
         addEmote("Kappa", "\\ue031");
         addEmote("Jebaited", "\\ue030");
         addEmote("Kekw", "\\ue032");
+        addEmote("Pog", "\\ue033");
+        addEmote("monkaW", "\\ue029");
+        addEmote("peppoHappy", "\\ue028");
+        addEmote("peppoLove", "\\ue027");
+        addEmote("peppoSad", "\\ue026");
     }
 
     private void addEmote(String emote, String unicode) {
