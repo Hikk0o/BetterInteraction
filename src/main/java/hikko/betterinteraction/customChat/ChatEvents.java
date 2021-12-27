@@ -34,6 +34,7 @@ public class ChatEvents implements Listener {
     }
 
     MessageQueue messageQueue = new MessageQueue();
+    EmotesFilter emotesFilter = new EmotesFilter();
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
@@ -174,8 +175,6 @@ public class ChatEvents implements Listener {
                 .append(nickname)
                 .append(messageColon);
 
-        EmotesFilter emotesFilter = new EmotesFilter();
-
         content = emotesFilter.getEmotes(content);
 
         String logMessage;
@@ -264,4 +263,7 @@ public class ChatEvents implements Listener {
         logger.log(Level.INFO, logMessage);
     }
 
+    public EmotesFilter getEmotesFilter() {
+        return emotesFilter;
+    }
 }

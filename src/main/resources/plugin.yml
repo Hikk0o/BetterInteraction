@@ -7,7 +7,7 @@ prefix: ${project.name}
 authors: [ Hikk0o ]
 website: ${project.url}
 description: ${project.description}
-sodepend:
+softdepend:
   - AuthMe
   - Essentials
   - ProtocolLib
@@ -15,6 +15,9 @@ sodepend:
 commands:
   chat:
     description: Faction chat
+
+  emotes:
+    description: Emotes list
 
   betterinteraction:
     description: Main command

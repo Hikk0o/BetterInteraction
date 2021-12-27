@@ -1,10 +1,8 @@
 package hikko.betterinteraction.customChat;
 
-import hikko.betterinteraction.BetterInteraction;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class EmotesFilter {
 
@@ -12,31 +10,35 @@ public class EmotesFilter {
     ArrayList<String> unicodeEmotes = new ArrayList<>();
 
     EmotesFilter() {
-        emotes.add("Jebaited");
-        unicodeEmotes.add("\\ue030");
-        emotes.add("Kappa");
-        unicodeEmotes.add("\\ue031");
-        emotes.add("Kekw");
-        unicodeEmotes.add("\\ue032");
+        addEmote("Kappa", "\\ue031");
+        addEmote("Jebaited", "\\ue030");
+        addEmote("Kekw", "\\ue032");
     }
 
+    private void addEmote(String emote, String unicode) {
+        emotes.add(emote);
+        unicodeEmotes.add(unicode);
+    }
 
+    public ArrayList<String> getEmotes() {
+        return emotes;
+    }
+
+    public ArrayList<String> getUnicodeEmotes() {
+        return unicodeEmotes;
+    }
 
     public String getEmotes(String m) {
         String message = m;
 
         for (String emoji : emotes) {
-            BetterInteraction.getInstance().getLogger().log(Level.INFO, "Find \"" + emoji + "\" in \"" + message + "\"");
             if (message.contains(emoji)) {
-//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Replace " + emoji + " on " + getUnicodeEmoji(emoji));
                 message = message.replace(emoji, getUnicodeEmoji(emoji));
             }
             if (message.contains(emoji.toLowerCase())) {
-//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Replace " + emoji + " on " + getUnicodeEmoji(emoji));
                 message = message.replace(emoji.toLowerCase(), getUnicodeEmoji(emoji));
             }
             if (message.contains(emoji.toUpperCase())) {
-//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Replace " + emoji + " on " + getUnicodeEmoji(emoji));
                 message = message.replace(emoji.toUpperCase(), getUnicodeEmoji(emoji));
             }
         }
@@ -45,8 +47,6 @@ public class EmotesFilter {
     }
 
     private String getUnicodeEmoji(String message) {
-
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, unicodeEmotes.get(emotes.indexOf(message)));
         return StringEscapeUtils.unescapeJava(unicodeEmotes.get(emotes.indexOf(message)));
     }
 }
