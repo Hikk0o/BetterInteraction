@@ -7,7 +7,7 @@ prefix: ${project.name}
 authors: [ Hikk0o ]
 website: ${project.url}
 description: ${project.description}
-depend:
+sodepend:
   - AuthMe
   - Essentials
   - ProtocolLib

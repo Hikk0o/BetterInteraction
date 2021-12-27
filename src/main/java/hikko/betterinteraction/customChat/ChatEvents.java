@@ -174,6 +174,10 @@ public class ChatEvents implements Listener {
                 .append(nickname)
                 .append(messageColon);
 
+        EmotesFilter emotesFilter = new EmotesFilter();
+
+        content = emotesFilter.getEmotes(content);
+
         String logMessage;
         if (content.startsWith("!")) {
             logMessage = ChatColor.GREEN + "[G] " + ChatColor.RESET + e.getPlayer().getName() + ": " + content.replaceFirst("!", "");
