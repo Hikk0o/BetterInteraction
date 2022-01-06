@@ -6,7 +6,8 @@
 
     <groupId>Hikk0o</groupId>
     <artifactId>BetterInteraction</artifactId>
-    <version>1.3-dev</version>
+    <version>1.3</version>
+
     <packaging>jar</packaging>
 
     <name>BetterInteraction</name>
