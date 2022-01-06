@@ -17,9 +17,9 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class itemEvents implements Listener {
+public class ItemEvents implements Listener {
 
-    public itemEvents() {
+    public ItemEvents() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading item events...");
     }
 

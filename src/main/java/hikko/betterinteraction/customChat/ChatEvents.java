@@ -33,8 +33,8 @@ public class ChatEvents implements Listener {
         new ChatPacketHandler();
     }
 
-    MessageQueue messageQueue = new MessageQueue();
-    EmotesFilter emotesFilter = new EmotesFilter();
+    final MessageQueue messageQueue = new MessageQueue();
+    final EmotesFilter emotesFilter = new EmotesFilter();
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
@@ -89,8 +89,8 @@ public class ChatEvents implements Listener {
 
             Logger.getLogger("PM").log(Level.INFO, "От " + sender.getName() + " для " + recipient.getName() + ": " + e.getMessage());
 
-            User senderr = BetterInteraction.getAPIEssentials().getUser(sender);
-            User recipientt = BetterInteraction.getAPIEssentials().getUser(recipient);
+            User senderr = BetterInteraction.getInstance().getAPIEssentials().getUser(sender);
+            User recipientt = BetterInteraction.getInstance().getAPIEssentials().getUser(recipient);
             senderr.setReplyRecipient(e.getRecipient());
             recipientt.setReplyRecipient(e.getSender());
         }
@@ -132,8 +132,8 @@ public class ChatEvents implements Listener {
         }
     }
 
-    Logger logger = Logger.getLogger("Chat");
-    public static ArrayList<Component> messages = new ArrayList<>();
+    final Logger logger = Logger.getLogger("Chat");
+    public static final ArrayList<Component> messages = new ArrayList<>();
 
     int conuter = 0;
 

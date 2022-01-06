@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 public class ChatPacketHandler {
 
 	public ChatPacketHandler() {
-		BetterInteraction.getProtocolManager().addPacketListener(new PacketAdapter(BetterInteraction.getInstance(),
+		BetterInteraction.getInstance().getProtocolManager().addPacketListener(new PacketAdapter(BetterInteraction.getInstance(),
 				ListenerPriority.NORMAL,
 				PacketType.Play.Server.CHAT) {
 			@Override

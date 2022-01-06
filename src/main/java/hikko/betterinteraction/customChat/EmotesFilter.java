@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class EmotesFilter {
 
-    ArrayList<String> emotes = new ArrayList<>();
-    ArrayList<String> unicodeEmotes = new ArrayList<>();
+    final ArrayList<String> emotes = new ArrayList<>();
+    final ArrayList<String> unicodeEmotes = new ArrayList<>();
 
     EmotesFilter() {
         addEmote("Kappa", "\\ue031");

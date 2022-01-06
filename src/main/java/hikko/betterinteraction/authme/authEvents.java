@@ -13,9 +13,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.logging.Level;
 
-public class authEvents implements Listener {
+public class AuthEvents implements Listener {
 
-    public authEvents() {
+    public AuthEvents() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading auth events...");
     }
 

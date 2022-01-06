@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class MessageQueue {
 
-    ArrayList<PlayerMessages> queuePlayersMessages = new ArrayList<>();
+    final ArrayList<PlayerMessages> queuePlayersMessages = new ArrayList<>();
 
     public synchronized void addPlayer(Player player) {
         queuePlayersMessages.add(new PlayerMessages(player.getName()));

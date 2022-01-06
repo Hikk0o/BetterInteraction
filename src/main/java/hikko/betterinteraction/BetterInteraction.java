@@ -2,13 +2,15 @@ package hikko.betterinteraction;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import hikko.betterinteraction.authme.authEvents;
+import hikko.betterinteraction.authme.AuthEvents;
 import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.Commands;
 import hikko.betterinteraction.commands.EmotesCommands;
 import hikko.betterinteraction.commands.FactionCommands;
 import hikko.betterinteraction.customChat.ChatEvents;
-import hikko.betterinteraction.itemLogger.itemEvents;
+import hikko.betterinteraction.donateSystem.Database;
+import hikko.betterinteraction.donateSystem.DonateSystemEvents;
+import hikko.betterinteraction.itemLogger.ItemEvents;
 import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -30,6 +32,7 @@ public final class BetterInteraction extends JavaPlugin {
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
     private static Properties properties;
+    private static Database donateDatabase;
 
     @Override
     public void onEnable() {
@@ -60,10 +63,13 @@ public final class BetterInteraction extends JavaPlugin {
         new CheckerEntities();
         protocolManager = ProtocolLibrary.getProtocolManager();
         new Commands();
+        donateDatabase = new Database();
+        donateDatabase.open();
         new FactionCommands();
         new EmotesCommands();
-        Bukkit.getPluginManager().registerEvents(new itemEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new authEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new DonateSystemEvents(), this);
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
 
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
@@ -73,6 +79,7 @@ public final class BetterInteraction extends JavaPlugin {
     @Override
     public void onDisable() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Goodbye!");
+        donateDatabase.close();
     }
 
     public void onReload() {
@@ -84,16 +91,19 @@ public final class BetterInteraction extends JavaPlugin {
     public static BetterInteraction getInstance() {
         return instance;
     }
-    public static ProtocolManager getProtocolManager() {
+    public ProtocolManager getProtocolManager() {
         return protocolManager;
     }
-    public static Properties getProperties() {
+    public Properties getProperties() {
         return properties;
     }
     public ChatEvents getChatEvents() {
         return chatEvents;
     }
-    public static IEssentials getAPIEssentials() {
+    public Database getDonateDatabase() {
+        return donateDatabase;
+    }
+    public IEssentials getAPIEssentials() {
         PluginManager manager = Bukkit.getPluginManager();
         Plugin plugin = manager.getPlugin("Essentials");
         return (IEssentials) plugin;
