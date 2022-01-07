@@ -146,10 +146,24 @@ public class ChatEvents implements Listener {
         conuter++;
 
         Component message = Component.empty();
+        Component nickname = Component.empty();
+        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
 
-        Component nickname = Component.text(e.getPlayer().getName())
-                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
-                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName())));
+            String permissions = "";
+            if (e.getPlayer().hasPermission("betterinteraction.moderator")) permissions += "- Удалять сообщения\n";
+
+            nickname = nickname.append(
+                    Component.text("[M] ").color(TextColor.color(0x55FF55))
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n\n" +
+                                    ChatColor.GRAY + "Этот игрок может:\n" + permissions))));
+
+        }
+        nickname = nickname
+                .append(Component.text(e.getPlayer().getName())
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
+
+
 
         Component messageColon = Component.text(": ")
                 .color(TextColor.color(0x5D5D5D));
