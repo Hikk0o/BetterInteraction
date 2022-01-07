@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import hikko.betterinteraction.authme.AuthEvents;
 import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.Commands;
+import hikko.betterinteraction.commands.DonateCommands;
 import hikko.betterinteraction.commands.EmotesCommands;
 import hikko.betterinteraction.commands.FactionCommands;
 import hikko.betterinteraction.customChat.ChatEvents;
@@ -62,11 +63,12 @@ public final class BetterInteraction extends JavaPlugin {
 
         new CheckerEntities();
         protocolManager = ProtocolLibrary.getProtocolManager();
-        new Commands();
         donateDatabase = new Database();
         donateDatabase.open();
+        new Commands();
         new FactionCommands();
         new EmotesCommands();
+        new DonateCommands();
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
         Bukkit.getPluginManager().registerEvents(new DonateSystemEvents(), this);
