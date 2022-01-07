@@ -32,6 +32,7 @@ public final class BetterInteraction extends JavaPlugin {
     public static String prefix;
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
+    private static DonateSystemEvents donateSystemEvents;
     private static Properties properties;
     private static Database donateDatabase;
 
@@ -71,7 +72,7 @@ public final class BetterInteraction extends JavaPlugin {
         new DonateCommands();
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new DonateSystemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
 
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
@@ -101,6 +102,9 @@ public final class BetterInteraction extends JavaPlugin {
     }
     public ChatEvents getChatEvents() {
         return chatEvents;
+    }
+    public DonateSystemEvents GetDonateSystemEvents() {
+        return donateSystemEvents;
     }
     public Database getDonateDatabase() {
         return donateDatabase;
