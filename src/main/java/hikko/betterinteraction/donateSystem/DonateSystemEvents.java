@@ -39,7 +39,6 @@ public class DonateSystemEvents implements Listener {
                     e.getView().close();
                 }
                 if (nameItem.equals("Список услуг")) {
-                    e.getView().close();
                     Player player = BetterInteraction.getInstance().getServer().getPlayer(e.getWhoClicked().getName());
                     donatePages.DonateListMenu(player);
                 }
