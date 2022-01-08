@@ -37,7 +37,9 @@ public class DonateCommands extends AbstractCommand {
         noPermission = noPermission.replace("{noPermission}", Objects.requireNonNull(BetterInteraction.getInstance().getConfig().getString("messages.noPermission")));
         noPermission = noPermission.replace("\\", "");
 
+
         if (args.length == 0) { // Реализация донат меню
+            if (sender.getName().equals("CONSOLE")) return;
             Player player = (Player) sender;
             donateSystemEvents.getDonatePages().InitialDonateMenu(player);
             return;
@@ -65,6 +67,7 @@ public class DonateCommands extends AbstractCommand {
                     }
                     sender.sendMessage(message);
                 } else {
+                    if (sender.getName().equals("CONSOLE")) return;
                     int donate = (int) BetterInteraction.getInstance().getDonateDatabase().getDonate(player.getName());
                     Component message = Component
                             .text("Вы имеете ").color(TextColor.color(0xFFDB45))

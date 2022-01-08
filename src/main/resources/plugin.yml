@@ -26,9 +26,38 @@ commands:
     aliases:
       - dm
 permissions:
-  betterinteraction.reload:
-    description: Reload plugin
+  betterinteraction.*:
     default: op
+    description: OP-Permission for all Commands and Functions
+    children:
+      betterinteraction.reload: true
+      betterinteraction.detelemessage: true
+      betterinteraction.moderator: true
+      betterinteraction.donate.*: true
+
+  betterinteraction.reload:
+    description: Reload plugin | Permission
+    default: op
+
+  betterinteraction.moderator:
+    description: Show mod badges | Permission
+    default: op
+
+  betterinteraction.donate.*:
+    description: Donate commands | Permission
+    default: op
+    children:
+      betterinteraction.donate.get: true
+      betterinteraction.donate.set: true
+
+  betterinteraction.donate.get:
+    description: Get donate | Permission
+    default: op
+
+  betterinteraction.donate.set:
+    description: Set donate | Permission
+    default: op
+
   betterinteraction.detelemessage:
-    description: Deleting a message
+    description: Deleting a message | Permission
     default: op

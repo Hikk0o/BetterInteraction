@@ -11,6 +11,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -22,6 +23,17 @@ public class Commands extends AbstractCommand {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading commands...");
     }
 
+    void sendVersion(CommandSender sender) {
+        Component message = Component.empty();
+        message = message.append(Component.text(BetterInteraction.getInstance().getName() + "-" + BetterInteraction.version).color(TextColor.color(0xFFFF55)).decorate(TextDecoration.BOLD));
+        message = message.append(Component.space());
+        message = message.append(Component.text("by Hikk0o")
+                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("GitHub").color(TextColor.color(0xC8C5C3)).decorate(TextDecoration.ITALIC)))
+                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, BetterInteraction.getInstance().getProperties().getProperty("website")))
+        );
+        sender.sendMessage(message);
+    }
+
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
 
@@ -31,16 +43,15 @@ public class Commands extends AbstractCommand {
 
 
         if (args.length == 0) {
-            Component message = Component.empty();
-            message = message.append(Component.text(BetterInteraction.getInstance().getName() + "-" + BetterInteraction.version).color(TextColor.color(0xFFFF55)).decorate(TextDecoration.BOLD));
-            message = message.append(Component.space());
-            message = message.append(Component.text("by Hikk0o")
-                    .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("GitHub").color(TextColor.color(0xC8C5C3)).decorate(TextDecoration.ITALIC)))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, BetterInteraction.getInstance().getProperties().getProperty("website")))
-            );
-            sender.sendMessage(message);
+            sendVersion(sender);
             return;
         }
+
+        if (args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("ver")) {
+            sendVersion(sender);
+            return;
+        }
+
         if (args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("betterinteraction.reload")) {
                 BetterInteraction.getInstance().onReload();
@@ -67,7 +78,16 @@ public class Commands extends AbstractCommand {
 
     @Override
     public List<String> complete(CommandSender sender, String[] args) {
-        if (args.length == 1) return Lists.newArrayList("reload", "getdonate", "setdonate");
-        return Lists.newArrayList();
+        ArrayList<String> list = Lists.newArrayList();
+        if (args.length == 1) {
+            list.add("version");
+            if (sender.hasPermission("betterinteraction.reload")) {
+                list.add("reload");
+            }
+            if (sender.hasPermission("betterinteraction.detelemessage")) {
+                list.add("detelemessage");
+            }
+        }
+        return list;
     }
 }
