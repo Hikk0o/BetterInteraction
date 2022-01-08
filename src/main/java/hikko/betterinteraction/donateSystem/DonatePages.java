@@ -64,15 +64,42 @@ public class DonatePages {
         ItemStack empty = new ItemStack(Material.AIR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemStack closeMenu = new ItemStack(Material.RED_CONCRETE);
+        ItemStack changeNickname = new ItemStack(Material.PAPER);
+        ItemStack testDonate1 = new ItemStack(Material.PAPER);
+        ItemStack testDonate2 = new ItemStack(Material.PAPER);
 
 
         ItemMeta closeMenuItemMeta = closeMenu.getItemMeta();
         closeMenuItemMeta.displayName(Component.text("Закрыть меню").decoration(ITALIC, false).color(TextColor.color(0xFF5A49)));
         closeMenu.setItemMeta(closeMenuItemMeta);
 
+        ItemMeta changeNicknameMeta = changeNickname.getItemMeta();
+        changeNicknameMeta.displayName(Component.text("Сменить цвет ника в чате").decoration(ITALIC, false).color(TextColor.color(0x34FF30)));
+        List<Component> changeNicknameLore = new ArrayList<>();
+        changeNicknameLore.add(Component.empty());
+        changeNicknameLore.add(Component.text("Выбери цвет для ника на 30 дней! ").decoration(ITALIC, false).color(TextColor.color(0x9C9C9C)));
+        changeNicknameLore.add(Component.text("(изменяется только в локальном и глобальном чате)").decoration(ITALIC, true).color(TextColor.color(0x9C9C9C)));
+        changeNicknameLore.add(Component.empty());
+        changeNicknameLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
+                .append(Component.text(" 100 ").color(TextColor.color(0xFFDB45)))
+                .append(Component.text("донат-коинов.")));
+
+
+        changeNicknameMeta.lore(changeNicknameLore);
+        changeNickname.setItemMeta(changeNicknameMeta);
+
+        ItemMeta testDonate1Meta = testDonate1.getItemMeta();
+        testDonate1Meta.displayName(Component.text("testDonate1").decoration(ITALIC, false).color(TextColor.color(0xF6FF3F)));
+        testDonate1.setItemMeta(testDonate1Meta);
+
+        ItemMeta testDonate2Meta = testDonate2.getItemMeta();
+        testDonate2Meta.displayName(Component.text("testDonate2").decoration(ITALIC, false).color(TextColor.color(0xF6FF3F)));
+        testDonate2.setItemMeta(testDonate2Meta);
+
+
         ItemStack[] items = {
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass,
-                menuGlass, empty,     empty,     empty,     empty,     empty,     empty,     closeMenu, menuGlass,
+                menuGlass, changeNickname, testDonate1, testDonate2, empty, empty, empty, closeMenu, menuGlass,
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass
         };
         inv.setContents(items);
