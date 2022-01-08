@@ -12,6 +12,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -150,18 +151,27 @@ public class ChatEvents implements Listener {
         if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
 
             String permissions = "";
-            if (e.getPlayer().hasPermission("betterinteraction.moderator")) permissions += "- Удалять сообщения\n";
-
+            if (e.getPlayer().hasPermission("betterinteraction.detelemessage")) permissions += "- Удалять сообщения";
+            String mod_badges = StringEscapeUtils.unescapeJava("\\ue025");
             nickname = nickname.append(
-                    Component.text("[M] ").color(TextColor.color(0x55FF55))
-                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n\n" +
+                    Component.text("\uD83D\uDEE1 ").color(TextColor.color(0xAA00)) // Значок модератора
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n" +
                                     ChatColor.GRAY + "Этот игрок может:\n" + permissions))));
 
         }
-        nickname = nickname
-                .append(Component.text(e.getPlayer().getName())
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
+
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isColoredNickname()) {
+            nickname = nickname
+                    .append(Component.text(e.getPlayer().getName()).color(TextColor.color(0xAC9BFA))
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
+
+        } else {
+            nickname = nickname
+                    .append(Component.text(e.getPlayer().getName())
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
+        }
 
 
 
