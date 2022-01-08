@@ -8,5 +8,15 @@ maxEntities: 30
 messages:
   noPermission: 'У вас нет прав на использование этой команды.'
 
+prices:
+  changeNickname:
+    cost: 100
+    sales: false
+    salesCosts: 100
+  sponsor:
+    cost: 500
+    sales: false
+    salesCosts: 500
+
 # Do not change this value
 ConfigVersion: 1
