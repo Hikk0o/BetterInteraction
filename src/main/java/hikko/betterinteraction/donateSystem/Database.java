@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -112,18 +113,18 @@ public class Database {
 
     public boolean addPlayerPurchase(String nickname, String product) {
         long currentTime = System.currentTimeMillis();
-        if (product.equals("changeColorNickname")) {
-            int days = 30;
-            long month = 1000L*60*60*24*days;
-            long endDate = currentTime + month;
-            Date date = new Date(endDate);
-            System.out.println(date);
+        if (product.equals("coloredNickname")) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(currentTime);
+            cal.add(Calendar.MONTH, 1);
             String query =
                     "INSERT INTO playersProducts (name, product, endDate) " +
-                            "VALUES ('"+nickname+"','"+product+"','"+endDate+"')";
+                    "VALUES ('"+nickname+"','"+product+"','"+cal.getTimeInMillis()+"')";
+            int nowMonth = cal.get(Calendar.MONTH) + 1;
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
                 statement.executeUpdate();
+                BetterInteraction.getInstance().getDonateDatabase().getPlayer(nickname).setColoredNickname(true);
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -136,8 +137,8 @@ public class Database {
     public ArrayList<String> getPlayerPurchase(String nickname) {
         String query =
                 "SELECT id, name, product, endDate " +
-                        "FROM playersProducts " +
-                        "WHERE name = ?";
+                "FROM playersProducts " +
+                "WHERE name = ?";
         try {
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, nickname);
@@ -145,7 +146,71 @@ public class Database {
             ArrayList<String> purchase = new ArrayList<>();
             if (!response.isClosed()) {
                 while (response.next()) {
-                    purchase.add(response.getString("product"));
+                    long currentTime = System.currentTimeMillis();
+                    Calendar nowDate = Calendar.getInstance();
+                    nowDate.setTimeInMillis(currentTime);
+                    Player player = BetterInteraction.getInstance().getServer().getPlayer(nickname);
+                    String dataProduct = response.getString("product");
+
+                    Calendar endDate = Calendar.getInstance();
+                    endDate.setTimeInMillis(response.getLong("endDate"));
+                    if (nowDate.getTimeInMillis() > endDate.getTimeInMillis()) {
+                        if (player != null) {
+                            if (dataProduct.equals("coloredNickname")) {
+                                player.sendMessage("[Donate] Срок подписки \"Цветной ник\" закончился.");
+                            }
+                        }
+                        String query2 =
+                                "DELETE FROM playersProducts " +
+                                        "WHERE id = '"+response.getInt("id")+"'";
+                        Statement statement2 = conn.createStatement();
+                        statement2.executeUpdate(query2);
+
+                    } else {
+                        purchase.add(response.getString("product"));
+                        if (player != null) {
+                            String product = "";
+                            if (dataProduct.equals("coloredNickname")) product = "\"Цветной ник\"";
+                            if (dataProduct.equals("sponsor")) product = "\"Спонсор\"";
+
+                            long days = response.getLong("endDate");
+
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTimeInMillis(days);
+                            int endMonth = cal.get(Calendar.MONTH) + 1;
+
+                            String date = "";
+                            if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
+                                date += "0"+cal.get(Calendar.DAY_OF_MONTH)+".";
+                            } else {
+                                date += cal.get(Calendar.DAY_OF_MONTH)+".";
+                            }
+                            if (endMonth < 10) {
+                                date += "0"+endMonth+".";
+                            } else {
+                                date += endMonth+".";
+                            }
+                            date += cal.get(Calendar.YEAR);
+
+                            String time = "";
+
+                            if (cal.get(Calendar.HOUR_OF_DAY) < 10) {
+                                time += "0"+cal.get(Calendar.HOUR_OF_DAY)+":";
+                            } else {
+                                time += cal.get(Calendar.HOUR_OF_DAY)+":";
+                            }
+                            if (cal.get(Calendar.MINUTE) < 10) {
+                                time += "0"+cal.get(Calendar.MINUTE);
+                            } else {
+                                time += cal.get(Calendar.MINUTE);
+                            }
+
+
+                            player.sendMessage("[Donate] Срок подписки "+product+" заканчивается " + date + " в " + time + " по МСК");
+
+                            int nowMonth = nowDate.get(Calendar.MONTH) + 1;
+                        }
+                    }
                 }
             }
             return purchase;
