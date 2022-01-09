@@ -9,7 +9,7 @@ messages:
   noPermission: 'У вас нет прав на использование этой команды.'
 
 prices:
-  changeNickname:
+  coloredNickname:
     cost: 100
     sales: false
     salesCosts: 100
