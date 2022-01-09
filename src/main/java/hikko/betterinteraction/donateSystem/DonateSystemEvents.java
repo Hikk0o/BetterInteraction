@@ -59,17 +59,21 @@ public class DonateSystemEvents implements Listener {
         if (PlainTextComponentSerializer.plainText().serialize(e.getView().title()).equals("Список услуг")) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
-
+                if (e.isRightClick()) return;
                 String nameItem = PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(e.getCurrentItem().getItemMeta().displayName()));
                 if (nameItem.equals("Закрыть меню")) {
                     e.getView().close();
                 }
                 if (nameItem.equals("Сменить цвет ника в чате")) {
-                    int changeNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.changeNickname.cost");
+                    int changeNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.cost");
 
                     e.getView().close();
                     Player player = BetterInteraction.getInstance().getServer().getPlayer(e.getWhoClicked().getName());
                     if (player == null) return;
+                    if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(player.getName()).isColoredNickname()) {
+                        player.sendMessage(ChatColor.YELLOW + "У вас уже есть эта услуга.");
+                        return;
+                    }
                     Database database = BetterInteraction.getInstance().getDonateDatabase();
                     if (database.getDonate(player.getName()) == null) return;
                     int playerBalance = (int) database.getDonate(player.getName());

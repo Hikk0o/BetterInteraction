@@ -1,10 +1,8 @@
 package hikko.betterinteraction.donateSystem;
 
 import hikko.betterinteraction.BetterInteraction;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class DonatePlayer {
 
@@ -20,7 +18,7 @@ public class DonatePlayer {
                 if (value.equals("coloredNickname")) {
                     coloredNickname = true;
                 }
-                if (value.equals("isSponsor")) {
+                if (value.equals("sponsor")) {
                     coloredNickname = true;
                     isSponsor = true;
                 }
@@ -34,5 +32,9 @@ public class DonatePlayer {
 
     public boolean isColoredNickname() {
         return coloredNickname;
+    }
+
+    public void setColoredNickname(boolean coloredNickname) {
+        this.coloredNickname = coloredNickname;
     }
 }
