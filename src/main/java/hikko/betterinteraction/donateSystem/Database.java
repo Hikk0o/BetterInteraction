@@ -111,6 +111,40 @@ public class Database {
 
     }
 
+    private String getTimeLeft(Calendar cal, String product) {
+
+        int endMonth = cal.get(Calendar.MONTH) + 1;
+
+        String date = "";
+        if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
+            date += "0"+cal.get(Calendar.DAY_OF_MONTH)+".";
+        } else {
+            date += cal.get(Calendar.DAY_OF_MONTH)+".";
+        }
+        if (endMonth < 10) {
+            date += "0"+endMonth+".";
+        } else {
+            date += endMonth+".";
+        }
+        date += cal.get(Calendar.YEAR);
+
+        String time = "";
+
+        if (cal.get(Calendar.HOUR_OF_DAY) < 10) {
+            time += "0"+cal.get(Calendar.HOUR_OF_DAY)+":";
+        } else {
+            time += cal.get(Calendar.HOUR_OF_DAY)+":";
+        }
+        if (cal.get(Calendar.MINUTE) < 10) {
+            time += "0"+cal.get(Calendar.MINUTE);
+        } else {
+            time += cal.get(Calendar.MINUTE);
+        }
+
+
+        return ChatColor.YELLOW + "Срок подписки " + ChatColor.WHITE + product + ChatColor.YELLOW + " заканчивается " + ChatColor.WHITE + date + ChatColor.YELLOW + " в " + ChatColor.WHITE + time + ChatColor.YELLOW + " по МСК";
+    }
+
     public boolean addPlayerPurchase(String nickname, String product) {
         long currentTime = System.currentTimeMillis();
         if (product.equals("coloredNickname")) {
@@ -169,6 +203,7 @@ public class Database {
                     } else {
                         purchase.add(response.getString("product"));
                         if (player != null) {
+
                             String product = "";
                             if (dataProduct.equals("coloredNickname")) product = "\"Цветной ник\"";
                             if (dataProduct.equals("sponsor")) product = "\"Спонсор\"";
@@ -177,38 +212,8 @@ public class Database {
 
                             Calendar cal = Calendar.getInstance();
                             cal.setTimeInMillis(days);
-                            int endMonth = cal.get(Calendar.MONTH) + 1;
 
-                            String date = "";
-                            if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
-                                date += "0"+cal.get(Calendar.DAY_OF_MONTH)+".";
-                            } else {
-                                date += cal.get(Calendar.DAY_OF_MONTH)+".";
-                            }
-                            if (endMonth < 10) {
-                                date += "0"+endMonth+".";
-                            } else {
-                                date += endMonth+".";
-                            }
-                            date += cal.get(Calendar.YEAR);
-
-                            String time = "";
-
-                            if (cal.get(Calendar.HOUR_OF_DAY) < 10) {
-                                time += "0"+cal.get(Calendar.HOUR_OF_DAY)+":";
-                            } else {
-                                time += cal.get(Calendar.HOUR_OF_DAY)+":";
-                            }
-                            if (cal.get(Calendar.MINUTE) < 10) {
-                                time += "0"+cal.get(Calendar.MINUTE);
-                            } else {
-                                time += cal.get(Calendar.MINUTE);
-                            }
-
-
-                            player.sendMessage("[Donate] Срок подписки "+product+" заканчивается " + date + " в " + time + " по МСК");
-
-                            int nowMonth = nowDate.get(Calendar.MONTH) + 1;
+                            player.sendMessage(getTimeLeft(cal, product));
                         }
                     }
                 }
