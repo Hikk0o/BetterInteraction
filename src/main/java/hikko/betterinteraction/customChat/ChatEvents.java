@@ -12,7 +12,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -148,17 +147,17 @@ public class ChatEvents implements Listener {
 
         Component message = Component.empty();
         Component nickname = Component.empty();
-        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
-
-            String permissions = "";
-            if (e.getPlayer().hasPermission("betterinteraction.detelemessage")) permissions += "- Удалять сообщения";
-            String mod_badges = StringEscapeUtils.unescapeJava("\\ue025");
-            nickname = nickname.append(
-                    Component.text("\uD83D\uDEE1 ").color(TextColor.color(0xAA00)) // Значок модератора
-                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n" +
-                                    ChatColor.GRAY + "Этот игрок может:\n" + permissions))));
-
-        }
+//        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
+//
+//            String permissions = "";
+//            if (e.getPlayer().hasPermission("betterinteraction.detelemessage")) permissions += "- Удалять сообщения";
+//            String mod_badges = StringEscapeUtils.unescapeJava("\\ue025");
+//            nickname = nickname.append(
+//                    Component.text("\uD83D\uDEE1 ").color(TextColor.color(0xAA00)) // Значок модератора
+//                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n" +
+//                                    ChatColor.GRAY + "Этот игрок может:\n" + permissions))));
+//
+//        }
 
         if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isColoredNickname()) {
             nickname = nickname
