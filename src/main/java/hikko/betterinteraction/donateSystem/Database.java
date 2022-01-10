@@ -147,7 +147,7 @@ public class Database {
 
     public boolean addPlayerPurchase(String nickname, String product) {
         long currentTime = System.currentTimeMillis();
-        if (product.equals("coloredNickname")) {
+
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(currentTime);
             cal.add(Calendar.MONTH, 1);
@@ -158,14 +158,18 @@ public class Database {
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
                 statement.executeUpdate();
-                BetterInteraction.getInstance().getDonateDatabase().getPlayer(nickname).setColoredNickname(true);
+                if (product.equals("coloredNickname")) getPlayer(nickname).setColoredNickname(true);
+                if (product.equals("sponsor")){
+                    getPlayer(nickname).setSponsor(true);
+                    getPlayer(nickname).setColoredNickname(true);
+                }
+
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
-        }
-        return false;
+
     }
 
     public ArrayList<String> getPlayerPurchase(String nickname) {
