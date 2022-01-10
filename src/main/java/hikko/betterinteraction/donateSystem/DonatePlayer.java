@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class DonatePlayer {
 
-    String name;
-    boolean coloredNickname = false;
-    boolean isSponsor = false;
+    private final String name;
+    private boolean coloredNickname = false;
+    private boolean isSponsor = false;
 
     public DonatePlayer(String name) {
         this.name = name;
@@ -33,8 +33,15 @@ public class DonatePlayer {
     public boolean isColoredNickname() {
         return coloredNickname;
     }
+    public boolean isSponsor() {
+        return isSponsor;
+    }
 
     public void setColoredNickname(boolean coloredNickname) {
         this.coloredNickname = coloredNickname;
+    }
+
+    public void setSponsor(boolean sponsor) {
+        isSponsor = sponsor;
     }
 }
