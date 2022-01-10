@@ -88,7 +88,7 @@ public class DonatePages {
         closeMenu.setItemMeta(closeMenuItemMeta);
 
         ItemMeta changeNicknameMeta = changeNickname.getItemMeta();
-        changeNicknameMeta.displayName(Component.text("Сменить цвет ника в чате").decoration(ITALIC, false).color(TextColor.color(0xDACDFF)));
+        changeNicknameMeta.displayName(Component.text("Цветной ник").decoration(ITALIC, false).color(TextColor.color(0xDACDFF)));
         List<Component> changeNicknameLore = new ArrayList<>();
         int changeNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.cost");
 //        boolean changeNicknameSales = BetterInteraction.getInstance().getConfig().getBoolean("prices.coloredNickname.sales");
@@ -116,7 +116,7 @@ public class DonatePages {
         testDonate1.setItemMeta(testDonate1Meta);
 
         ItemMeta sponsorMeta = sponsor.getItemMeta();
-        sponsorMeta.displayName(Component.text("Всё включено").decoration(ITALIC, false).color(TextColor.color(0xFAD341)).decorate(TextDecoration.BOLD));
+        sponsorMeta.displayName(Component.text("Спонсор").decoration(ITALIC, false).color(TextColor.color(0xFAD341)).decorate(TextDecoration.BOLD));
         sponsorMeta.addEnchant(Enchantment.LUCK, 1, false);
         sponsorMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
@@ -154,8 +154,47 @@ public class DonatePages {
         inv.setContents(items);
 
         player.openInventory(inv);
-
     }
 
+    public void ConfirmPage(Player player, String product) {
+        Component menuTitle;
+        if (product.equals("sponsor")) {
+            menuTitle = Component.text("Товар: Спонсор").decoration(ITALIC, false);
+        } else if (product.equals("coloredNickname")) {
+            menuTitle = Component.text("Товар: Цветной ник").decoration(ITALIC, false);
+        } else {
+            player.closeInventory();
+            return;
+        }
 
+        Inventory inv = Bukkit.createInventory(player, 27, menuTitle);
+        ItemStack empty = new ItemStack(Material.AIR);
+        ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemStack confirmButton = new ItemStack(Material.LIME_WOOL);
+        ItemStack unconfirmedButton = new ItemStack(Material.RED_WOOL);
+
+        ItemMeta menuGlassMeta = menuGlass.getItemMeta();
+        menuGlassMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        menuGlassMeta.displayName(Component.text("Пусто..").color(TextColor.color(0x231924)));
+        menuGlass.setItemMeta(menuGlassMeta);
+
+        ItemMeta confirmButtonMeta = confirmButton.getItemMeta();
+        confirmButtonMeta.displayName(Component.text("Подтвердить покупку").decoration(ITALIC, false).color(TextColor.color(0x4FE64F)));
+        confirmButton.setItemMeta(confirmButtonMeta);
+
+        ItemMeta unconfirmedButtonMeta = unconfirmedButton.getItemMeta();
+        unconfirmedButtonMeta.displayName(Component.text("Отклонить покупку").decoration(ITALIC, false).color(TextColor.color(0xFF504A)));
+        unconfirmedButton.setItemMeta(unconfirmedButtonMeta);
+
+
+        ItemStack[] items = {
+                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass,
+                menuGlass, empty, empty, confirmButton, empty, unconfirmedButton, empty, empty, menuGlass,
+                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass
+        };
+        inv.setContents(items);
+
+        player.openInventory(inv);
     }
+
+}
