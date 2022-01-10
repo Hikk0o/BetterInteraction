@@ -65,7 +65,7 @@ public class Commands extends AbstractCommand {
         }
         if (args[0].equalsIgnoreCase("detelemessage")) {
             if (sender.hasPermission("betterinteraction.detelemessage")) {
-                BetterInteraction.getInstance().getChatEvents().delMessage(Integer.parseInt(args[1]));
+                BetterInteraction.getInstance().getChatEvents().delMessage(Integer.parseInt(args[1]), (Player) sender);
             } else {
                 sender.sendMessage(noPermission);
             }

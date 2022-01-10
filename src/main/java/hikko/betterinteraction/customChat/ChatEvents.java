@@ -1,6 +1,8 @@
 package hikko.betterinteraction.customChat;
 
 import com.earth2me.essentials.User;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.customChat.chat.MessageQueue;
 import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
@@ -12,6 +14,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -51,9 +54,9 @@ public class ChatEvents implements Listener {
         messageQueue.delPlayer(player);
     }
 
-    public void delMessage(int id) {
+    public void delMessage(int id, Player player) {
         Component message = messages.get(id);
-        messageQueue.delMessage(message);
+        messageQueue.delMessage(message, player.getName());
     }
 
     @EventHandler
@@ -147,11 +150,13 @@ public class ChatEvents implements Listener {
 
         Component message = Component.empty();
         Component nickname = Component.empty();
+
+        FPlayer fsender = FPlayers.getInstance().getByPlayer(BetterInteraction.getInstance().getServer().getPlayer(e.getPlayer().getName()));
+
 //        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
 //
 //            String permissions = "";
 //            if (e.getPlayer().hasPermission("betterinteraction.detelemessage")) permissions += "- Удалять сообщения";
-//            String mod_badges = StringEscapeUtils.unescapeJava("\\ue025");
 //            nickname = nickname.append(
 //                    Component.text("\uD83D\uDEE1 ").color(TextColor.color(0xAA00)) // Значок модератора
 //                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n" +
@@ -159,18 +164,34 @@ public class ChatEvents implements Listener {
 //
 //        }
 
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isColoredNickname()) {
-            nickname = nickname
-                    .append(Component.text(e.getPlayer().getName()).color(TextColor.color(0xAC9BFA))
-                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
-                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isSponsor()) {
+            nickname = nickname.append(
+                    Component.text("✦ ").color(TextColor.color(0xC580FF)) // Значок спонсора
+                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Спонсор\n").color(TextColor.color(0xB38AFF))
+                                    .append(Component.text("Этот игрок является спонсором сервера").color(TextColor.color(0xD6C3E8))))));
 
-        } else {
-            nickname = nickname
-                    .append(Component.text(e.getPlayer().getName())
-                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
-                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
         }
+        Component nick = Component.text(e.getPlayer().getName());
+
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isColoredNickname()) {
+            nick = nick.color(TextColor.color(0xAC9BFA));
+        }
+
+
+        Component descNickname = Component.empty();
+//        if (fsender.getFaction().isWilderness()) {
+//          descNickname = Component.text(fsender.getName() + ChatColor.YELLOW + " не состоит во фракции");
+//        } else {
+//          descNickname = Component.text(fsender.getName() + ChatColor.YELLOW + " является участником фракции " + ChatColor.RESET + fsender.getFaction().getTag());
+//        }
+//        descNickname = descNickname
+//                .append(Component.newline())
+//                .append(Component.newline());
+
+        nickname = nickname
+                .append(nick)
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, descNickname.append(Component.text(ChatColor.GREEN+"Нажмите "+ChatColor.WHITE+"ПКМ"+ChatColor.GREEN+", чтобы отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
 
 
 

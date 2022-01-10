@@ -27,10 +27,10 @@ public class MessageQueue {
         return null;
     }
 
-    public synchronized void delMessage (Component component) {
+    public synchronized void delMessage (Component component, String nickname) {
         for (PlayerMessages playerMessages : queuePlayersMessages) {
 //            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Del for " + playerMessages.getPlayer());
-            playerMessages.delMessage(component);
+            playerMessages.delMessage(component, nickname);
         }
     }
 }
