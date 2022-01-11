@@ -12,6 +12,7 @@ depend:
   - Essentials
   - ProtocolLib
   - Factions
+  - LuckPerms
 commands:
   chat:
     description: Faction chat
