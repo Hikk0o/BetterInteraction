@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.customChat.chat.MessageQueue;
+import hikko.betterinteraction.customChat.chat.PlayerMessages;
 import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.ess3.api.events.PrivateMessagePreSendEvent;
@@ -14,7 +15,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -62,9 +63,42 @@ public class ChatEvents implements Listener {
     @EventHandler
     public void PrivateMessageSent(PrivateMessagePreSendEvent e) { // Essentials event
         e.setCancelled(true);
+
+        Player player = BetterInteraction.getInstance().getServer().getPlayer(e.getSender().getName());
+
+        PlayerMessages playerMessages = messageQueue.getPlayer(player);
+        if (playerMessages != null && player != null) {
+            if (messageQueue.getPlayer(player).isCooldown()) {
+                player.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправлять сообщения");
+                return;
+            }
+            if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
+                player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                return;
+            }
+            playerMessages.setLastSendMessage(e.getMessage());
+        }
+        messageQueue.getPlayer(player).setCooldown(true);
+        scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
+            if (playerMessages != null) {
+                playerMessages.setCooldown(false);
+            }
+        }, 40);
+
         Player recipient = BetterInteraction.getInstance().getServer().getPlayer(e.getRecipient().getName());
         Player sender = BetterInteraction.getInstance().getServer().getPlayer(e.getSender().getName());
         if (recipient != null && sender != null) {
+            sender.playSound(sender.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, (float) 0.3, (float) 1.5);
+            Component sernderMessage = Component.empty();
+            sernderMessage = sernderMessage
+                    .append(Component.text("PM для ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(recipient.getName()).color(TextColor.color(0xFFDB45)))
+                    .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
+                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
+
+            sender.sendMessage(sernderMessage);
+            messageQueue.getPlayer(sender).addMessage(sernderMessage);
+
             recipient.playSound(recipient.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_PLACE, (float) 0.5, (float) 2);
             Component recipientMessage = Component.empty();
             recipientMessage = recipientMessage
@@ -78,17 +112,6 @@ public class ChatEvents implements Listener {
 
             recipient.sendMessage(recipientMessage);
             messageQueue.getPlayer(recipient).addMessage(recipientMessage);
-
-            sender.playSound(sender.getLocation(), Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, (float) 0.3, (float) 1.5);
-            Component sernderMessage = Component.empty();
-            sernderMessage = sernderMessage
-                    .append(Component.text("PM для ").color(TextColor.color(0xFF9D1F)))
-                    .append(Component.text(recipient.getName()).color(TextColor.color(0xFFDB45)))
-                    .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
-                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
-
-            sender.sendMessage(sernderMessage);
-            messageQueue.getPlayer(sender).addMessage(sernderMessage);
 
             Logger.getLogger("PM").log(Level.INFO, "От " + sender.getName() + " для " + recipient.getName() + ": " + e.getMessage());
 
@@ -137,6 +160,7 @@ public class ChatEvents implements Listener {
 
     final Logger logger = Logger.getLogger("Chat");
     public static final ArrayList<Component> messages = new ArrayList<>();
+    final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
 
     int conuter = 0;
 
@@ -148,10 +172,17 @@ public class ChatEvents implements Listener {
         int id = conuter;
         conuter++;
 
+        Player sender = e.getPlayer();
+
+        if (messageQueue.getPlayer(sender).isCooldown()) {
+            sender.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправлять сообщения");
+            return;
+        }
+
         Component message = Component.empty();
         Component nickname = Component.empty();
 
-        FPlayer fsender = FPlayers.getInstance().getByPlayer(BetterInteraction.getInstance().getServer().getPlayer(e.getPlayer().getName()));
+        FPlayer fsender = FPlayers.getInstance().getByPlayer(sender);
 
 //        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
 //
@@ -164,16 +195,16 @@ public class ChatEvents implements Listener {
 //
 //        }
 
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isSponsor()) {
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isSponsor()) {
             nickname = nickname.append(
                     Component.text("✦ ").color(TextColor.color(0xC580FF)) // Значок спонсора
                             .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Спонсор\n").color(TextColor.color(0xB38AFF))
                                     .append(Component.text("Этот игрок является спонсором сервера").color(TextColor.color(0xD6C3E8))))));
 
         }
-        Component nick = Component.text(e.getPlayer().getName());
+        Component nick = Component.text(sender.getName());
 
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(e.getPlayer().getName()).isColoredNickname()) {
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isColoredNickname()) {
             nick = nick.color(TextColor.color(0xAC9BFA));
         }
 
@@ -213,7 +244,7 @@ public class ChatEvents implements Listener {
                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.RED + "Удалить сообщение\n"+ ChatColor.GRAY + ChatColor.ITALIC + "ID: " + id)))
                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/betterinteraction detelemessage " + id));
 
-        Location location = e.getPlayer().getLocation();
+        Location location = sender.getLocation();
 
         message = message
                 .append(nickname)
@@ -250,13 +281,29 @@ public class ChatEvents implements Listener {
                             .append(messageColon)
                             .append(Component.text(playerContent.replaceFirst("!", "")));
                 }
+
+                PlayerMessages playerMessages = messageQueue.getPlayer(sender);
+                if (playerMessages != null) {
+                    if (playerMessages.getLastSendMessage().equals(content)) {
+                        player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                        return;
+                    }
+                    playerMessages.setLastSendMessage(content);
+                }
+                messageQueue.getPlayer(sender).setCooldown(true);
+                scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
+                    if (playerMessages != null) {
+                        playerMessages.setCooldown(false);
+                    }
+                }, 40);
+
                 messageQueue.getPlayer(player).addMessage(sendMessage);
                 player.sendMessage(sendMessage);
 
 
             }
         } else {
-            logMessage = ChatColor.YELLOW + "[L] " + ChatColor.RESET + e.getPlayer().getName() + ": " + content;
+            logMessage = ChatColor.YELLOW + "[L] " + ChatColor.RESET + sender.getName() + ": " + content;
             message = message
             .append(Component.text(content));
             boolean heard = false;
@@ -286,7 +333,23 @@ public class ChatEvents implements Listener {
                                 .append(messageColon)
                                 .append(Component.text(playerContent));
                     }
-                    if (!player.equals(e.getPlayer())) heard = true;
+                    if (!player.equals(sender)) heard = true;
+
+                    PlayerMessages playerMessages = messageQueue.getPlayer(sender);
+                    if (playerMessages != null) {
+                        if (playerMessages.getLastSendMessage().equals(content)) {
+                            player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                            return;
+                        }
+                        playerMessages.setLastSendMessage(content);
+                    }
+                    messageQueue.getPlayer(sender).setCooldown(true);
+                    scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
+                        if (playerMessages != null) {
+                            playerMessages.setCooldown(false);
+                        }
+                    }, 40);
+
                     messageQueue.getPlayer(player).addMessage(sendMessage);
                     player.sendMessage(sendMessage);
                 }
@@ -299,8 +362,9 @@ public class ChatEvents implements Listener {
                         .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Или просто напиши "+ ChatColor.GREEN + "!" + ChatColor.RESET + " в начале сообщения")))
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "!" + content))
                 );
-                e.getPlayer().sendMessage(notHeard);
-                messageQueue.getPlayer(e.getPlayer()).addMessage(notHeard);
+                sender.sendMessage(notHeard);
+                messageQueue.getPlayer(sender).addMessage(notHeard);
+                messageQueue.getPlayer(sender).setCooldown(false);
             }
         }
         messages.add(message);

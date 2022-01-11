@@ -14,11 +14,29 @@ import java.util.logging.Level;
 public class PlayerMessages {
 
     private final String player;
+    private boolean cooldown = false;
+    private String lastSendMessage = "";
     private boolean lock = false;
     private final ArrayList<Component> messages = new ArrayList<>();
 
     PlayerMessages(String player) {
         this.player = player;
+    }
+
+    public String getLastSendMessage() {
+        return lastSendMessage;
+    }
+
+    public void setLastSendMessage(String lastSendMessage) {
+        this.lastSendMessage = lastSendMessage;
+    }
+
+    public boolean isCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(boolean cooldown) {
+        this.cooldown = cooldown;
     }
 
     public synchronized void addMessage(Component message) {
@@ -30,8 +48,8 @@ public class PlayerMessages {
 //            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Add message for " + this.player + ": " + PlainTextComponentSerializer.plainText().serialize(message));
         } catch (Exception e) {
             e.printStackTrace();
-            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "this.messages.size() "+ this.messages.size());
-            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "message.toString() "+ message.toString());
+            BetterInteraction.getInstance().getLogger().log(Level.WARNING, "this.messages.size() "+ this.messages.size());
+            BetterInteraction.getInstance().getLogger().log(Level.WARNING, "message.toString() "+ message.toString());
         }
     }
 
