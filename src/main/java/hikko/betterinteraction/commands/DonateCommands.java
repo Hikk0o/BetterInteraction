@@ -7,19 +7,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-
-import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 public class DonateCommands extends AbstractCommand {
 
@@ -114,6 +109,56 @@ public class DonateCommands extends AbstractCommand {
             }
             return;
         }
+        if (args[0].equalsIgnoreCase("adddonate")) {
+            if (sender.hasPermission("betterinteraction.donate.add")) {
+                if (args.length == 3) {
+                    int donateValue;
+                    try {
+                        donateValue = Integer.parseInt(args[2]);
+                    } catch (Exception e) {
+                        sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
+                        return;
+                    }
+
+                    Object objectCurrentBalance = BetterInteraction.getInstance().getDonateDatabase().getDonate(args[1]);
+                    if (objectCurrentBalance == null) return;
+                    int currentBalance = (int) objectCurrentBalance;
+
+                    boolean completed = BetterInteraction.getInstance().getDonateDatabase().setDonate(args[1], currentBalance+donateValue);
+                    Component message;
+                    if (!completed) {
+                        message = Component
+                                .text("Никнейм ").color(TextColor.color(0xFFDB45))
+                                .append(Component.text(args[1]).color(TextColor.color(0xFFFFFF)))
+                                .append(Component.text(" не найден в базе данных."));
+                    } else {
+                        message = Component
+                                .text("Игроку ").color(TextColor.color(0xFFDB45))
+                                .append(Component.text(args[1]).color(TextColor.color(0xFFFFFF)))
+                                .append(Component.text(" добавлено "))
+                                .append(Component.text(donateValue).color(TextColor.color(0xFFFFFF)))
+                                .append(Component.text(" донат-поинтов.\nБаланс игрока: "))
+                                .append(Component.text(currentBalance+donateValue).color(TextColor.color(0xFFFFFF)));
+                    }
+                    sender.sendMessage(message);
+
+                    Player player = BetterInteraction.getInstance().getServer().getPlayer(args[1]);
+
+                    if (player != null) {
+                        int newBalance = currentBalance+donateValue;
+                        player.sendMessage(ChatColor.GREEN + "Вам начислено " + ChatColor.YELLOW + donateValue +
+                                ChatColor.GREEN + " донат-коинов.\nТекущий баланс: " + ChatColor.YELLOW + newBalance);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, (float) 0.7, (float) 1);
+                    }
+
+                } else {
+                    sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
+                }
+            } else {
+                sender.sendMessage(noPermission);
+            }
+            return;
+        }
 
         sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " Неизвестная команда: " + args[0]);
 
@@ -130,9 +175,12 @@ public class DonateCommands extends AbstractCommand {
             if (sender.hasPermission("betterinteraction.donate.get")) {
                 list.add("getdonate");
             }
+            if (sender.hasPermission("betterinteraction.donate.add")) {
+                list.add("adddonate");
+            }
             return list;
         }
-        if (args.length == 2 && (args[0].equalsIgnoreCase("setdonate") || args[0].equalsIgnoreCase("getdonate"))) {
+        if (args.length == 2 && (args[0].equalsIgnoreCase("setdonate") || args[0].equalsIgnoreCase("getdonate") || args[0].equalsIgnoreCase("adddonate"))) {
             if (sender.hasPermission("betterinteraction.donate.set") || sender.hasPermission("betterinteraction.donate.get")) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     list.add(player.getName());
