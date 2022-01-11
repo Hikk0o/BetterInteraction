@@ -29,15 +29,10 @@ public class DonatePlayer {
                 if (value.equals("sponsor")) {
                     coloredNickname = true;
                     isSponsor = true;
+                    setHaveEffects(true);
                 }
                 if (value.equals("particleMenu")) {
                     isHaveEffects = true;
-                    Player player = BetterInteraction.getInstance().getServer().getPlayer(name);
-                    if (player == null) return;
-                    LuckPerms api = LuckPermsProvider.get();
-                    User user = api.getPlayerAdapter(Player.class).getUser(player);
-                    DataMutateResult result = user.data().add(Node.builder("group.donateplayer").build());
-                    api.getUserManager().saveUser(user);
                 }
             }
         }
@@ -70,6 +65,14 @@ public class DonatePlayer {
         isReaded = readed;
     }
     public void setHaveEffects(boolean haveEffects) {
+        if (haveEffects) {
+            Player player = BetterInteraction.getInstance().getServer().getPlayer(this.name);
+            if (player == null) return;
+            LuckPerms api = LuckPermsProvider.get();
+            User user = api.getPlayerAdapter(Player.class).getUser(player);
+            DataMutateResult result = user.data().add(Node.builder("group.donateplayer").build());
+            api.getUserManager().saveUser(user);
+        }
         isHaveEffects = haveEffects;
     }
 }

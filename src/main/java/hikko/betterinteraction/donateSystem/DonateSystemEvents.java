@@ -139,7 +139,7 @@ public class DonateSystemEvents implements Listener {
                         double boost = faction.getPowerBoost();
                         faction.setPowerBoost(boost+50.0);
 
-                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.empty(), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
+                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
                         Location location = player.getLocation();
                         location.add(0, 1.5, 0);
 
@@ -208,7 +208,7 @@ public class DonateSystemEvents implements Listener {
                         Location location = player.getLocation();
                         location.add(0, 1.5, 0);
 
-                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.empty(), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
+                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
 
                         player.sendMessage(ChatColor.GREEN + "Успешная покупка! Баланс: " + ChatColor.YELLOW + newPlayerBalance);
                         player.spawnParticle(Particle.FIREWORKS_SPARK, location, 1000);

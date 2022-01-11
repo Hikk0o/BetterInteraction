@@ -24,7 +24,7 @@ public class DonatePages {
         Component menuTitle = Component.text("Donate Menu").decoration(ITALIC, false).color(TextColor.color(0x212121));
         Inventory inv = Bukkit.createInventory(player, 27, menuTitle);
         ItemStack empty = new ItemStack(Material.AIR);
-        ItemStack balance = new ItemStack(Material.BUNDLE);
+        ItemStack balance = new ItemStack(Material.EMERALD_BLOCK);
         ItemStack donateList = new ItemStack(Material.NETHER_STAR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemStack closeMenu = new ItemStack(Material.RED_STAINED_GLASS_PANE);
