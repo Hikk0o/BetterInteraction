@@ -205,7 +205,10 @@ public class ChatEvents implements Listener {
         Component nick = Component.text(sender.getName());
 
         if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isColoredNickname()) {
-            nick = nick.color(TextColor.color(0xAC9BFA));
+            nick = nick.color(TextColor.color(0x9CA2F0));
+        }
+        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isSponsor()) {
+            nick = nick.color(TextColor.color(0xAC8BFF));
         }
 
 
