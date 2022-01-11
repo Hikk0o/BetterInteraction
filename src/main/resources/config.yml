@@ -13,6 +13,14 @@ prices:
     cost: 100
     sales: false
     salesCosts: 100
+  addPower:
+    cost: 100
+    sales: false
+    salesCosts: 100
+  particleHats:
+    cost: 200
+    sales: false
+    salesCosts: 200
   sponsor:
     cost: 500
     sales: false

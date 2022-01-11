@@ -24,10 +24,10 @@ public class DonatePages {
         Component menuTitle = Component.text("Donate Menu").decoration(ITALIC, false).color(TextColor.color(0x212121));
         Inventory inv = Bukkit.createInventory(player, 27, menuTitle);
         ItemStack empty = new ItemStack(Material.AIR);
-        ItemStack balance = new ItemStack(Material.RAW_GOLD_BLOCK);
+        ItemStack balance = new ItemStack(Material.BUNDLE);
         ItemStack donateList = new ItemStack(Material.NETHER_STAR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemStack closeMenu = new ItemStack(Material.RED_CONCRETE);
+        ItemStack closeMenu = new ItemStack(Material.RED_STAINED_GLASS_PANE);
 
         ItemMeta menuGlassMeta = menuGlass.getItemMeta();
         menuGlassMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -56,8 +56,8 @@ public class DonatePages {
         donateList.setItemMeta(donateListMeta);
 
         ItemStack[] items = {
-                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass,
-                menuGlass, balance, empty, empty, donateList, empty, empty, closeMenu, menuGlass,
+                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, closeMenu,
+                menuGlass, balance, empty, empty, donateList, empty, empty, empty, menuGlass,
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass
         };
         inv.setContents(items);
@@ -72,9 +72,10 @@ public class DonatePages {
 
         ItemStack empty = new ItemStack(Material.AIR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemStack closeMenu = new ItemStack(Material.RED_CONCRETE);
-        ItemStack changeNickname = new ItemStack(Material.PAPER);
-        ItemStack testDonate1 = new ItemStack(Material.PAPER);
+        ItemStack closeMenu = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemStack coloredNickname = new ItemStack(Material.PAPER);
+        ItemStack addPower = new ItemStack(Material.GRASS_BLOCK);
+        ItemStack particleHats = new ItemStack(Material.ENCHANTED_BOOK);
         ItemStack sponsor = new ItemStack(Material.GOLD_BLOCK);
 
         ItemMeta menuGlassMeta = menuGlass.getItemMeta();
@@ -87,52 +88,102 @@ public class DonatePages {
         closeMenuItemMeta.displayName(Component.text("Закрыть меню").decoration(ITALIC, false).color(TextColor.color(0xFF5A49)));
         closeMenu.setItemMeta(closeMenuItemMeta);
 
-        ItemMeta changeNicknameMeta = changeNickname.getItemMeta();
-        changeNicknameMeta.displayName(Component.text("Цветной ник").decoration(ITALIC, false).color(TextColor.color(0xDACDFF)));
-        List<Component> changeNicknameLore = new ArrayList<>();
-        int changeNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.cost");
-//        boolean changeNicknameSales = BetterInteraction.getInstance().getConfig().getBoolean("prices.coloredNickname.sales");
-//        int changeNicknameSalesCosts = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.salesCosts");
-        changeNicknameLore.add(Component.empty());
-        changeNicknameLore.add(Component.text("Ваш ник будет выглядеть вот так: ").decoration(ITALIC, false).color(TextColor.color(0xCACACA))
-                .append(Component.text(player.getName()).color(TextColor.color(0xAC9BFA))));
-        changeNicknameLore.add(Component.text("(изменяется только в локальном и глобальном чате)").decoration(ITALIC, true).color(TextColor.color(0x9C9C9C)));
-        changeNicknameLore.add(Component.text("Приобретается на 30 дней").decoration(ITALIC, false).color(TextColor.color(0xCACACA)));
-        changeNicknameLore.add(Component.empty());
-        changeNicknameLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
-                .append(Component.text(" "+changeNicknameCost+" ").color(TextColor.color(0xFFFFFF)))
+        // Colored nickname
+        ItemMeta coloredNicknameMeta = coloredNickname.getItemMeta();
+        coloredNicknameMeta.displayName(Component.text("Цветной ник").decoration(ITALIC, false).color(TextColor.color(0xDACDFF)));
+        List<Component> coloredNicknameLore = new ArrayList<>();
+
+        int coloredNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.cost");
+
+        coloredNicknameLore.add(Component.empty());
+        coloredNicknameLore.add(Component.text("Ваш ник будет выглядеть вот так: ").decoration(ITALIC, false).color(TextColor.color(0xCACACA))
+                .append(Component.text(player.getName()).color(TextColor.color(0x9CA2F0))));
+        coloredNicknameLore.add(Component.text("(изменяется только в локальном и глобальном чате)").decoration(ITALIC, true).color(TextColor.color(0x9C9C9C)));
+        coloredNicknameLore.add(Component.text("Приобретается на 30 дней").decoration(ITALIC, false).color(TextColor.color(0xCACACA)));
+        coloredNicknameLore.add(Component.empty());
+        coloredNicknameLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
+                .append(Component.text(" "+coloredNicknameCost+" ").color(TextColor.color(0xFFFFFF)))
                 .append(Component.text("донат-коинов").color(TextColor.color(0x78CB51))));
-        changeNicknameLore.add(Component.empty());
-        changeNicknameLore.add(Component.text("Нажмите ").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
+        coloredNicknameLore.add(Component.empty());
+        coloredNicknameLore.add(Component.text("Нажмите ").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
                 .append(Component.text("ЛКМ").color(TextColor.color(0x78CB51)))
                 .append(Component.text(", чтобы перейти к странице подтверждения").color(TextColor.color(0xFFFFFF))));
 
-        changeNicknameMeta.lore(changeNicknameLore);
-        changeNickname.setItemMeta(changeNicknameMeta);
+        coloredNicknameMeta.lore(coloredNicknameLore);
+        coloredNickname.setItemMeta(coloredNicknameMeta);
 
+        // Add power
+        int addPowerCost = BetterInteraction.getInstance().getConfig().getInt("prices.addPower.cost");
 
-        ItemMeta testDonate1Meta = testDonate1.getItemMeta();
-        testDonate1Meta.displayName(Component.text("testDonate1").decoration(ITALIC, false).color(TextColor.color(0xF6FF3F)));
-        testDonate1.setItemMeta(testDonate1Meta);
+        ItemMeta addPowerMeta = addPower.getItemMeta();
+        addPowerMeta.displayName(Component.text("+50 силы для фракции").decoration(ITALIC, false).color(TextColor.color(0x3EDFC4)));
+        List<Component> addPowerLore = new ArrayList<>();
+        addPowerLore.add(Component.empty());
+        addPowerLore.add(Component.text("Покупая данный товар, вы прибавляете +50 силы для вашей ТЕКУЩЕЙ фракции").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
+        addPowerLore.add(Component.text("Сила позволяет захватывать больше земель").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
+        addPowerLore.add(Component.text("(Можно сразу использовать)").decoration(ITALIC, true).color(TextColor.color(0xA1FAE6)));
+        addPowerLore.add(Component.empty());
+        addPowerLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
+                .append(Component.text(" "+addPowerCost+" ").color(TextColor.color(0xFFFFFF)))
+                .append(Component.text("донат-коинов").color(TextColor.color(0x78CB51))));
+        addPowerLore.add(Component.empty());
+        addPowerLore.add(Component.text("Нажмите ").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
+                .append(Component.text("ЛКМ").color(TextColor.color(0x78CB51)))
+                .append(Component.text(", чтобы перейти к странице подтверждения").color(TextColor.color(0xFFFFFF))));
+        addPowerMeta.lore(addPowerLore);
 
+        addPower.setItemMeta(addPowerMeta);
+
+        // Particle Menu
+        int particleHatsCost = BetterInteraction.getInstance().getConfig().getInt("prices.particleHats.cost");
+
+        ItemMeta particleHatsMeta = particleHats.getItemMeta();
+        particleHatsMeta.displayName(Component.text("Меню эффектов").decoration(ITALIC, false).color(TextColor.color(0xAA66F4)));
+        List<Component> particleHatsLore = new ArrayList<>();
+        particleHatsLore.add(Component.empty());
+        particleHatsLore.add(Component.text("Покупая данный товар, вы получаете доступ к меню эффектов").decoration(ITALIC, false).color(TextColor.color(0xAB95D8)));
+        particleHatsLore.add(Component.text("(Команда /h)").decoration(ITALIC, false).color(TextColor.color(0xAB95D8)));
+        particleHatsLore.add(Component.text("Приобретается на 30 дней").decoration(ITALIC, false).color(TextColor.color(0xAB95D8)));
+        particleHatsLore.add(Component.empty());
+        particleHatsLore.add(Component.text("Меню содержит в себе 4 эффекта:").decoration(ITALIC, false).color(TextColor.color(0xAB95D8)));
+        particleHatsLore.add(Component.text(" - Эффект \"Разноцветный ореол из редстоуна\"").decoration(ITALIC, false).color(TextColor.color(0xBEB8D8)));
+        particleHatsLore.add(Component.text(" - Эффект \"Сверкающий плащ\"").decoration(ITALIC, false).color(TextColor.color(0xBEB8D8)));
+        particleHatsLore.add(Component.text(" - Эффект \"Пламбоб\"").decoration(ITALIC, false).color(TextColor.color(0xBEB8D8)));
+        particleHatsLore.add(Component.text(" - Эффект \"Магическая аура\"").decoration(ITALIC, false).color(TextColor.color(0xBEB8D8)));
+        particleHatsLore.add(Component.empty());
+        particleHatsLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
+                .append(Component.text(" "+particleHatsCost+" ").color(TextColor.color(0xFFFFFF)))
+                .append(Component.text("донат-коинов").color(TextColor.color(0x78CB51))));
+        particleHatsLore.add(Component.empty());
+        particleHatsLore.add(Component.text("Нажмите ").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
+                .append(Component.text("ЛКМ").color(TextColor.color(0x78CB51)))
+                .append(Component.text(", чтобы перейти к странице подтверждения").color(TextColor.color(0xFFFFFF))));
+        particleHatsMeta.lore(particleHatsLore);
+
+        particleHats.setItemMeta(particleHatsMeta);
+
+        // Sponsor
         ItemMeta sponsorMeta = sponsor.getItemMeta();
         sponsorMeta.displayName(Component.text("Спонсор").decoration(ITALIC, false).color(TextColor.color(0xFAD341)).decorate(TextDecoration.BOLD));
         sponsorMeta.addEnchant(Enchantment.LUCK, 1, false);
         sponsorMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         int sponsorCost = BetterInteraction.getInstance().getConfig().getInt("prices.sponsor.cost");
-//        boolean sponsorSales = BetterInteraction.getInstance().getConfig().getBoolean("prices.sponsor.sales");
-//        int sponsorSalesCosts = BetterInteraction.getInstance().getConfig().getInt("prices.sponsor.salesCosts");
 
         List<Component> sponsorLore = new ArrayList<>();
         sponsorLore.add(Component.empty());
-        sponsorLore.add(Component.text("Выгодно, если хотите иметь все преимущества на этом сервере").decoration(ITALIC, false).color(TextColor.color(0xFAEB67)));
+        sponsorLore.add(Component.text("Полный комплект плюшек из магазина").decoration(ITALIC, false).color(TextColor.color(0xFAEB67)));
         sponsorLore.add(Component.text("Приобретается на 30 дней").decoration(ITALIC, false).color(TextColor.color(0xFAEB67)));
         sponsorLore.add(Component.empty());
         sponsorLore.add(Component.text("Вы получите: ").decoration(ITALIC, false).color(TextColor.color(0xFAEB67)));
-        sponsorLore.add(Component.text("- Смена цвета ника в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
-        sponsorLore.add(Component.text("- Значок \"Спонсор\" в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
-        sponsorLore.add(Component.text("- Что-то ещё").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - Цветной ник в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - Значок \"Спонсор\" в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - Доступ к меню эффектов").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - +50 силы для фракции").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - Уважение от Hikko").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text("Ваш ник будет выглядеть вот так: ").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7))
+                .append(Component.text("✦ ").color(TextColor.color(0xC580FF)))
+                .append(Component.text(player.getName()).color(TextColor.color(0xAC8BFF))));
         sponsorLore.add(Component.empty());
         sponsorLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
                 .append(Component.text(" "+sponsorCost+" ").color(TextColor.color(0xFFFFFF)))
@@ -147,8 +198,8 @@ public class DonatePages {
         sponsor.setItemMeta(sponsorMeta);
 
         ItemStack[] items = {
-                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass,
-                menuGlass, changeNickname, testDonate1, sponsor, empty, empty, empty, closeMenu, menuGlass,
+                menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, closeMenu,
+                menuGlass, coloredNickname, addPower, particleHats, sponsor, empty, empty, empty, menuGlass,
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass
         };
         inv.setContents(items);
@@ -158,20 +209,29 @@ public class DonatePages {
 
     public void ConfirmPage(Player player, String product) {
         Component menuTitle;
-        if (product.equals("sponsor")) {
-            menuTitle = Component.text("Товар: Спонсор").decoration(ITALIC, false);
-        } else if (product.equals("coloredNickname")) {
-            menuTitle = Component.text("Товар: Цветной ник").decoration(ITALIC, false);
-        } else {
-            player.closeInventory();
-            return;
+        switch (product) {
+            case "sponsor":
+                menuTitle = Component.text("Товар: Спонсор").decoration(ITALIC, false);
+                break;
+            case "coloredNickname":
+                menuTitle = Component.text("Товар: Цветной ник").decoration(ITALIC, false);
+                break;
+            case "addPower":
+                menuTitle = Component.text("Товар: +50 силы для фракции").decoration(ITALIC, false);
+                break;
+            case "particleMenu":
+                menuTitle = Component.text("Товар: Меню эффектов").decoration(ITALIC, false);
+                break;
+            default:
+                player.closeInventory();
+                return;
         }
 
         Inventory inv = Bukkit.createInventory(player, 27, menuTitle);
         ItemStack empty = new ItemStack(Material.AIR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemStack confirmButton = new ItemStack(Material.LIME_WOOL);
-        ItemStack unconfirmedButton = new ItemStack(Material.RED_WOOL);
+        ItemStack confirmButton = new ItemStack(Material.LIME_CONCRETE);
+        ItemStack unconfirmedButton = new ItemStack(Material.RED_CONCRETE);
 
         ItemMeta menuGlassMeta = menuGlass.getItemMeta();
         menuGlassMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

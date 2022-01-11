@@ -1,6 +1,11 @@
 package hikko.betterinteraction.donateSystem;
 
 import hikko.betterinteraction.BetterInteraction;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.data.DataMutateResult;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -46,6 +51,7 @@ public class Database {
     public void addPlayer(Player player) {
         String name = player.getName();
         donatePlayers.add(new DonatePlayer(name));
+        DonatePlayer donatePlayer = getPlayer(player.getName());
         String query =
                 "INSERT OR IGNORE INTO players (name, donate) " +
                 "VALUES ('"+name+"','0')";
@@ -159,6 +165,17 @@ public class Database {
                 PreparedStatement statement = conn.prepareStatement(query);
                 statement.executeUpdate();
                 if (product.equals("coloredNickname")) getPlayer(nickname).setColoredNickname(true);
+                if (product.equals("particleMenu")) {
+
+                    getPlayer(nickname).setHaveEffects(true);
+                    Player player = BetterInteraction.getInstance().getServer().getPlayer(nickname);
+                    if (player != null) {
+                        LuckPerms api = LuckPermsProvider.get();
+                        User user = api.getPlayerAdapter(Player.class).getUser(player);
+                        DataMutateResult result = user.data().add(Node.builder("group.donateplayer").build());
+                        api.getUserManager().saveUser(user);
+                    }
+                }
                 if (product.equals("sponsor")){
                     getPlayer(nickname).setSponsor(true);
                     getPlayer(nickname).setColoredNickname(true);
@@ -194,9 +211,12 @@ public class Database {
                     endDate.setTimeInMillis(response.getLong("endDate"));
                     if (nowDate.getTimeInMillis() > endDate.getTimeInMillis()) {
                         if (player != null) {
-                            if (dataProduct.equals("coloredNickname")) {
-                                player.sendMessage("[Donate] Срок подписки \"Цветной ник\" закончился.");
-                            }
+                            String product = "";
+                            if (dataProduct.equals("coloredNickname")) product = "\"Цветной ник\"";
+                            if (dataProduct.equals("sponsor")) product = "\"Спонсор\"";
+                            if (dataProduct.equals("particleMenu")) product = "\"Меню эффектов\"";
+
+                            player.sendMessage(ChatColor.YELLOW + "Срок подписки "+ChatColor.WHITE+product+ChatColor.YELLOW+" закончился.");
                         }
                         String query2 =
                                 "DELETE FROM playersProducts " +
@@ -211,6 +231,7 @@ public class Database {
                             String product = "";
                             if (dataProduct.equals("coloredNickname")) product = "\"Цветной ник\"";
                             if (dataProduct.equals("sponsor")) product = "\"Спонсор\"";
+                            if (dataProduct.equals("particleMenu")) product = "\"Меню эффектов\"";
 
                             long days = response.getLong("endDate");
 
