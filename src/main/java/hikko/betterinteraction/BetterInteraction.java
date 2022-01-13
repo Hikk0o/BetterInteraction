@@ -45,8 +45,17 @@ public final class BetterInteraction extends JavaPlugin {
         File file = new File(BetterInteraction.getInstance().getDataFolder() + "/logs/");
         if (!file.exists()) {
             try {
-                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Trying to create a directory...");
+//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Create a \"/logs/\" directory...");
                 Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/logs/"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        file = new File(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/");
+        if (!file.exists()) {
+            try {
+//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Create a \"/transactionsLogs/\" directory...");
+                Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
