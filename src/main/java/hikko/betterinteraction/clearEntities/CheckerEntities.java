@@ -5,8 +5,10 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class CheckerEntities extends BukkitRunnable {
@@ -54,7 +56,8 @@ public class CheckerEntities extends BukkitRunnable {
         }
     }
 
-    final World world = Bukkit.getWorld("world");
+    @NotNull
+    final World world = Objects.requireNonNull(Bukkit.getWorld("world"));
 
     @Override
     public void run()
@@ -63,7 +66,6 @@ public class CheckerEntities extends BukkitRunnable {
 
             ArrayList<Chunk> chunks = new ArrayList<>();
 
-            assert world != null;
             for (Entity entity : world.getEntities()) {
                 if (entity.getType().name().equals("PIG") || entity.getType().name().equals("CHICKEN") || entity.getType().name().equals("COW") || entity.getType().name().equals("SHEEP")) {
                     chunks.add(entity.getChunk());
