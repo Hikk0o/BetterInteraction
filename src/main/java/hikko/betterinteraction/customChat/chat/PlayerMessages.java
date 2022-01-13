@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 
+@SuppressWarnings("CommentedOutCode")
 public class PlayerMessages {
 
     private final String player;

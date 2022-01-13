@@ -2,7 +2,6 @@ package hikko.betterinteraction.donateSystem;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
 import fr.xephi.authme.events.LoginEvent;
 import hikko.betterinteraction.BetterInteraction;
 import net.kyori.adventure.text.Component;

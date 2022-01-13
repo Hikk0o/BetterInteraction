@@ -31,14 +31,17 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings("CommentedOutCode")
 public class ChatEvents implements Listener {
     public ChatEvents() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading chat events...");
         new ChatPacketHandler();
     }
 
-    final MessageQueue messageQueue = new MessageQueue();
-    final EmotesFilter emotesFilter = new EmotesFilter();
+    private final MessageQueue messageQueue = new MessageQueue();
+    private final EmotesFilter emotesFilter = new EmotesFilter();
+    private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
+    private final Logger logger = Logger.getLogger("Chat");
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
@@ -69,7 +72,7 @@ public class ChatEvents implements Listener {
         PlayerMessages playerMessages = messageQueue.getPlayer(player);
         if (playerMessages != null && player != null) {
             if (messageQueue.getPlayer(player).isCooldown()) {
-                player.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправлять сообщения");
+                player.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправить сообщение");
                 return;
             }
             if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
@@ -158,9 +161,7 @@ public class ChatEvents implements Listener {
         }
     }
 
-    final Logger logger = Logger.getLogger("Chat");
     public static final ArrayList<Component> messages = new ArrayList<>();
-    final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
 
     int conuter = 0;
 
@@ -175,7 +176,7 @@ public class ChatEvents implements Listener {
         Player sender = e.getPlayer();
 
         if (messageQueue.getPlayer(sender).isCooldown()) {
-            sender.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправлять сообщения");
+            sender.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправить сообщение");
             return;
         }
 

@@ -13,6 +13,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("CommentedOutCode")
 public class ChatPacketHandler {
 
 	public ChatPacketHandler() {
