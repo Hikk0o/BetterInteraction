@@ -51,8 +51,7 @@ public class Database {
     public void addPlayer(Player player) {
         String name = player.getName();
         donatePlayers.add(new DonatePlayer(name));
-        DonatePlayer donatePlayer = getPlayer(player.getName());
-        if (donatePlayer == null) {
+        if (getDonate(player.getName()) == null) {
             String query =
                     "INSERT OR IGNORE INTO players (name, donate) " +
                     "VALUES ('"+name+"','0')";
@@ -78,7 +77,7 @@ public class Database {
 
     public Object getDonate(String nickname) {
         String query =
-                "SELECT id, name, donate " +
+                "SELECT name, donate " +
                 "FROM players " +
                 "WHERE name = ?";
         try {
@@ -116,7 +115,6 @@ public class Database {
             e.printStackTrace();
             return false;
         }
-
     }
 
     private String getTimeLeft(Calendar cal, String product) {
@@ -181,6 +179,7 @@ public class Database {
                 if (product.equals("sponsor")){
                     getPlayer(nickname).setSponsor(true);
                     getPlayer(nickname).setColoredNickname(true);
+
                 }
 
                 return true;

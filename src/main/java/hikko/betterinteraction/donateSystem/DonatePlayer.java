@@ -15,7 +15,6 @@ public class DonatePlayer {
     private final String name;
     private boolean coloredNickname = false;
     private boolean isSponsor = false;
-    private boolean isReaded = false;
     private boolean isHaveEffects = false;
 
     public DonatePlayer(String name) {
@@ -27,7 +26,6 @@ public class DonatePlayer {
                     coloredNickname = true;
                 }
                 if (value.equals("sponsor")) {
-                    coloredNickname = true;
                     isSponsor = true;
                     setHaveEffects(true);
                 }
@@ -48,9 +46,6 @@ public class DonatePlayer {
     public boolean isSponsor() {
         return isSponsor;
     }
-    public boolean isReaded() {
-        return isReaded;
-    }
     public boolean isHaveEffects() {
         return isHaveEffects;
     }
@@ -60,9 +55,7 @@ public class DonatePlayer {
     }
     public void setSponsor(boolean sponsor) {
         isSponsor = sponsor;
-    }
-    public void setReaded(boolean readed) {
-        isReaded = readed;
+        setHaveEffects(true);
     }
     public void setHaveEffects(boolean haveEffects) {
         if (haveEffects) {
