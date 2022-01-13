@@ -11,7 +11,7 @@ public class CheckerEvents implements Listener {
 
     @EventHandler
     public void SpawnMonstersEvent(PlayerNaturallySpawnCreaturesEvent e) {
-        boolean checkerTPS = BetterInteraction.getInstance().getConfig().getBoolean("prices.coloredNickname.cost");
+        boolean checkerTPS = BetterInteraction.getInstance().getConfig().getBoolean("checkerTPS");
 
         if (checkerTPS) {
             Server server = BetterInteraction.getInstance().getServer();
