@@ -28,11 +28,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class DonateSystemEvents implements Listener {
 
-    DonatePages donatePages;
-    Database database;
+    final DonatePages donatePages;
+    final Database database;
 
     public DonateSystemEvents() {
         donatePages = new DonatePages();
@@ -86,6 +87,9 @@ public class DonateSystemEvents implements Listener {
                 if (nameItem.equals("Список услуг")) {
                     donatePages.DonateListMenu(player);
                 }
+                if (nameItem.equals("Подробнее про пожертования")) {
+                    donatePages.aboutDonate(player);
+                }
             }
         }
 
@@ -107,7 +111,7 @@ public class DonateSystemEvents implements Listener {
                 if (nameItem.equals("Меню эффектов")) {
                     donatePages.ConfirmPage(player, "particleMenu");
                 }
-                if (nameItem.equals("+50 силы для фракции")) {
+                if (nameItem.equals("+50 силы")) {
                     donatePages.ConfirmPage(player, "addPower");
                 }
             }
@@ -115,7 +119,7 @@ public class DonateSystemEvents implements Listener {
 
         String productTitle = "Товар: ";
 
-        if (menuTitle.equals(productTitle+"+50 силы для фракции")) {
+        if (menuTitle.equals(productTitle+"+50 силы")) {
             e.setCancelled(true);
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, (float) 0.7, 1);
             if (e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
@@ -128,16 +132,19 @@ public class DonateSystemEvents implements Listener {
 
                     int productCost = BetterInteraction.getInstance().getConfig().getInt("prices.addPower.cost");
                     e.getView().close();
-                    if (database.getDonate(player.getName()) == null) return;
+                    if (database.getDonate(player.getName()) == null) {
+                        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Null");
+                    }
                     int playerBalance = (int) database.getDonate(player.getName());
                     int newPlayerBalance = playerBalance - productCost;
                     if (playerBalance >= productCost) {
                         database.setDonate(player.getName(), newPlayerBalance);
 
                         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-                        Faction faction = fplayer.getFaction();
-                        double boost = faction.getPowerBoost();
-                        faction.setPowerBoost(boost+50.0);
+                        double boost = fplayer.getPowerBoost();
+                        fplayer.setPowerBoost(boost+50.0);
+//
+                        fplayer.alterPower(50.0);
 
                         Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
                         Location location = player.getLocation();
@@ -147,6 +154,8 @@ public class DonateSystemEvents implements Listener {
                         player.spawnParticle(Particle.FIREWORKS_SPARK, location, 1000);
                         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, (float) 0.7, (float) 1);
                         player.showTitle(title);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Недостаточно донат-коинов. Баланс: " + ChatColor.YELLOW + playerBalance);
                     }
                 }
             }

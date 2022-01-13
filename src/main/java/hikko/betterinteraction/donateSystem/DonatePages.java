@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -24,10 +25,15 @@ public class DonatePages {
         Component menuTitle = Component.text("Donate Menu").decoration(ITALIC, false).color(TextColor.color(0x212121));
         Inventory inv = Bukkit.createInventory(player, 27, menuTitle);
         ItemStack empty = new ItemStack(Material.AIR);
-        ItemStack balance = new ItemStack(Material.EMERALD_BLOCK);
+        ItemStack balance = new ItemStack(Material.EMERALD);
         ItemStack donateList = new ItemStack(Material.NETHER_STAR);
         ItemStack menuGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemStack closeMenu = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemStack about = new ItemStack(Material.BOOK);
+
+        ItemMeta aboutMeta = about.getItemMeta();
+        aboutMeta.displayName(Component.text("Подробнее про пожертования").decoration(ITALIC, false).color(TextColor.color(0xF8F8F8)));
+        about.setItemMeta(aboutMeta);
 
         ItemMeta menuGlassMeta = menuGlass.getItemMeta();
         menuGlassMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -57,13 +63,15 @@ public class DonatePages {
 
         ItemStack[] items = {
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, closeMenu,
-                menuGlass, balance, empty, empty, donateList, empty, empty, empty, menuGlass,
+                menuGlass, balance, empty, empty, donateList, empty, empty, about, menuGlass,
                 menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass, menuGlass
         };
         inv.setContents(items);
 
         player.openInventory(inv);
     }
+
+
 
     public void DonateListMenu(Player player) {
         Component menuTitle = Component.text("Список услуг").decoration(ITALIC, false).color(TextColor.color(0x212121));
@@ -116,10 +124,10 @@ public class DonatePages {
         int addPowerCost = BetterInteraction.getInstance().getConfig().getInt("prices.addPower.cost");
 
         ItemMeta addPowerMeta = addPower.getItemMeta();
-        addPowerMeta.displayName(Component.text("+50 силы для фракции").decoration(ITALIC, false).color(TextColor.color(0x3EDFC4)));
+        addPowerMeta.displayName(Component.text("+50 силы").decoration(ITALIC, false).color(TextColor.color(0x3EDFC4)));
         List<Component> addPowerLore = new ArrayList<>();
         addPowerLore.add(Component.empty());
-        addPowerLore.add(Component.text("Покупая данный товар, вы прибавляете +50 силы для вашей ТЕКУЩЕЙ фракции").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
+        addPowerLore.add(Component.text("Покупая данный товар, вы прибавляете +50 силы для СЕБЯ").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
         addPowerLore.add(Component.text("Сила позволяет захватывать больше земель").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
         addPowerLore.add(Component.text("(Можно сразу использовать)").decoration(ITALIC, true).color(TextColor.color(0xA1FAE6)));
         addPowerLore.add(Component.empty());
@@ -179,7 +187,7 @@ public class DonatePages {
         sponsorLore.add(Component.text(" - Цветной ник в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
         sponsorLore.add(Component.text(" - Значок \"Спонсор\" в чате").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
         sponsorLore.add(Component.text(" - Доступ к меню эффектов").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
-        sponsorLore.add(Component.text(" - +50 силы для фракции").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
+        sponsorLore.add(Component.text(" - +50 силы").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
         sponsorLore.add(Component.text(" - Уважение от Hikko").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7)));
         sponsorLore.add(Component.text("Ваш ник будет выглядеть вот так: ").decoration(ITALIC, false).color(TextColor.color(0xD7D7D7))
                 .append(Component.text("✦ ").color(TextColor.color(0xC580FF)))
@@ -217,7 +225,7 @@ public class DonatePages {
                 menuTitle = Component.text("Товар: Цветной ник").decoration(ITALIC, false);
                 break;
             case "addPower":
-                menuTitle = Component.text("Товар: +50 силы для фракции").decoration(ITALIC, false);
+                menuTitle = Component.text("Товар: +50 силы").decoration(ITALIC, false);
                 break;
             case "particleMenu":
                 menuTitle = Component.text("Товар: Меню эффектов").decoration(ITALIC, false);
@@ -257,4 +265,19 @@ public class DonatePages {
         player.openInventory(inv);
     }
 
+    public void aboutDonate(Player player) {
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK); //Create book ItemStack
+        BookMeta meta = (BookMeta)book.getItemMeta(); //Get BookMeta
+        meta.setTitle("Litwein SMP");
+        meta.addPages(net.kyori.adventure.text.Component.text(
+                "Пожертвования сущесвуют исключетельно для тех, кто желает поддержать сервер и получить что-то взамен.\n" +
+                        "Не ожидайте того, что, закидывая копеечку, Вы получите большое преимущество перед другими игроками.\n")); //Add a page
+        meta.addPages(net.kyori.adventure.text.Component.text(
+                "Донат - вынужденная мера для того, чтобы сервер жил и развивался.\n" +
+                        "Надеюсь на ваше понимание ❤")); //Add a page
+        meta = meta.author(Component.text("Litwein SMP"));
+        book.setItemMeta(meta); //Set meta
+
+        player.openBook(book);
+    }
 }
