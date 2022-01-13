@@ -52,14 +52,16 @@ public class Database {
         String name = player.getName();
         donatePlayers.add(new DonatePlayer(name));
         DonatePlayer donatePlayer = getPlayer(player.getName());
-        String query =
-                "INSERT OR IGNORE INTO players (name, donate) " +
-                "VALUES ('"+name+"','0')";
-        try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (donatePlayer == null) {
+            String query =
+                    "INSERT OR IGNORE INTO players (name, donate) " +
+                    "VALUES ('"+name+"','0')";
+            try {
+                Statement statement = conn.createStatement();
+                statement.executeUpdate(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
