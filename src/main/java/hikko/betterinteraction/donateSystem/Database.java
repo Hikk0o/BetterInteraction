@@ -9,7 +9,12 @@ import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,6 +51,19 @@ public class Database {
 
     public List<DonatePlayer> getDonatePlayers() {
         return donatePlayers;
+    }
+
+    final SimpleDateFormat format = new SimpleDateFormat("d.M.y");
+    final SimpleDateFormat time = new SimpleDateFormat("[HH:mm:ss] ");
+    PrintWriter writer;
+
+    void openFile() {
+        File file = new File(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/" + format.format(Calendar.getInstance().getTime()) + ".log");
+        try {
+            this.writer = new PrintWriter(new FileWriter(file,true));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addPlayer(Player player) {
@@ -107,6 +125,9 @@ public class Database {
                 statement.setInt(1, donate);
                 statement.setString(2, nickname);
                 statement.executeUpdate();
+                openFile();
+                this.writer.println(time.format(Calendar.getInstance().getTime()) + "setDonate: { player: " + nickname + "; setDonate: " + donate + " }");
+                this.writer.close();
                 return true;
             } else {
                 return false;
@@ -181,7 +202,9 @@ public class Database {
                     getPlayer(nickname).setColoredNickname(true);
 
                 }
-
+                openFile();
+                this.writer.println(time.format(Calendar.getInstance().getTime()) + "addPlayerProduct: { player: " + nickname + "; product: " + product + "; endData: "+cal+" }");
+                this.writer.close();
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
