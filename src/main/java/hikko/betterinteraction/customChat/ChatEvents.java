@@ -75,10 +75,10 @@ public class ChatEvents implements Listener {
                 player.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправить сообщение");
                 return;
             }
-            if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
-                player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
-                return;
-            }
+//            if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
+//                player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+//                return;
+//            }
             playerMessages.setLastSendMessage(e.getMessage());
         }
         messageQueue.getPlayer(player).setCooldown(true);
@@ -261,6 +261,21 @@ public class ChatEvents implements Listener {
             logMessage = ChatColor.GREEN + "[G] " + ChatColor.RESET + e.getPlayer().getName() + ": " + content.replaceFirst("!", "");
             message = message
                     .append(Component.text(content.replaceFirst("!", "")));
+            PlayerMessages playerMessages = messageQueue.getPlayer(sender);
+            if (playerMessages != null) {
+                if (playerMessages.getLastSendMessage().equals(content)) {
+                    sender.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                    return;
+                }
+                playerMessages.setLastSendMessage(content);
+            }
+            messageQueue.getPlayer(sender).setCooldown(true);
+            scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
+                if (playerMessages != null) {
+                    playerMessages.setCooldown(false);
+                }
+            }, 40);
+
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String playerContent = content;
                 Component sendMessage = Component.empty();
@@ -286,21 +301,6 @@ public class ChatEvents implements Listener {
                             .append(Component.text(playerContent.replaceFirst("!", "")));
                 }
 
-                PlayerMessages playerMessages = messageQueue.getPlayer(sender);
-                if (playerMessages != null) {
-                    if (playerMessages.getLastSendMessage().equals(content)) {
-                        player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
-                        return;
-                    }
-                    playerMessages.setLastSendMessage(content);
-                }
-                messageQueue.getPlayer(sender).setCooldown(true);
-                scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
-                    if (playerMessages != null) {
-                        playerMessages.setCooldown(false);
-                    }
-                }, 40);
-
                 messageQueue.getPlayer(player).addMessage(sendMessage);
                 player.sendMessage(sendMessage);
 
@@ -311,6 +311,22 @@ public class ChatEvents implements Listener {
             message = message
             .append(Component.text(content));
             boolean heard = false;
+
+            PlayerMessages playerMessages = messageQueue.getPlayer(sender);
+            if (playerMessages != null) {
+                if (playerMessages.getLastSendMessage().equals(content)) {
+                    sender.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                    return;
+                }
+                playerMessages.setLastSendMessage(content);
+            }
+            messageQueue.getPlayer(sender).setCooldown(true);
+            scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
+                if (playerMessages != null) {
+                    playerMessages.setCooldown(false);
+                }
+            }, 40);
+
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String playerContent = content;
                 if (!location.getWorld().equals(player.getWorld())) continue;
@@ -338,21 +354,6 @@ public class ChatEvents implements Listener {
                                 .append(Component.text(playerContent));
                     }
                     if (!player.equals(sender)) heard = true;
-
-                    PlayerMessages playerMessages = messageQueue.getPlayer(sender);
-                    if (playerMessages != null) {
-                        if (playerMessages.getLastSendMessage().equals(content)) {
-                            player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
-                            return;
-                        }
-                        playerMessages.setLastSendMessage(content);
-                    }
-                    messageQueue.getPlayer(sender).setCooldown(true);
-                    scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
-                        if (playerMessages != null) {
-                            playerMessages.setCooldown(false);
-                        }
-                    }, 40);
 
                     messageQueue.getPlayer(player).addMessage(sendMessage);
                     player.sendMessage(sendMessage);
