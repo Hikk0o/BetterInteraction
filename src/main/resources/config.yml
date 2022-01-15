@@ -19,7 +19,7 @@ prices:
     cost: 100
     sales: false
     salesCosts: 100
-  particleHats:
+  particleMenu:
     cost: 200
     sales: false
     salesCosts: 200
