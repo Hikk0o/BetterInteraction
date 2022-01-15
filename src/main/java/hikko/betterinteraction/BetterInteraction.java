@@ -9,6 +9,7 @@ import hikko.betterinteraction.commands.DonateCommands;
 import hikko.betterinteraction.commands.EmotesCommands;
 import hikko.betterinteraction.commands.FactionCommands;
 import hikko.betterinteraction.customChat.ChatEvents;
+import hikko.betterinteraction.customRecipe.CustomRecipe;
 import hikko.betterinteraction.donateSystem.Database;
 import hikko.betterinteraction.donateSystem.DonateSystemEvents;
 import hikko.betterinteraction.itemLogger.ItemEvents;
@@ -45,7 +46,6 @@ public final class BetterInteraction extends JavaPlugin {
         File file = new File(BetterInteraction.getInstance().getDataFolder() + "/logs/");
         if (!file.exists()) {
             try {
-//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Create a \"/logs/\" directory...");
                 Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/logs/"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -54,7 +54,6 @@ public final class BetterInteraction extends JavaPlugin {
         file = new File(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/");
         if (!file.exists()) {
             try {
-//                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Create a \"/transactionsLogs/\" directory...");
                 Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -80,6 +79,7 @@ public final class BetterInteraction extends JavaPlugin {
         new EmotesCommands();
         new DonateCommands();
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomRecipe(), this);
         Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
         Bukkit.getPluginManager().registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
         Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
