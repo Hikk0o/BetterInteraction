@@ -171,7 +171,6 @@ public class ChatEvents implements Listener {
         e.setCancelled(true);
 
         int id = conuter;
-        conuter++;
 
         Player sender = e.getPlayer();
 
@@ -372,6 +371,7 @@ public class ChatEvents implements Listener {
                 messageQueue.getPlayer(sender).setCooldown(false);
             }
         }
+        conuter++;
         messages.add(message);
         logger.log(Level.INFO, logMessage);
     }

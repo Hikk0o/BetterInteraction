@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
-import java.util.logging.Level;
 
 public class CustomRecipe implements Listener {
     ItemStack enchantedBook_10lvl;
@@ -84,13 +83,16 @@ public class CustomRecipe implements Listener {
             ItemMeta resultItemMeta = resultItem.getItemMeta();
 
             if (Objects.equals(e.getInventory().getSecondItem(), enchantedBook_10lvl)) {
+
                 resultItemMeta.addEnchant(Enchantment.DAMAGE_ALL, 10, true);
+                resultItem.setItemMeta(resultItemMeta);
+                e.setResult(resultItem);
             } else if (Objects.equals(e.getInventory().getSecondItem(), enchantedBook_7lvl)) {
                 resultItemMeta.addEnchant(Enchantment.DAMAGE_ALL, 7, true);
+                resultItem.setItemMeta(resultItemMeta);
+                e.setResult(resultItem);
             }
 
-            resultItem.setItemMeta(resultItemMeta);
-            e.setResult(resultItem);
         } else if (Objects.equals(e.getInventory().getSecondItem(), enchantedBook_10lvl) || Objects.equals(e.getInventory().getSecondItem(), enchantedBook_7lvl)) {
             e.setResult(new ItemStack(Material.AIR));
         }
