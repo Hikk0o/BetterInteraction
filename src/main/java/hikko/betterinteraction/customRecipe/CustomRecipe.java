@@ -91,6 +91,8 @@ public class CustomRecipe implements Listener {
 
             resultItem.setItemMeta(resultItemMeta);
             e.setResult(resultItem);
+        } else if (Objects.equals(e.getInventory().getSecondItem(), enchantedBook_10lvl) || Objects.equals(e.getInventory().getSecondItem(), enchantedBook_7lvl)) {
+            e.setResult(new ItemStack(Material.AIR));
         }
     }
     @EventHandler

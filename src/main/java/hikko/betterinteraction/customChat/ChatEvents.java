@@ -75,10 +75,10 @@ public class ChatEvents implements Listener {
                 player.sendMessage(ChatColor.YELLOW + "Немного подождите, прежде чем отправить сообщение");
                 return;
             }
-//            if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
-//                player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
-//                return;
-//            }
+            if (playerMessages.getLastSendMessage().equals(e.getMessage())) {
+                player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
+                return;
+            }
             playerMessages.setLastSendMessage(e.getMessage());
         }
         messageQueue.getPlayer(player).setCooldown(true);
