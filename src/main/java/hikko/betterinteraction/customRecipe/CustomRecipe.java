@@ -104,7 +104,7 @@ public class CustomRecipe implements Listener {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.getType().equals(Material.NETHERITE_SWORD)) {
                 ItemMeta itemInHandMeta = itemInHand.getItemMeta();
-                if (itemInHandMeta.hasEnchant(Enchantment.DAMAGE_ALL)) {
+                if (itemInHandMeta.hasEnchant(Enchantment.DAMAGE_ALL) && !e.getEntity().getType().equals(EntityType.PLAYER)) {
                     int levelEnchant = itemInHandMeta.getEnchantLevel(Enchantment.DAMAGE_ALL);
                     if (levelEnchant == 7) {
                         e.setDamage(e.getDamage()*1.4);
