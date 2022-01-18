@@ -11,6 +11,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.ess3.api.events.PrivateMessagePreSendEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -18,6 +19,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,8 +30,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("CommentedOutCode")
 public class ChatEvents implements Listener {
@@ -42,9 +47,38 @@ public class ChatEvents implements Listener {
     private final EmotesFilter emotesFilter = new EmotesFilter();
     private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
     private final Logger logger = Logger.getLogger("Chat");
+    private final List<String> banwords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
+    }
+
+    public boolean hasBanWordInMessage(Player player, String message) {
+        for (String s : banwords) {
+            String banword = s.toLowerCase();
+            message = message.toLowerCase();
+            Pattern pattern = Pattern.compile(".*" + banword + ".*");
+            Matcher matcher = pattern.matcher(message);
+
+            if (matcher.find()) {
+                Component banMessage = Component.empty();
+                banMessage = banMessage
+                        .append(Component.text("Ваше сообщение содержит запрещённое ").color(TextColor.color(0xFF5555))
+                        .append(Component.text("слово").decorate(TextDecoration.BOLD)
+                                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(banword).decorate(TextDecoration.ITALIC).color(TextColor.color(0x818181))))));
+
+                messageQueue.getPlayer(player).addMessage(banMessage);
+                player.sendMessage(banMessage);
+
+                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
+                scheduler.scheduleSyncDelayedTask(BetterInteraction.getInstance(), () -> {
+                    CommandSender console = BetterInteraction.getInstance().getServer().getConsoleSender();
+                    BetterInteraction.getInstance().getServer().dispatchCommand(console, "mute "+ player.getName() +" 2m Automod");
+                });
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler
@@ -79,6 +113,7 @@ public class ChatEvents implements Listener {
                 player.sendMessage(ChatColor.YELLOW + "Ваше сообщение совпадает с предыдущим");
                 return;
             }
+            if (hasBanWordInMessage(player, e.getMessage())) return;
             playerMessages.setLastSendMessage(e.getMessage());
         }
         messageQueue.getPlayer(player).setCooldown(true);
@@ -233,6 +268,7 @@ public class ChatEvents implements Listener {
                 .color(TextColor.color(0x5D5D5D));
 
         String content = PlainTextComponentSerializer.plainText().serialize(e.message());
+        if (hasBanWordInMessage(sender, content)) return;
 
         Component global = Component.text("[G] ")
                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Глобальный чат").color(TextColor.color(0x55FF55))))

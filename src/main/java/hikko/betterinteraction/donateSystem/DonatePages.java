@@ -269,10 +269,10 @@ public class DonatePages {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK); //Create book ItemStack
         BookMeta meta = (BookMeta)book.getItemMeta(); //Get BookMeta
         meta.setTitle("Litwein SMP");
-        meta.addPages(net.kyori.adventure.text.Component.text(
+        meta.addPages(Component.text(
                 "Пожертвования существуют исключительно для тех, кто желает поддержать сервер и получить что-то взамен.\n" +
                         "Внеся копеечку, Вы не получите большое преимущество перед другими игроками, но и не останетесь без плюшек.\n")); //Add a page
-        meta.addPages(net.kyori.adventure.text.Component.text(
+        meta.addPages(Component.text(
                 "Донат - вынужденная мера для того, чтобы сервер жил и развивался.\n" +
                         "Надеюсь на ваше понимание ❤")); //Add a page
         meta = meta.author(Component.text("Litwein SMP"));
