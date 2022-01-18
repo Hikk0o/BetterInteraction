@@ -97,6 +97,7 @@ public final class BetterInteraction extends JavaPlugin {
     public void onReload() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reload plugin...");
         saveDefaultConfig();
+        getChatEvents().updateBanWords();
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reloaded.");
     }
 

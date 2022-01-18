@@ -47,14 +47,18 @@ public class ChatEvents implements Listener {
     private final EmotesFilter emotesFilter = new EmotesFilter();
     private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
     private final Logger logger = Logger.getLogger("Chat");
-    private final List<String> banwords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+    private List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+
+    public void updateBanWords() {
+        this.banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+    }
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
     }
 
     public boolean hasBanWordInMessage(Player player, String message) {
-        for (String s : banwords) {
+        for (String s : banWords) {
             String banword = s.toLowerCase();
             message = message.toLowerCase();
             Pattern pattern = Pattern.compile(".*" + banword + ".*");
@@ -73,7 +77,7 @@ public class ChatEvents implements Listener {
                 BetterInteraction.getInstance().getLogger().log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
                 scheduler.scheduleSyncDelayedTask(BetterInteraction.getInstance(), () -> {
                     CommandSender console = BetterInteraction.getInstance().getServer().getConsoleSender();
-                    BetterInteraction.getInstance().getServer().dispatchCommand(console, "mute "+ player.getName() +" 2m Automod");
+                    BetterInteraction.getInstance().getServer().dispatchCommand(console, "mute "+ player.getName() +" 2m AutoMod");
                 });
                 return true;
             }
