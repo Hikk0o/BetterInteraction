@@ -190,6 +190,4 @@ public class DonateCommands extends AbstractCommand {
         }
         return Lists.newArrayList();
     }
-
-
-    }
+}

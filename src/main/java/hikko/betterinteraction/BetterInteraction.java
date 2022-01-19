@@ -4,10 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import hikko.betterinteraction.authme.AuthEvents;
 import hikko.betterinteraction.clearEntities.CheckerEntities;
-import hikko.betterinteraction.commands.Commands;
-import hikko.betterinteraction.commands.DonateCommands;
-import hikko.betterinteraction.commands.EmotesCommands;
-import hikko.betterinteraction.commands.FactionCommands;
+import hikko.betterinteraction.commands.*;
 import hikko.betterinteraction.customChat.ChatEvents;
 import hikko.betterinteraction.customRecipe.CustomRecipe;
 import hikko.betterinteraction.donateSystem.Database;
@@ -19,8 +16,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -78,6 +79,7 @@ public final class BetterInteraction extends JavaPlugin {
         new FactionCommands();
         new EmotesCommands();
         new DonateCommands();
+        new ReportCommand();
         Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
         Bukkit.getPluginManager().registerEvents(new CustomRecipe(), this);
         Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
@@ -91,7 +93,7 @@ public final class BetterInteraction extends JavaPlugin {
     @Override
     public void onDisable() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Goodbye!");
-        donateDatabase.close();
+        if (donateDatabase != null) donateDatabase.close();
     }
 
     public void onReload() {

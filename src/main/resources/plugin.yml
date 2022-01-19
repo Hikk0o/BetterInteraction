@@ -16,6 +16,8 @@ depend:
 commands:
   chat:
     description: Faction chat
+  report:
+    description: Report chat
   emotes:
     description: Emotes list
   betterinteraction:
