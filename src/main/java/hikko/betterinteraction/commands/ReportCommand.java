@@ -66,6 +66,14 @@ public class ReportCommand extends AbstractCommand {
                             "    }\n" +
                             "  ]\n" +
                             "}").getBytes(StandardCharsets.UTF_8));
+                    sender.sendMessage(ChatColor.YELLOW + "Вы отправили репорт на игрока " + ChatColor.WHITE + args[0] + "\n" +
+                            ChatColor.YELLOW + "Репорт: "+ ChatColor.WHITE + reportMessage);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (player.hasPermission("betterinteraction.seereports")) {
+                            player.sendMessage(ChatColor.YELLOW + "[REPORT] Репорт от "+ChatColor.WHITE + sender.getName() + ChatColor.YELLOW +" на "+ChatColor.WHITE + args[0]+"\n" +
+                                    ChatColor.YELLOW + "Сообщение: "+ChatColor.WHITE + reportMessage);
+                        }
+                    }
                 }
                 connection.getInputStream();
             } catch (final IOException e) {

@@ -36,6 +36,7 @@ permissions:
       betterinteraction.reload: true
       betterinteraction.detelemessage: true
       betterinteraction.moderator: true
+      betterinteraction.seereports: true
       betterinteraction.donate.*: true
 
   betterinteraction.reload:
@@ -44,6 +45,10 @@ permissions:
 
   betterinteraction.moderator:
     description: Show mod badges | Permission
+    default: op
+
+  betterinteraction.seereports:
+    description: Show reports | Permission
     default: op
 
   betterinteraction.donate.*:
