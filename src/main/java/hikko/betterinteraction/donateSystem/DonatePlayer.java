@@ -23,38 +23,38 @@ public class DonatePlayer {
         if (purchase != null && !purchase.isEmpty()) {
             for (String value : purchase) {
                 if (value.equals("coloredNickname")) {
-                    coloredNickname = true;
+                    this.coloredNickname = true;
                 }
                 if (value.equals("sponsor")) {
-                    isSponsor = true;
+                    this.isSponsor = true;
                     setHaveEffects(true);
                 }
                 if (value.equals("particleMenu")) {
-                    isHaveEffects = true;
+                    setHaveEffects(true);
                 }
             }
         }
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean isColoredNickname() {
-        return coloredNickname;
+        return this.coloredNickname;
     }
     public boolean isSponsor() {
-        return isSponsor;
+        return this.isSponsor;
     }
     public boolean isHaveEffects() {
-        return isHaveEffects;
+        return this.isHaveEffects;
     }
 
     public void setColoredNickname(boolean coloredNickname) {
         this.coloredNickname = coloredNickname;
     }
     public void setSponsor(boolean sponsor) {
-        isSponsor = sponsor;
+        this.isSponsor = sponsor;
         setHaveEffects(true);
     }
     public void setHaveEffects(boolean haveEffects) {
@@ -63,9 +63,9 @@ public class DonatePlayer {
             if (player == null) return;
             LuckPerms api = LuckPermsProvider.get();
             User user = api.getPlayerAdapter(Player.class).getUser(player);
-            DataMutateResult result = user.data().add(Node.builder("group.donateplayer").build());
+            user.data().add(Node.builder("group.donateplayer").build());
             api.getUserManager().saveUser(user);
         }
-        isHaveEffects = haveEffects;
+        this.isHaveEffects = haveEffects;
     }
 }

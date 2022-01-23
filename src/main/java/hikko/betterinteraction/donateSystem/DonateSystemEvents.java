@@ -62,7 +62,7 @@ public class DonateSystemEvents implements Listener {
         if (player.hasPermission("group.donateplayer")) {
             LuckPerms api = LuckPermsProvider.get();
             User user = api.getPlayerAdapter(Player.class).getUser(player);
-            DataMutateResult result = user.data().remove(Node.builder("group.donateplayer").build());
+            user.data().remove(Node.builder("group.donateplayer").build());
             api.getUserManager().saveUser(user);
         }
     }
