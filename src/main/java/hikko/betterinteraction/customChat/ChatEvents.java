@@ -19,7 +19,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +30,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -47,40 +47,47 @@ public class ChatEvents implements Listener {
     private final EmotesFilter emotesFilter = new EmotesFilter();
     private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
     private final Logger logger = Logger.getLogger("Chat");
-    private List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
-
-    public void updateBanWords() {
-        this.banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
-    }
+    private final List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+    private final List<String> fakeBanWords = BetterInteraction.getInstance().getConfig().getStringList("fakebanwords");
+    Logger debug = BetterInteraction.getInstance().getLogger();
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
     }
 
     public boolean hasBanWordInMessage(Player player, String message) {
-        for (String s : banWords) {
-            String banword = s.toLowerCase();
-            message = message.toLowerCase();
-            Pattern pattern = Pattern.compile(".*" + banword + ".*");
-            Matcher matcher = pattern.matcher(message);
+        message = message.toLowerCase().replaceFirst("!", "");
+        for (String word : message.split(" ")) {
+            for (String s : banWords) {
+                String banword = s.toLowerCase();
 
-            if (matcher.find()) {
-                Component banMessage = Component.empty();
-                banMessage = banMessage
-                        .append(Component.text("Ваше сообщение содержит запрещённое ").color(TextColor.color(0xFF5555))
-                        .append(Component.text("слово").decorate(TextDecoration.BOLD)
-                                .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(banword).decorate(TextDecoration.ITALIC).color(TextColor.color(0x818181))))));
+                boolean isFakeBanWord = false;
+                for (String fakeBanWord : fakeBanWords) {
+                    if (Objects.equals(word, fakeBanWord)) {
+                        isFakeBanWord = true;
+                        break;
+                    }
+                }
+                if (isFakeBanWord) continue;
 
-                messageQueue.getPlayer(player).addMessage(banMessage);
-                player.sendMessage(banMessage);
+                Pattern pattern = Pattern.compile(".*" + banword + ".*");
+                Matcher matcher = pattern.matcher(word);
 
-                BetterInteraction.getInstance().getLogger().log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
-                scheduler.scheduleSyncDelayedTask(BetterInteraction.getInstance(), () -> {
-                    CommandSender console = BetterInteraction.getInstance().getServer().getConsoleSender();
-                    BetterInteraction.getInstance().getServer().dispatchCommand(console, "mute "+ player.getName() +" 2m AutoMod");
-                });
-                return true;
+                if (matcher.find()) {
+                    logger.log(Level.INFO, pattern.pattern());
+                    Component banMessage = Component.empty();
+                    banMessage = banMessage
+                            .append(Component.text("Ваше сообщение содержит запрещённое ").color(TextColor.color(0xFF5555))
+                                    .append(Component.text("слово").decorate(TextDecoration.BOLD)
+                                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(banword).decorate(TextDecoration.ITALIC).color(TextColor.color(0x818181))))));
+                    messageQueue.getPlayer(player).addMessage(banMessage);
+                    player.sendMessage(banMessage);
+
+                    BetterInteraction.getInstance().getLogger().log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
+                    return true;
+                }
             }
+
         }
         return false;
     }
@@ -120,12 +127,15 @@ public class ChatEvents implements Listener {
             if (hasBanWordInMessage(player, e.getMessage())) return;
             playerMessages.setLastSendMessage(e.getMessage());
         }
+
         messageQueue.getPlayer(player).setCooldown(true);
         scheduler.runTaskLater(BetterInteraction.getInstance(), () -> {
             if (playerMessages != null) {
                 playerMessages.setCooldown(false);
             }
         }, 40);
+
+        String message = emotesFilter.getEmotes(e.getMessage());
 
         Player recipient = BetterInteraction.getInstance().getServer().getPlayer(e.getRecipient().getName());
         Player sender = BetterInteraction.getInstance().getServer().getPlayer(e.getSender().getName());
@@ -136,7 +146,7 @@ public class ChatEvents implements Listener {
                     .append(Component.text("PM для ").color(TextColor.color(0xFF9D1F)))
                     .append(Component.text(recipient.getName()).color(TextColor.color(0xFFDB45)))
                     .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
-                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
+                    .append(Component.text(message).color(TextColor.color(0xFFFFFF)));
 
             sender.sendMessage(sernderMessage);
             messageQueue.getPlayer(sender).addMessage(sernderMessage);
@@ -150,7 +160,7 @@ public class ChatEvents implements Listener {
                             .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Ответить игроку ").color(TextColor.color(0xFF9D1F)).append(Component.text(sender.getName()).color(TextColor.color(0xFFDB45)))))
                             .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + sender.getName() + " ")))
                     .append(Component.text(": ").color(TextColor.color(0xFF9D1F)))
-                    .append(Component.text(e.getMessage()).color(TextColor.color(0xFFFFFF)));
+                    .append(Component.text(message).color(TextColor.color(0xFFFFFF)));
 
             recipient.sendMessage(recipientMessage);
             messageQueue.getPlayer(recipient).addMessage(recipientMessage);

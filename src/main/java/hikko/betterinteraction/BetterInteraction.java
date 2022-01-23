@@ -16,12 +16,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -99,7 +95,6 @@ public final class BetterInteraction extends JavaPlugin {
     public void onReload() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reload plugin...");
         saveDefaultConfig();
-        getChatEvents().updateBanWords();
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reloaded.");
     }
 
