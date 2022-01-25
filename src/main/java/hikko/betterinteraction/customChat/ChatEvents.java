@@ -74,7 +74,6 @@ public class ChatEvents implements Listener {
                 Matcher matcher = pattern.matcher(word);
 
                 if (matcher.find()) {
-                    logger.log(Level.INFO, pattern.pattern());
                     Component banMessage = Component.empty();
                     banMessage = banMessage
                             .append(Component.text("Ваше сообщение содержит запрещённое ").color(TextColor.color(0xFF5555))
@@ -83,7 +82,8 @@ public class ChatEvents implements Listener {
                     messageQueue.getPlayer(player).addMessage(banMessage);
                     player.sendMessage(banMessage);
 
-                    BetterInteraction.getInstance().getLogger().log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
+                    logger.log(Level.INFO, message);
+                    logger.log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
                     return true;
                 }
             }
