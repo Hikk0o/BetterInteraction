@@ -3,7 +3,6 @@ package hikko.betterinteraction.donateSystem;
 import hikko.betterinteraction.BetterInteraction;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.entity.Player;
@@ -19,7 +18,7 @@ public class DonatePlayer {
 
     public DonatePlayer(String name) {
         this.name = name;
-        ArrayList<String> purchase = BetterInteraction.getInstance().getDonateDatabase().getPlayerPurchase(name);
+        ArrayList<String> purchase = BetterInteraction.getInstance().getDatabase().getPlayerPurchase(name);
         if (purchase != null && !purchase.isEmpty()) {
             for (String value : purchase) {
                 if (value.equals("coloredNickname")) {

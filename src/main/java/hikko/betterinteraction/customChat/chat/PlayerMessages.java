@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-
-@SuppressWarnings("CommentedOutCode")
 public class PlayerMessages {
 
     private final String player;
@@ -46,7 +44,6 @@ public class PlayerMessages {
             if (this.messages.size() > 100) {
                 this.messages.remove(0);
             }
-//            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Add message for " + this.player + ": " + PlainTextComponentSerializer.plainText().serialize(message));
         } catch (Exception e) {
             e.printStackTrace();
             BetterInteraction.getInstance().getLogger().log(Level.WARNING, "this.messages.size() "+ this.messages.size());
@@ -62,8 +59,6 @@ public class PlayerMessages {
             String delMessage;
 
             try {
-//                int counter = 0;
-
                 if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(0)).equals("[X] ")) {
                     for (int counter = 1; counter < this.messages.get(a).children().size(); counter++) {
                         if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(counter)).equals("[L] ") ||
@@ -82,18 +77,6 @@ public class PlayerMessages {
                 }
 
                 }
-
-
-//                if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(0)).equals("[X] ")) {
-//                    if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(1)).equals("[L] ") ||
-//                            PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(1)).equals("[G] ")) {
-//                        if ()
-//                        chatType = this.messages.get(a).children().get(1);
-//                    }
-//                } else if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(0)).equals("[L] ") ||
-//                        PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(0)).equals("[G] ")) {
-//                    chatType = this.messages.get(a).children().get(0);
-//                }
 
                 playerMessage = PlainTextComponentSerializer.plainText().serialize(this.messages.get(a));
                 delMessage = PlainTextComponentSerializer.plainText().serialize(component);
@@ -115,8 +98,6 @@ public class PlayerMessages {
                     .replace("✦ ", "")
                     .replace("\uD83D\uDEE1 ", "");
 
-//            BetterInteraction.getInstance().getLogger().log(Level.WARNING, playerMessage);
-//            BetterInteraction.getInstance().getLogger().log(Level.WARNING, delMessage);
             if (playerMessage.equals(delMessage)) {
 
                 equals = true;
@@ -149,7 +130,6 @@ public class PlayerMessages {
             }
             for (Component value : this.messages) {
                 player.sendMessage(value);
-//            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Send comp");
             }
             lock = false;
         }

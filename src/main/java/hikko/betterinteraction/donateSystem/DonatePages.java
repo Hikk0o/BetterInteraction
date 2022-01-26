@@ -45,7 +45,7 @@ public class DonatePages {
         balanceItemMeta.displayName(Component.text("Баланс").decoration(ITALIC, false).color(TextColor.color(0x6DFE43)));
         List<Component> balanceLore = new ArrayList<>();
         balanceLore.add(Component.text("Вы имеете ").decoration(ITALIC, false).color(TextColor.color(0xF8F8F8))
-                .append(Component.text((int) BetterInteraction.getInstance().getDonateDatabase().getDonate(player.getName())).color(TextColor.color(0xFFDB45)))
+                .append(Component.text((int) BetterInteraction.getInstance().getDatabase().getDonate(player.getName())).color(TextColor.color(0xFFDB45)))
                 .append(Component.text(" донат-поинтов.")));
         balanceItemMeta.lore(balanceLore);
         balance.setItemMeta(balanceItemMeta);

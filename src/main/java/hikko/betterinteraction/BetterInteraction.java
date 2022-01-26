@@ -7,7 +7,6 @@ import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.*;
 import hikko.betterinteraction.customChat.ChatEvents;
 import hikko.betterinteraction.customRecipe.CustomRecipe;
-import hikko.betterinteraction.donateSystem.Database;
 import hikko.betterinteraction.donateSystem.DonateSystemEvents;
 import hikko.betterinteraction.itemLogger.ItemEvents;
 import net.ess3.api.IEssentials;
@@ -22,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class BetterInteraction extends JavaPlugin {
 
@@ -32,26 +32,30 @@ public final class BetterInteraction extends JavaPlugin {
     private static ChatEvents chatEvents;
     private static DonateSystemEvents donateSystemEvents;
     private static Properties properties;
-    private static Database donateDatabase;
+    private static Database database;
+    private Logger logger;
+    private PluginManager pluginManager;
 
     @Override
     public void onEnable() {
         instance = this;
+        logger = this.getLogger();
+        pluginManager = Bukkit.getPluginManager();
 
         saveDefaultConfig();
 
-        File file = new File(BetterInteraction.getInstance().getDataFolder() + "/logs/");
+        File file = new File(this.getDataFolder() + "/logs/");
         if (!file.exists()) {
             try {
-                Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/logs/"));
+                Files.createDirectories(Paths.get(this.getDataFolder() + "/logs/"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        file = new File(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/");
+        file = new File(this.getDataFolder() + "/transactionsLogs/");
         if (!file.exists()) {
             try {
-                Files.createDirectories(Paths.get(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/"));
+                Files.createDirectories(Paths.get(this.getDataFolder() + "/transactionsLogs/"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -69,33 +73,33 @@ public final class BetterInteraction extends JavaPlugin {
 
         new CheckerEntities();
         protocolManager = ProtocolLibrary.getProtocolManager();
-        donateDatabase = new Database();
-        donateDatabase.open();
+        database = new Database();
+        database.open();
         new Commands();
         new FactionCommands();
         new EmotesCommands();
         new DonateCommands();
         new ReportCommand();
-        Bukkit.getPluginManager().registerEvents(new ItemEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new CustomRecipe(), this);
-        Bukkit.getPluginManager().registerEvents(new AuthEvents(), this);
-        Bukkit.getPluginManager().registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
-        Bukkit.getPluginManager().registerEvents(chatEvents = new ChatEvents(), this);
+        pluginManager.registerEvents(new ItemEvents(), this);
+        pluginManager.registerEvents(new CustomRecipe(), this);
+        pluginManager.registerEvents(new AuthEvents(), this);
+        pluginManager.registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
+        pluginManager.registerEvents(chatEvents = new ChatEvents(), this);
 
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Successfully enabled.");
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
+        logger.log(Level.INFO, "Successfully enabled.");
+        logger.log(Level.INFO, "Author: Hikk0o (https://github.com/Hikk0o)");
     }
 
     @Override
     public void onDisable() {
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Goodbye!");
-        if (donateDatabase != null) donateDatabase.close();
+        logger.log(Level.INFO, "Goodbye!");
+        if (database != null) database.close();
     }
 
     public void onReload() {
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reload plugin...");
+        logger.log(Level.INFO, "Reload plugin...");
         saveDefaultConfig();
-        BetterInteraction.getInstance().getLogger().log(Level.INFO, "Reloaded.");
+        logger.log(Level.INFO, "Reloaded.");
     }
 
     public static BetterInteraction getInstance() {
@@ -113,12 +117,11 @@ public final class BetterInteraction extends JavaPlugin {
     public DonateSystemEvents GetDonateSystemEvents() {
         return donateSystemEvents;
     }
-    public Database getDonateDatabase() {
-        return donateDatabase;
+    public Database getDatabase() {
+        return database;
     }
     public IEssentials getAPIEssentials() {
-        PluginManager manager = Bukkit.getPluginManager();
-        Plugin plugin = manager.getPlugin("Essentials");
+        Plugin plugin = pluginManager.getPlugin("Essentials");
         return (IEssentials) plugin;
     }
 }

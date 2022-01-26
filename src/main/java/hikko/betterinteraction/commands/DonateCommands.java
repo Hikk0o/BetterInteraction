@@ -2,6 +2,7 @@ package hikko.betterinteraction.commands;
 
 import com.google.common.collect.Lists;
 import hikko.betterinteraction.BetterInteraction;
+import hikko.betterinteraction.Database;
 import hikko.betterinteraction.donateSystem.DonateSystemEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -27,8 +28,9 @@ public class DonateCommands extends AbstractCommand {
     public void execute(CommandSender sender, String label, String[] args) {
 
         DonateSystemEvents donateSystemEvents = BetterInteraction.getInstance().GetDonateSystemEvents();
+        Database database = BetterInteraction.getInstance().getDatabase();
 
-        String noPermission = net.md_5.bungee.api.ChatColor.RED + "{noPermission}";
+        String noPermission = ChatColor.RED + "{noPermission}";
         noPermission = noPermission.replace("{noPermission}", Objects.requireNonNull(BetterInteraction.getInstance().getConfig().getString("messages.noPermission")));
         noPermission = noPermission.replace("\\", "");
 
@@ -44,7 +46,7 @@ public class DonateCommands extends AbstractCommand {
             if (sender.hasPermission("betterinteraction.donate.get")) {
                 Player player = (Player) sender;
                 if (args.length > 1) {
-                    Object objDonate = BetterInteraction.getInstance().getDonateDatabase().getDonate(args[1]);
+                    Object objDonate = database.getDonate(args[1]);
                     Component message;
                     if (objDonate != null) {
                         int donate = (int) objDonate;
@@ -63,7 +65,7 @@ public class DonateCommands extends AbstractCommand {
                     sender.sendMessage(message);
                 } else {
                     if (sender.getName().equals("CONSOLE")) return;
-                    int donate = (int) BetterInteraction.getInstance().getDonateDatabase().getDonate(player.getName());
+                    int donate = (int) database.getDonate(player.getName());
                     Component message = Component
                             .text("Вы имеете ").color(TextColor.color(0xFFDB45))
                             .append(Component.text(donate).color(TextColor.color(0xFFFFFF)))
@@ -82,10 +84,10 @@ public class DonateCommands extends AbstractCommand {
                     try {
                         donateValue = Integer.parseInt(args[2]);
                     } catch (Exception e) {
-                        sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin setdonate <nickname> <donate>");
+                        sender.sendMessage(ChatColor.GRAY + BetterInteraction.prefix + " /bin setdonate <nickname> <donate>");
                         return;
                     }
-                    boolean completed = BetterInteraction.getInstance().getDonateDatabase().setDonate(args[1], donateValue);
+                    boolean completed = database.setDonate(args[1], donateValue);
                     Component message;
                     if (!completed) {
                         message = Component
@@ -102,7 +104,7 @@ public class DonateCommands extends AbstractCommand {
                     }
                     sender.sendMessage(message);
                 } else {
-                    sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin setdonate <nickname> <donate>");
+                    sender.sendMessage(ChatColor.GRAY + BetterInteraction.prefix + " /bin setdonate <nickname> <donate>");
                 }
             } else {
                 sender.sendMessage(noPermission);
@@ -116,15 +118,15 @@ public class DonateCommands extends AbstractCommand {
                     try {
                         donateValue = Integer.parseInt(args[2]);
                     } catch (Exception e) {
-                        sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
+                        sender.sendMessage(ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
                         return;
                     }
 
-                    Object objectCurrentBalance = BetterInteraction.getInstance().getDonateDatabase().getDonate(args[1]);
+                    Object objectCurrentBalance = database.getDonate(args[1]);
                     if (objectCurrentBalance == null) return;
                     int currentBalance = (int) objectCurrentBalance;
 
-                    boolean completed = BetterInteraction.getInstance().getDonateDatabase().setDonate(args[1], currentBalance+donateValue);
+                    boolean completed = database.setDonate(args[1], currentBalance + donateValue);
                     Component message;
                     if (!completed) {
                         message = Component
@@ -152,7 +154,7 @@ public class DonateCommands extends AbstractCommand {
                     }
 
                 } else {
-                    sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
+                    sender.sendMessage(ChatColor.GRAY + BetterInteraction.prefix + " /bin adddonate <nickname> <donate>");
                 }
             } else {
                 sender.sendMessage(noPermission);
@@ -160,7 +162,7 @@ public class DonateCommands extends AbstractCommand {
             return;
         }
 
-        sender.sendMessage(net.md_5.bungee.api.ChatColor.GRAY + BetterInteraction.prefix + " Неизвестная команда: " + args[0]);
+        sender.sendMessage(ChatColor.GRAY + BetterInteraction.prefix + " Неизвестная команда: " + args[0]);
 
 
     }

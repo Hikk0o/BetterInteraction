@@ -4,13 +4,13 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import fr.xephi.authme.events.LoginEvent;
 import hikko.betterinteraction.BetterInteraction;
+import hikko.betterinteraction.Database;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,10 +34,12 @@ public class DonateSystemEvents implements Listener {
 
     final DonatePages donatePages;
     final Database database;
+    final Configuration config;
 
     public DonateSystemEvents() {
         donatePages = new DonatePages();
-        database = BetterInteraction.getInstance().getDonateDatabase();
+        database = BetterInteraction.getInstance().getDatabase();
+        config = BetterInteraction.getInstance().getConfig();
     }
 
     public DonatePages getDonatePages() {
@@ -129,7 +132,7 @@ public class DonateSystemEvents implements Listener {
                 }
                 if (nameItem.equals("Подтвердить покупку")) {
 
-                    int productCost = BetterInteraction.getInstance().getConfig().getInt("prices.addPower.cost");
+                    int productCost = config.getInt("prices.addPower.cost");
                     e.getView().close();
                     if (database.getDonate(player.getName()) == null) {
                         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Null");
@@ -177,7 +180,7 @@ public class DonateSystemEvents implements Listener {
                     if (menuTitle.equals(productTitle+"Цветной ник")) product = "coloredNickname";
                     if (menuTitle.equals(productTitle+"Меню эффектов")) product = "particleMenu";
 
-                    int productCost = BetterInteraction.getInstance().getConfig().getInt("prices."+product+".cost");
+                    int productCost = config.getInt("prices."+product+".cost");
 
                     e.getView().close();
 

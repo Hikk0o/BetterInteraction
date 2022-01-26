@@ -20,7 +20,6 @@ public class MessageQueue {
     public synchronized PlayerMessages getPlayer (Player player) {
         for (PlayerMessages queuePlayerMessages : queuePlayersMessages) {
             if (queuePlayerMessages.getPlayer().equals(player.getName())) {
-//                BetterPerformance.getInstance().getLogger().log(Level.WARNING, queuePlayerMessages.getPlayer());
                 return queuePlayerMessages;
             }
         }
@@ -29,7 +28,6 @@ public class MessageQueue {
 
     public synchronized void delMessage (Component component, String nickname) {
         for (PlayerMessages playerMessages : queuePlayersMessages) {
-//            BetterPerformance.getInstance().getLogger().log(Level.WARNING, "Del for " + playerMessages.getPlayer());
             playerMessages.delMessage(component, nickname);
         }
     }

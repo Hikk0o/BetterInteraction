@@ -4,6 +4,7 @@ import com.earth2me.essentials.User;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import hikko.betterinteraction.BetterInteraction;
+import hikko.betterinteraction.Database;
 import hikko.betterinteraction.customChat.chat.MessageQueue;
 import hikko.betterinteraction.customChat.chat.PlayerMessages;
 import hikko.betterinteraction.customChat.protocol.ChatPacketHandler;
@@ -45,6 +46,7 @@ public class ChatEvents implements Listener {
 
     private final MessageQueue messageQueue = new MessageQueue();
     private final EmotesFilter emotesFilter = new EmotesFilter();
+    private final Database database = BetterInteraction.getInstance().getDatabase();
     private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
     private final Logger logger = Logger.getLogger("Chat");
     private final List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
@@ -82,8 +84,8 @@ public class ChatEvents implements Listener {
                     messageQueue.getPlayer(player).addMessage(banMessage);
                     player.sendMessage(banMessage);
 
-                    logger.log(Level.INFO, message);
                     logger.log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
+                    logger.log(Level.INFO, "Full message: " + message);
                     return true;
                 }
             }
@@ -244,7 +246,7 @@ public class ChatEvents implements Listener {
 //
 //        }
 
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isSponsor()) {
+        if (database.getPlayer(sender.getName()).isSponsor()) {
             nickname = nickname.append(
                     Component.text("✦ ").color(TextColor.color(0xC580FF)) // Значок спонсора
                             .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Спонсор\n").color(TextColor.color(0xB38AFF))
@@ -253,10 +255,10 @@ public class ChatEvents implements Listener {
         }
         Component nick = Component.text(sender.getName());
 
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isColoredNickname()) {
+        if (database.getPlayer(sender.getName()).isColoredNickname()) {
             nick = nick.color(TextColor.color(0x9CA2F0));
         }
-        if (BetterInteraction.getInstance().getDonateDatabase().getPlayer(sender.getName()).isSponsor()) {
+        if (database.getPlayer(sender.getName()).isSponsor()) {
             nick = nick.color(TextColor.color(0xAC8BFF));
         }
 
