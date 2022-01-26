@@ -60,8 +60,8 @@ public class FactionCommands extends AbstractCommand {
                     }
                     msg.append(str).append(" ");
                 }
-
-                message = message.append(Component.text(msg.toString()).color(TextColor.color(0xFFFFFF)));
+                String strMessage = BetterInteraction.getInstance().getChatEvents().getEmotesFilter().getEmotes(msg.toString());
+                message = message.append(Component.text(strMessage).color(TextColor.color(0xFFFFFF)));
 
                 player.sendMessage(message);
                 BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).addMessage(message);
