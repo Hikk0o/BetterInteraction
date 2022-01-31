@@ -32,9 +32,9 @@ import java.util.logging.Level;
 
 public class DonateSystemEvents implements Listener {
 
-    final DonatePages donatePages;
-    final Database database;
-    final Configuration config;
+    DonatePages donatePages;
+    Database database;
+    Configuration config;
 
     public DonateSystemEvents() {
         donatePages = new DonatePages();
@@ -68,6 +68,17 @@ public class DonateSystemEvents implements Listener {
             user.data().remove(Node.builder("group.donateplayer").build());
             api.getUserManager().saveUser(user);
         }
+    }
+
+    private void successfulBuy(Player player, int balance) {
+        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
+        Location location = player.getLocation();
+        location.add(0, 1.5, 0);
+
+        player.sendMessage(ChatColor.GREEN + "Успешная покупка! Баланс: " + ChatColor.YELLOW + balance);
+        player.spawnParticle(Particle.FIREWORKS_SPARK, location, 1000);
+        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, (float) 0.7, (float) 1);
+        player.showTitle(title);
     }
 
     @EventHandler
@@ -145,17 +156,9 @@ public class DonateSystemEvents implements Listener {
                         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
                         double boost = fplayer.getPowerBoost();
                         fplayer.setPowerBoost(boost+50.0);
-//
                         fplayer.alterPower(50.0);
 
-                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
-                        Location location = player.getLocation();
-                        location.add(0, 1.5, 0);
-
-                        player.sendMessage(ChatColor.GREEN + "Успешная покупка! Баланс: " + ChatColor.YELLOW + newPlayerBalance);
-                        player.spawnParticle(Particle.FIREWORKS_SPARK, location, 1000);
-                        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, (float) 0.7, (float) 1);
-                        player.showTitle(title);
+                        successfulBuy(player, newPlayerBalance);
                     } else {
                         player.sendMessage(ChatColor.RED + "Недостаточно донат-коинов. Баланс: " + ChatColor.YELLOW + playerBalance);
                     }
@@ -216,16 +219,7 @@ public class DonateSystemEvents implements Listener {
                             return;
                         }
 
-                        Location location = player.getLocation();
-                        location.add(0, 1.5, 0);
-
-                        Title title = Title.title(Component.text("Успешная покупка!").color(TextColor.color(0x55FF55)), Component.text("Спасибо за поддержку сервера ❤").color(TextColor.color(0xFFFF55)), Title.Times.of(Duration.ofMillis(500), Duration.ofSeconds(4), Duration.ofSeconds(1)));
-
-                        player.sendMessage(ChatColor.GREEN + "Успешная покупка! Баланс: " + ChatColor.YELLOW + newPlayerBalance);
-                        player.spawnParticle(Particle.FIREWORKS_SPARK, location, 1000);
-                        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, (float) 0.7, (float) 1);
-                        player.showTitle(title);
-
+                        successfulBuy(player, newPlayerBalance);
                     } else {
                         player.sendMessage(ChatColor.RED + "Недостаточно донат-коинов. Баланс: " + ChatColor.YELLOW + playerBalance);
                     }

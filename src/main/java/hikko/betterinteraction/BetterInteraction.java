@@ -31,6 +31,7 @@ public final class BetterInteraction extends JavaPlugin {
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
     private static DonateSystemEvents donateSystemEvents;
+    private static ItemEvents itemEvents;
     private static Properties properties;
     private static Database database;
     private Logger logger;
@@ -80,9 +81,9 @@ public final class BetterInteraction extends JavaPlugin {
         new EmotesCommands();
         new DonateCommands();
         new ReportCommand();
-        pluginManager.registerEvents(new ItemEvents(), this);
         pluginManager.registerEvents(new CustomRecipe(), this);
         pluginManager.registerEvents(new AuthEvents(), this);
+        pluginManager.registerEvents(itemEvents = new ItemEvents(), this);
         pluginManager.registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
         pluginManager.registerEvents(chatEvents = new ChatEvents(), this);
 
@@ -98,7 +99,10 @@ public final class BetterInteraction extends JavaPlugin {
 
     public void onReload() {
         logger.log(Level.INFO, "Reload plugin...");
-        saveDefaultConfig();
+        reloadConfig();
+        itemEvents.updateLogsToConsole();
+        chatEvents.updateWords();
+        donateSystemEvents.getDonatePages().updateDonateCost();
         logger.log(Level.INFO, "Reloaded.");
     }
 

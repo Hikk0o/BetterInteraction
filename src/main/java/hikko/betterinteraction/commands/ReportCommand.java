@@ -14,6 +14,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class ReportCommand extends AbstractCommand {
@@ -31,7 +32,7 @@ public class ReportCommand extends AbstractCommand {
             sender.sendMessage(ChatColor.YELLOW + "Используйте /report [ник] [сообщение]");
         } else {
             try {
-                String webhookURL = "https://discord.com/api/webhooks/933332923866808320/4F_K8eLXjm_GBn4tDpnYpciYWZMiaPZThm-xT7TnJixRms6zL9_yZ2YG1sCKfeE6G-SS";
+                String webhookURL = Objects.requireNonNull(BetterInteraction.getInstance().getConfig().getString("webhookURL"));
                 final HttpsURLConnection connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");

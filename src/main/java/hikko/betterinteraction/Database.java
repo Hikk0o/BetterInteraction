@@ -1,6 +1,5 @@
 package hikko.betterinteraction;
 
-import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.donateSystem.DonatePlayer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;

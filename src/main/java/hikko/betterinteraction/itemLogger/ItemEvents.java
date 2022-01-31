@@ -27,6 +27,11 @@ public class ItemEvents implements Listener {
     final SimpleDateFormat format = new SimpleDateFormat("d.M.y");
     final SimpleDateFormat time = new SimpleDateFormat("[HH:mm:ss] ");
     PrintWriter writer;
+    boolean logsToConsole = BetterInteraction.getInstance().getConfig().getBoolean("logsToConsole");
+
+    public void updateLogsToConsole() {
+        logsToConsole = BetterInteraction.getInstance().getConfig().getBoolean("logsToConsole");
+    }
 
     void openFile() {
         File file = new File(BetterInteraction.getInstance().getDataFolder() + "/logs/" + format.format(Calendar.getInstance().getTime()) + ".log");
@@ -42,7 +47,7 @@ public class ItemEvents implements Listener {
         scheduler.runTaskAsynchronously(BetterInteraction.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "}");
-            if (BetterInteraction.getInstance().getConfig().getBoolean("logsToConsole")) {
+            if (logsToConsole) {
                 logger.log(Level.INFO, "ItemDespawnEvent: {item: " + e.getEntity().getName() + " x " + e.getEntity().getItemStack().getAmount() + "}");
             }
             writer.close();
@@ -54,7 +59,7 @@ public class ItemEvents implements Listener {
         scheduler.runTaskAsynchronously(BetterInteraction.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDropItemEvent: {item: " + e.getItemDrop().getName() + " x " + e.getItemDrop().getItemStack().getAmount() + "; owner: "+ e.getPlayer().getName() +"}");
-            if (BetterInteraction.getInstance().getConfig().getBoolean("logsToConsole")) {
+            if (logsToConsole) {
                 logger.log(Level.INFO, "PlayerDropItemEvent: {item: " + e.getItemDrop().getName() + " x " + e.getItemDrop().getItemStack().getAmount() + "; owner: "+ e.getPlayer().getName() +"}");
             }
             writer.close();
@@ -66,7 +71,7 @@ public class ItemEvents implements Listener {
         scheduler.runTaskAsynchronously(BetterInteraction.getInstance(), () -> {
             openFile();
             writer.println(time.format(Calendar.getInstance().getTime()) + "PlayerDeathEvent: {items: " + e.getDrops() + "; owner: "+ e.getPlayer().getName() +"}");
-            if (BetterInteraction.getInstance().getConfig().getBoolean("logsToConsole")) {
+            if (logsToConsole) {
                 logger.log(Level.INFO, "PlayerDeathEvent: {items:" + e.getDrops() + "; owner: "+ e.getPlayer().getName() +"}");
             }
             writer.close();

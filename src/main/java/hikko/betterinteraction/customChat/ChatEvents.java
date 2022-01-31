@@ -48,13 +48,18 @@ public class ChatEvents implements Listener {
     private final EmotesFilter emotesFilter = new EmotesFilter();
     private final Database database = BetterInteraction.getInstance().getDatabase();
     private final BukkitScheduler scheduler = BetterInteraction.getInstance().getServer().getScheduler();
-    private final Logger logger = Logger.getLogger("Chat");
-    private final List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
-    private final List<String> fakeBanWords = BetterInteraction.getInstance().getConfig().getStringList("fakebanwords");
+    private final Logger chatLogger = Logger.getLogger("Chat");
+    private List<String> banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+    private List<String> fakeBanWords = BetterInteraction.getInstance().getConfig().getStringList("fakebanwords");
     Logger debug = BetterInteraction.getInstance().getLogger();
 
     public MessageQueue getMessageQueue() {
         return messageQueue;
+    }
+
+    public void updateWords() {
+        banWords = BetterInteraction.getInstance().getConfig().getStringList("banwords");
+        fakeBanWords = BetterInteraction.getInstance().getConfig().getStringList("fakebanwords");
     }
 
     public boolean hasBanWordInMessage(Player player, String message) {
@@ -65,7 +70,9 @@ public class ChatEvents implements Listener {
 
                 boolean isFakeBanWord = false;
                 for (String fakeBanWord : fakeBanWords) {
-                    if (Objects.equals(word, fakeBanWord)) {
+                    Pattern pattern = Pattern.compile(".*" + fakeBanWord + ".*");
+                    Matcher matcher = pattern.matcher(word);
+                    if (matcher.find()) {
                         isFakeBanWord = true;
                         break;
                     }
@@ -84,8 +91,8 @@ public class ChatEvents implements Listener {
                     messageQueue.getPlayer(player).addMessage(banMessage);
                     player.sendMessage(banMessage);
 
-                    logger.log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
-                    logger.log(Level.INFO, "Full message: " + message);
+                    chatLogger.log(Level.INFO, "Word \"" + banword + "\" by "+ player.getName() +" removed.");
+                    chatLogger.log(Level.INFO, "Full message: " + message);
                     return true;
                 }
             }
@@ -292,7 +299,7 @@ public class ChatEvents implements Listener {
 
         Component local = Component.text("[L] ")
                 .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Локальный чат").color(TextColor.color(0xFFFF55))))
-                .color(TextColor.color(0xFFFF55));
+                .color(TextColor.color(0xAAAAAA));
 
         Component deleteButton = Component.text("[X] ")
                 .color(TextColor.color(0xED4E3F))
@@ -404,7 +411,8 @@ public class ChatEvents implements Listener {
                                 .append(messageColon)
                                 .append(Component.text(playerContent));
                     }
-                    if (!player.equals(sender)) heard = true;
+
+                    if (!player.equals(sender) && sender.canSee(player)) heard = true;
 
                     messageQueue.getPlayer(player).addMessage(sendMessage);
                     player.sendMessage(sendMessage);
@@ -425,7 +433,7 @@ public class ChatEvents implements Listener {
         }
         conuter++;
         messages.add(message);
-        logger.log(Level.INFO, logMessage);
+        chatLogger.log(Level.INFO, logMessage);
     }
 
     public EmotesFilter getEmotesFilter() {

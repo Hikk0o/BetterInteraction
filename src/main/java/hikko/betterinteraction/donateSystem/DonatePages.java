@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,6 +21,21 @@ import java.util.List;
 import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 public class DonatePages {
+
+    Configuration config = BetterInteraction.getInstance().getConfig();
+
+    int particleMenuCost = config.getInt("prices.particleMenu.cost");
+    int coloredNicknameCost = config.getInt("prices.coloredNickname.cost");
+    int addPowerCost = config.getInt("prices.addPower.cost");
+    int sponsorCost = config.getInt("prices.sponsor.cost");
+
+    public void updateDonateCost() {
+        config = BetterInteraction.getInstance().getConfig();
+        particleMenuCost = config.getInt("prices.particleMenu.cost");
+        coloredNicknameCost = config.getInt("prices.coloredNickname.cost");
+        addPowerCost = config.getInt("prices.addPower.cost");
+        sponsorCost = config.getInt("prices.sponsor.cost");
+    }
 
     public void InitialDonateMenu(Player player) {
         Component menuTitle = Component.text("Donate Menu").decoration(ITALIC, false).color(TextColor.color(0x212121));
@@ -97,11 +113,10 @@ public class DonatePages {
         closeMenu.setItemMeta(closeMenuItemMeta);
 
         // Colored nickname
+
         ItemMeta coloredNicknameMeta = coloredNickname.getItemMeta();
         coloredNicknameMeta.displayName(Component.text("Цветной ник").decoration(ITALIC, false).color(TextColor.color(0xDACDFF)));
         List<Component> coloredNicknameLore = new ArrayList<>();
-
-        int coloredNicknameCost = BetterInteraction.getInstance().getConfig().getInt("prices.coloredNickname.cost");
 
         coloredNicknameLore.add(Component.empty());
         coloredNicknameLore.add(Component.text("Ваш ник будет выглядеть вот так: ").decoration(ITALIC, false).color(TextColor.color(0xCACACA))
@@ -121,11 +136,11 @@ public class DonatePages {
         coloredNickname.setItemMeta(coloredNicknameMeta);
 
         // Add power
-        int addPowerCost = BetterInteraction.getInstance().getConfig().getInt("prices.addPower.cost");
 
         ItemMeta addPowerMeta = addPower.getItemMeta();
         addPowerMeta.displayName(Component.text("+50 силы").decoration(ITALIC, false).color(TextColor.color(0x3EDFC4)));
         List<Component> addPowerLore = new ArrayList<>();
+
         addPowerLore.add(Component.empty());
         addPowerLore.add(Component.text("Покупая данный товар, вы прибавляете +50 силы для СЕБЯ").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
         addPowerLore.add(Component.text("Сила позволяет захватывать больше земель").decoration(ITALIC, false).color(TextColor.color(0xA1FAE6)));
@@ -143,7 +158,6 @@ public class DonatePages {
         addPower.setItemMeta(addPowerMeta);
 
         // Particle Menu
-        int particleHatsCost = BetterInteraction.getInstance().getConfig().getInt("prices.particleHats.cost");
 
         ItemMeta particleHatsMeta = particleHats.getItemMeta();
         particleHatsMeta.displayName(Component.text("Меню эффектов").decoration(ITALIC, false).color(TextColor.color(0xAA66F4)));
@@ -160,7 +174,7 @@ public class DonatePages {
         particleHatsLore.add(Component.text(" - Эффект \"Магическая аура\"").decoration(ITALIC, false).color(TextColor.color(0xBEB8D8)));
         particleHatsLore.add(Component.empty());
         particleHatsLore.add(Component.text("Стоимость:").decoration(ITALIC, false).color(TextColor.color(0x78CB51))
-                .append(Component.text(" "+particleHatsCost+" ").color(TextColor.color(0xFFFFFF)))
+                .append(Component.text(" "+ particleMenuCost +" ").color(TextColor.color(0xFFFFFF)))
                 .append(Component.text("донат-коинов").color(TextColor.color(0x78CB51))));
         particleHatsLore.add(Component.empty());
         particleHatsLore.add(Component.text("Нажмите ").decoration(ITALIC, false).color(TextColor.color(0xFFFFFF))
@@ -171,12 +185,11 @@ public class DonatePages {
         particleHats.setItemMeta(particleHatsMeta);
 
         // Sponsor
+
         ItemMeta sponsorMeta = sponsor.getItemMeta();
         sponsorMeta.displayName(Component.text("Спонсор").decoration(ITALIC, false).color(TextColor.color(0xFAD341)).decorate(TextDecoration.BOLD));
         sponsorMeta.addEnchant(Enchantment.LUCK, 1, false);
         sponsorMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-        int sponsorCost = BetterInteraction.getInstance().getConfig().getInt("prices.sponsor.cost");
 
         List<Component> sponsorLore = new ArrayList<>();
         sponsorLore.add(Component.empty());
