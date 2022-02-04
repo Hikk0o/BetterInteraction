@@ -90,7 +90,13 @@ public class CheckerEntities extends BukkitRunnable {
                         taskActive = true;
                         BetterInteraction.getInstance().getLogger().log(Level.WARNING, "Many entities!");
                         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Started deleting...");
-                        new ClearEntitiesTask().runTaskTimer(BetterInteraction.getInstance(), 0L, 5);
+                        try {
+                            new ClearEntitiesTask().runTaskTimer(BetterInteraction.getInstance(), 0L, 5);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            this.cancel();
+                            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "****** The task was canceled due to an error! ******");
+                        }
                         break;
                     }
                     CheckerEntities.MAXCOUNT = BetterInteraction.getInstance().getConfig().getInt("maxEntities");
