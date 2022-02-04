@@ -13,6 +13,7 @@ depend:
   - ProtocolLib
   - Factions
   - LuckPerms
+  - PlasmoVoice
 commands:
   chat:
     description: Faction chat
@@ -29,6 +30,10 @@ commands:
     aliases:
       - dm
 permissions:
+  canSpeak:
+    default: op
+    description: Allows you to speak in voice chat
+
   betterinteraction.*:
     default: op
     description: OP-Permission for all Commands and Functions

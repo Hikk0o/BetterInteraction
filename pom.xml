@@ -72,6 +72,10 @@
             <id>faction-api</id>
             <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
+        <repository>
+            <id>plasmo-repo</id>
+            <url>https://repo.plo.su</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -104,6 +108,12 @@
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>su.plo.voice</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.0.9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

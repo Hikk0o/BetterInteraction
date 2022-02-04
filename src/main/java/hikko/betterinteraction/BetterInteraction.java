@@ -9,11 +9,13 @@ import hikko.betterinteraction.customChat.ChatEvents;
 import hikko.betterinteraction.customRecipe.CustomRecipe;
 import hikko.betterinteraction.donateSystem.DonateSystemEvents;
 import hikko.betterinteraction.itemLogger.ItemEvents;
+import hikko.betterinteraction.plasmoVoice.PlasmoVoice;
 import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import su.plo.voice.PlasmoVoiceAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +84,7 @@ public final class BetterInteraction extends JavaPlugin {
         new DonateCommands();
         new ReportCommand();
         pluginManager.registerEvents(new CustomRecipe(), this);
+        pluginManager.registerEvents(new PlasmoVoice(), this);
         pluginManager.registerEvents(new AuthEvents(), this);
         pluginManager.registerEvents(itemEvents = new ItemEvents(), this);
         pluginManager.registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
