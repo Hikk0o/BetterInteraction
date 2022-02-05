@@ -3,10 +3,10 @@ package hikko.betterinteraction;
 import hikko.betterinteraction.donateSystem.DonatePlayer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -57,7 +57,7 @@ public class Database {
     final SimpleDateFormat time = new SimpleDateFormat("[HH:mm:ss] ");
     PrintWriter writer;
 
-    void openFile() {
+    private void openFile() {
         File file = new File(BetterInteraction.getInstance().getDataFolder() + "/transactionsLogs/" + format.format(Calendar.getInstance().getTime()) + ".log");
         try {
             this.writer = new PrintWriter(new FileWriter(file,true));
@@ -186,22 +186,8 @@ public class Database {
                 PreparedStatement statement = conn.prepareStatement(query);
                 statement.executeUpdate();
                 if (product.equals("coloredNickname")) getPlayer(nickname).setColoredNickname(true);
-                if (product.equals("particleMenu")) {
-
-                    getPlayer(nickname).setHaveEffects(true);
-                    Player player = BetterInteraction.getInstance().getServer().getPlayer(nickname);
-                    if (player != null) {
-                        LuckPerms api = LuckPermsProvider.get();
-                        User user = api.getPlayerAdapter(Player.class).getUser(player);
-                        DataMutateResult result = user.data().add(Node.builder("group.donateplayer").build());
-                        api.getUserManager().saveUser(user);
-                    }
-                }
-                if (product.equals("sponsor")){
-                    getPlayer(nickname).setSponsor(true);
-                    getPlayer(nickname).setColoredNickname(true);
-
-                }
+                if (product.equals("particleMenu")) getPlayer(nickname).setHaveEffects(true);
+                if (product.equals("sponsor")) getPlayer(nickname).setSponsor(true);
                 openFile();
                 this.writer.println(time.format(Calendar.getInstance().getTime()) + "addPlayerProduct: { player: " + nickname + "; product: " + product + "; endData: "+cal+" }");
                 this.writer.close();
@@ -211,6 +197,20 @@ public class Database {
                 return false;
             }
 
+    }
+
+    private void removePermissionGroup(Player player, String groupName) {
+        groupName = "group." + groupName;
+        if (player.hasPermission(groupName)) {
+            LuckPerms api = LuckPermsProvider.get();
+            User user = api.getPlayerAdapter(Player.class).getUser(player);
+            user.data().remove(Node.builder(groupName).build());
+            api.getUserManager().saveUser(user);
+        }
+        if (groupName.equals("group.donateplayer")) {
+            CommandSender console = BetterInteraction.getInstance().getServer().getConsoleSender();
+            BetterInteraction.getInstance().getServer().dispatchCommand(console, "h clear " + player.getName());
+        }
     }
 
     public ArrayList<String> getPlayerPurchase(String nickname) {
@@ -237,16 +237,26 @@ public class Database {
                         if (player != null) {
                             String product = "";
                             if (dataProduct.equals("coloredNickname")) product = "\"Цветной ник\"";
-                            if (dataProduct.equals("sponsor")) product = "\"Спонсор\"";
-                            if (dataProduct.equals("particleMenu")) product = "\"Меню эффектов\"";
+                            if (dataProduct.equals("sponsor")) {
+                                product = "\"Спонсор\"";
+                                removePermissionGroup(player, "donateplayer");
+                            }
+                            if (dataProduct.equals("particleMenu")) {
+                                product = "\"Меню эффектов\"";
+                                removePermissionGroup(player, "donateplayer");
+                            }
 
                             player.sendMessage(ChatColor.YELLOW + "Срок подписки "+ChatColor.WHITE+product+ChatColor.YELLOW+" закончился.");
+
+                            String query2 =
+                                    "DELETE FROM playersProducts " +
+                                            "WHERE id = '"+response.getInt("id")+"'";
+                            Statement statement2 = conn.createStatement();
+                            statement2.executeUpdate(query2);
+
+                        } else {
+                            BetterInteraction.getInstance().getLogger().log(Level.SEVERE, "Player null!");
                         }
-                        String query2 =
-                                "DELETE FROM playersProducts " +
-                                        "WHERE id = '"+response.getInt("id")+"'";
-                        Statement statement2 = conn.createStatement();
-                        statement2.executeUpdate(query2);
 
                     } else {
                         purchase.add(response.getString("product"));

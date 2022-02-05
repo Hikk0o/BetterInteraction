@@ -7,7 +7,7 @@ import hikko.betterinteraction.clearEntities.CheckerEntities;
 import hikko.betterinteraction.commands.*;
 import hikko.betterinteraction.customChat.ChatEvents;
 import hikko.betterinteraction.customRecipe.CustomRecipe;
-import hikko.betterinteraction.donateSystem.DonateSystemEvents;
+import hikko.betterinteraction.donateSystem.DonateEvents;
 import hikko.betterinteraction.itemLogger.ItemEvents;
 import hikko.betterinteraction.plasmoVoice.PlasmoVoice;
 import net.ess3.api.IEssentials;
@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import su.plo.voice.PlasmoVoiceAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +31,7 @@ public final class BetterInteraction extends JavaPlugin {
     public static String prefix;
     private static ProtocolManager protocolManager;
     private static ChatEvents chatEvents;
-    private static DonateSystemEvents donateSystemEvents;
+    private static DonateEvents donateEvents;
     private static ItemEvents itemEvents;
     private static Properties properties;
     private static Database database;
@@ -87,7 +86,7 @@ public final class BetterInteraction extends JavaPlugin {
         pluginManager.registerEvents(new PlasmoVoice(), this);
         pluginManager.registerEvents(new AuthEvents(), this);
         pluginManager.registerEvents(itemEvents = new ItemEvents(), this);
-        pluginManager.registerEvents(donateSystemEvents = new DonateSystemEvents(), this);
+        pluginManager.registerEvents(donateEvents = new DonateEvents(), this);
         pluginManager.registerEvents(chatEvents = new ChatEvents(), this);
 
         logger.log(Level.INFO, "Successfully enabled.");
@@ -105,7 +104,7 @@ public final class BetterInteraction extends JavaPlugin {
         reloadConfig();
         itemEvents.updateLogsToConsole();
         chatEvents.updateWords();
-        donateSystemEvents.getDonatePages().updateDonateCost();
+        donateEvents.getDonatePages().updateDonateCost();
         logger.log(Level.INFO, "Reloaded.");
     }
 
@@ -121,8 +120,8 @@ public final class BetterInteraction extends JavaPlugin {
     public ChatEvents getChatEvents() {
         return chatEvents;
     }
-    public DonateSystemEvents GetDonateSystemEvents() {
-        return donateSystemEvents;
+    public DonateEvents GetDonateSystemEvents() {
+        return donateEvents;
     }
     public Database getDatabase() {
         return database;

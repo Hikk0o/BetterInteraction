@@ -54,16 +54,19 @@ public class DonatePlayer {
     }
     public void setSponsor(boolean sponsor) {
         this.isSponsor = sponsor;
+        setColoredNickname(true);
         setHaveEffects(true);
     }
     public void setHaveEffects(boolean haveEffects) {
         if (haveEffects) {
             Player player = BetterInteraction.getInstance().getServer().getPlayer(this.name);
             if (player == null) return;
-            LuckPerms api = LuckPermsProvider.get();
-            User user = api.getPlayerAdapter(Player.class).getUser(player);
-            user.data().add(Node.builder("group.donateplayer").build());
-            api.getUserManager().saveUser(user);
+            if (!player.hasPermission("group.donateplayer")) {
+                LuckPerms api = LuckPermsProvider.get();
+                User user = api.getPlayerAdapter(Player.class).getUser(player);
+                user.data().add(Node.builder("group.donateplayer").build());
+                api.getUserManager().saveUser(user);
+            }
         }
         this.isHaveEffects = haveEffects;
     }

@@ -3,40 +3,35 @@ package hikko.betterinteraction.donateSystem;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import fr.xephi.authme.events.LoginEvent;
+import fr.xephi.authme.events.LogoutEvent;
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.Database;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class DonateSystemEvents implements Listener {
+public class DonateEvents implements Listener {
 
     DonatePages donatePages;
     Database database;
     Configuration config;
 
-    public DonateSystemEvents() {
+    public DonateEvents() {
         donatePages = new DonatePages();
         database = BetterInteraction.getInstance().getDatabase();
         config = BetterInteraction.getInstance().getConfig();
@@ -47,27 +42,21 @@ public class DonateSystemEvents implements Listener {
     }
 
     @EventHandler
-    public void OnLoginEvent(LoginEvent e) {
+    public void LoginEvent(LoginEvent e) { // AuthMe
         Player player = e.getPlayer();
         database.addPlayer(player);
     }
+
     @EventHandler
-    public void OnLoginEvent(PlayerJoinEvent e) {
+    public void LogoutEvent(LogoutEvent e) { // AuthMe
         Player player = e.getPlayer();
-        CommandSender console = BetterInteraction.getInstance().getServer().getConsoleSender();
-        BetterInteraction.getInstance().getServer().dispatchCommand(console, "h clear "+player.getName());
+        database.getDonatePlayers().removeIf(donatePlayer -> donatePlayer.getName().equals(player.getName()));
     }
 
     @EventHandler
-    public void OnLogoutEvent(PlayerQuitEvent e) {
+    public void PlayerQuitEvent(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         database.getDonatePlayers().removeIf(donatePlayer -> donatePlayer.getName().equals(player.getName()));
-        if (player.hasPermission("group.donateplayer")) {
-            LuckPerms api = LuckPermsProvider.get();
-            User user = api.getPlayerAdapter(Player.class).getUser(player);
-            user.data().remove(Node.builder("group.donateplayer").build());
-            api.getUserManager().saveUser(user);
-        }
     }
 
     private void successfulBuy(Player player, int balance) {

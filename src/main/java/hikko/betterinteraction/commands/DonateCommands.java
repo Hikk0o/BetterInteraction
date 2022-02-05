@@ -3,7 +3,7 @@ package hikko.betterinteraction.commands;
 import com.google.common.collect.Lists;
 import hikko.betterinteraction.BetterInteraction;
 import hikko.betterinteraction.Database;
-import hikko.betterinteraction.donateSystem.DonateSystemEvents;
+import hikko.betterinteraction.donateSystem.DonateEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -27,7 +27,7 @@ public class DonateCommands extends AbstractCommand {
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
 
-        DonateSystemEvents donateSystemEvents = BetterInteraction.getInstance().GetDonateSystemEvents();
+        DonateEvents donateEvents = BetterInteraction.getInstance().GetDonateSystemEvents();
         Database database = BetterInteraction.getInstance().getDatabase();
 
         String noPermission = ChatColor.RED + "{noPermission}";
@@ -38,7 +38,7 @@ public class DonateCommands extends AbstractCommand {
         if (args.length == 0) { // Реализация донат меню
             if (sender.getName().equals("CONSOLE")) return;
             Player player = (Player) sender;
-            donateSystemEvents.getDonatePages().InitialDonateMenu(player);
+            donateEvents.getDonatePages().InitialDonateMenu(player);
             return;
         }
 
