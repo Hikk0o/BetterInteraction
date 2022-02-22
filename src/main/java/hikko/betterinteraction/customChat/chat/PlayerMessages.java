@@ -69,13 +69,12 @@ public class PlayerMessages {
                     }
                 } else {
                     for (int counter = 0; counter < this.messages.get(a).children().size(); counter++) {
-                    if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(counter)).equals("[L] ") ||
-                            PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(counter)).equals("[G] ")) {
-                        chatType = this.messages.get(a).children().get(counter);
-                        break;
+                        if (PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(counter)).equals("[L] ") ||
+                                PlainTextComponentSerializer.plainText().serialize(this.messages.get(a).children().get(counter)).equals("[G] ")) {
+                            chatType = this.messages.get(a).children().get(counter);
+                            break;
+                        }
                     }
-                }
-
                 }
 
                 playerMessage = PlainTextComponentSerializer.plainText().serialize(this.messages.get(a));

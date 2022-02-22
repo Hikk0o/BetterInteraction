@@ -24,10 +24,8 @@ public class ReportCommand extends AbstractCommand {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading report commands...");
     }
 
-
     @Override
     public void execute(CommandSender sender, String label, String[] args) {
-
         if (args.length < 2) {
             sender.sendMessage(ChatColor.YELLOW + "Используйте /report [ник] [сообщение]");
         } else {
@@ -80,7 +78,6 @@ public class ReportCommand extends AbstractCommand {
             } catch (final IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

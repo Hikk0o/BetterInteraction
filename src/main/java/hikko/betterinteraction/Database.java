@@ -86,7 +86,6 @@ public class Database {
 
         for (DonatePlayer donatePlayer : donatePlayers) {
             if (donatePlayer.getName().equals(nickname)) {
-//                BetterPerformance.getInstance().getLogger().log(Level.WARNING, queuePlayerMessages.getPlayer());
                 return donatePlayer;
             }
         }

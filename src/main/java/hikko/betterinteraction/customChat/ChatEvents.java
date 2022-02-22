@@ -31,13 +31,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("CommentedOutCode")
 public class ChatEvents implements Listener {
     public ChatEvents() {
         BetterInteraction.getInstance().getLogger().log(Level.INFO, "Loading chat events...");
@@ -242,17 +240,6 @@ public class ChatEvents implements Listener {
 
         FPlayer fsender = FPlayers.getInstance().getByPlayer(sender);
 
-//        if (e.getPlayer().hasPermission("betterinteraction.moderator")) {
-//
-//            String permissions = "";
-//            if (e.getPlayer().hasPermission("betterinteraction.detelemessage")) permissions += "- Удалять сообщения";
-//            nickname = nickname.append(
-//                    Component.text("\uD83D\uDEE1 ").color(TextColor.color(0xAA00)) // Значок модератора
-//                            .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(ChatColor.GREEN + "Модератор\n" +
-//                                    ChatColor.GRAY + "Этот игрок может:\n" + permissions))));
-//
-//        }
-
         if (database.getPlayer(sender.getName()).isSponsor()) {
             nickname = nickname.append(
                     Component.text("✦ ").color(TextColor.color(0xC580FF)) // Значок спонсора
@@ -269,23 +256,12 @@ public class ChatEvents implements Listener {
             nick = nick.color(TextColor.color(0xAC8BFF));
         }
 
-
         Component descNickname = Component.empty();
-//        if (fsender.getFaction().isWilderness()) {
-//          descNickname = Component.text(fsender.getName() + ChatColor.YELLOW + " не состоит во фракции");
-//        } else {
-//          descNickname = Component.text(fsender.getName() + ChatColor.YELLOW + " является участником фракции " + ChatColor.RESET + fsender.getFaction().getTag());
-//        }
-//        descNickname = descNickname
-//                .append(Component.newline())
-//                .append(Component.newline());
 
         nickname = nickname
                 .append(nick)
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/w " + e.getPlayer().getName() + " "))
                         .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, descNickname.append(Component.text(ChatColor.GREEN+"Нажмите "+ChatColor.WHITE+"ПКМ"+ChatColor.GREEN+", чтобы отправить личное сообщение игроку " + ChatColor.WHITE + e.getPlayer().getName()))));
-
-
 
         Component messageColon = Component.text(": ")
                 .color(TextColor.color(0x5D5D5D));

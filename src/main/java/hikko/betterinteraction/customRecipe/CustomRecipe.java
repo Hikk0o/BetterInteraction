@@ -48,7 +48,6 @@ public class CustomRecipe implements Listener {
         recipe_10lvl.setIngredient('N', Material.NETHERITE_INGOT);
         BetterInteraction.getInstance().getServer().addRecipe(recipe_10lvl);
 
-
         //Craft 7lvl
         enchantedBook_7lvl = new ItemStack(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta enchantedBookMeta_7lvl = (EnchantmentStorageMeta)enchantedBook_7lvl.getItemMeta();

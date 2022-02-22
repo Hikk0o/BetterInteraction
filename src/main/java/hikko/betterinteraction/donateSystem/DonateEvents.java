@@ -212,8 +212,6 @@ public class DonateEvents implements Listener {
                     } else {
                         player.sendMessage(ChatColor.RED + "Недостаточно донат-коинов. Баланс: " + ChatColor.YELLOW + playerBalance);
                     }
-
-
                 }
             }
         }

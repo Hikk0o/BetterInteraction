@@ -13,7 +13,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("CommentedOutCode")
 public class ChatPacketHandler {
 
 	public ChatPacketHandler() {
@@ -40,13 +39,9 @@ public class ChatPacketHandler {
 					try {
 						component = GsonComponentSerializer.gson().deserialize(chatComponents.getValues().get(0).getJson());
 					} catch (NullPointerException e) {
-//						BetterPerformance.getInstance().getLogger().log(Level.WARNING, " NullPointerException ChatPacketHandler");
 						return;
 					}
 					BetterInteraction.getInstance().getChatEvents().getMessageQueue().getPlayer(player).addMessage(component);
-
-//					BetterPerformance.getInstance().getLogger().log(Level.INFO, "To " + player.getName() + ": " + PlainTextComponentSerializer.plainText().serialize(component));
-//					BetterPerformance.getInstance().getLogger().log(Level.INFO, "To " + player.getName() + ": " + packet.getChatTypes().getValues());
 				}
 				catch (NullPointerException e) {
 					e.printStackTrace();

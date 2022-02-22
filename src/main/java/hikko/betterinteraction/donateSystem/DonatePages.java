@@ -56,7 +56,6 @@ public class DonatePages {
         menuGlassMeta.displayName(Component.text("Пусто..").color(TextColor.color(0x231924)));
         menuGlass.setItemMeta(menuGlassMeta);
 
-
         ItemMeta balanceItemMeta = balance.getItemMeta();
         balanceItemMeta.displayName(Component.text("Баланс").decoration(ITALIC, false).color(TextColor.color(0x6DFE43)));
         List<Component> balanceLore = new ArrayList<>();
@@ -86,8 +85,6 @@ public class DonatePages {
 
         player.openInventory(inv);
     }
-
-
 
     public void DonateListMenu(Player player) {
         Component menuTitle = Component.text("Список услуг").decoration(ITALIC, false).color(TextColor.color(0x212121));

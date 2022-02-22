@@ -18,36 +18,24 @@ class ClearEntitiesTask extends BukkitRunnable {
             entity.remove();
             counter++;
             CheckerEntities.pigs.remove(0);
-/*
-            LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + "Kill PIG");
-*/
         }
         if (!CheckerEntities.chikens.isEmpty()) {
             Entity entity = CheckerEntities.chikens.get(0);
             entity.remove();
             counter++;
             CheckerEntities.chikens.remove(0);
-/*
-            LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + "Kill CHICKEN");
-*/
         }
         if (!CheckerEntities.cows.isEmpty()) {
             Entity entity = CheckerEntities.cows.get(0);
             entity.remove();
             counter++;
             CheckerEntities.cows.remove(0);
-/*
-            LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + "Kill COW");
-*/
         }
         if (!CheckerEntities.sheeps.isEmpty()) {
             Entity entity = CheckerEntities.sheeps.get(0);
             entity.remove();
             counter++;
             CheckerEntities.sheeps.remove(0);
-/*
-            LoggerItems.getInstance().getLogger().log(Level.INFO, ChatColor.RED + "Kill SHEEP");
-*/
         }
 
         if (CheckerEntities.pigs.isEmpty() && CheckerEntities.chikens.isEmpty() && CheckerEntities.cows.isEmpty() && CheckerEntities.sheeps.isEmpty()) {
