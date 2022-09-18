@@ -21,6 +21,9 @@
   ![image](https://user-images.githubusercontent.com/78872275/155315452-e60c6ff4-e255-4cd8-9041-8810fe873617.png) **->** ![image](https://user-images.githubusercontent.com/78872275/155315496-24f77300-0688-4e52-a3b9-73f31daecc9c.png)<br><br>
   - Личные сообщения со звуковым оповещением. (Используется API плагина [EssentialsX](https://github.com/EssentialsX/Essentials/))<br><br>
   ![image](https://user-images.githubusercontent.com/78872275/155316194-7278a714-ec45-46e3-bb88-df4a3513abce.png)<br>
-
+### Логирование важных событий
+### Кастомные рецепты
+### Система донатов с интерактивным меню
+### Интеграция с модом PlasmoVoice
 ### Другое
   В плагине используются и прочие API, WebHooks и др. Подробнее можно увидеть в коде.
