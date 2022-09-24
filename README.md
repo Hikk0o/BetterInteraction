@@ -1,7 +1,7 @@
 #### Этот плагин был написан для личного сервера. После его закрытия, этот проект стал публичным.
 
 # Подробнее о BetterInteraction
-  Плагин на основе API форка [глобальной серверной модификации MC](https://github.com/PaperMC/Paper) на языке Java. Для сборки используется Maven.
+  Плагин на основе API форка [глобальной серверной модификации Minecraft](https://github.com/PaperMC/Paper) на языке Java. Для сборки используется Maven.
   
   Структура проекта:<br><br>
 ![image](https://user-images.githubusercontent.com/78872275/155320634-1dba0dc8-c81f-4aae-aeb9-0a5ca5b5f16a.png)
